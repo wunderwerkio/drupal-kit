@@ -5,11 +5,14 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
-    "lint": {
-      "outputs": []
+    "lint": {},
+    "typecheck": {},
+    "test": {
+      "output": [],
+      "inputs": ["src/**/*.ts", "tests/**/*.ts"]
     },
-    "typecheck": {
-      "outputs": []
+    "test:watch": {
+      "cache": false
     }
   },
   "globalEnv": ["NODE_ENV"]
