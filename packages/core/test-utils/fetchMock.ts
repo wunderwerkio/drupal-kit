@@ -16,8 +16,8 @@ export const mockResponse = (
   const url =
     typeof options.url === "string"
       ? dk.buildUrl(options.url, {
-        localeOverride: options.locale,
-      })
+          localeOverride: options.locale,
+        })
       : options.url;
 
   // Mock next request for url.

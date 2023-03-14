@@ -29,18 +29,25 @@ describe("DrupalkitJsonApiError", () => {
         headers: {},
         status: 422,
         data: JsonApiErrorResponse,
-        url: "some-url"
-      }
+        url: "some-url",
+      },
     });
 
     const jaError = DrupalkitJsonApiError.fromDrupalkitError(error);
 
-    expect(jaError.hasValidationErrors()).toBeTruthy()
-    expect(jaError.getInvalidFields()).toEqual(["field_firstname", "field_lastname"]);
+    expect(jaError.hasValidationErrors()).toBeTruthy();
+    expect(jaError.getInvalidFields()).toEqual([
+      "field_firstname",
+      "field_lastname",
+    ]);
     expect(jaError.getErrorsByStatus(400)).toHaveLength(1);
     expect(jaError.getErrorsByStatus(422)).toHaveLength(2);
 
-    expect(jaError.getErrorsByStatus(400)).toMatchSnapshot("bad-request-errors");
-    expect(jaError.getErrorsByStatus(422)).toMatchSnapshot("unprocessable-entity-errors");
+    expect(jaError.getErrorsByStatus(400)).toMatchSnapshot(
+      "bad-request-errors",
+    );
+    expect(jaError.getErrorsByStatus(422)).toMatchSnapshot(
+      "unprocessable-entity-errors",
+    );
   });
 });

@@ -1,7 +1,7 @@
 import { Response } from "node-fetch";
 
 /**
- * Get buffer from response. 
+ * Get buffer from response.
  *
  * @param response - The response object.
  */

@@ -1,8 +1,8 @@
 import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
 import { DrupalkitError } from "@drupalkit/error";
-import { mockResponse } from "../test-utils";
 
 import { Drupalkit } from "../src";
+import { mockResponse } from "../test-utils";
 import DemoEndpointResponse from "./fixtures/demo-endpoint.json";
 
 enableFetchMocks();

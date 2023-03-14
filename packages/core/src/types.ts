@@ -1,7 +1,7 @@
+import { ParsedQs } from "qs";
 import { DrupalkitError } from "@drupalkit/error";
 import * as DrupalkitTypes from "@drupalkit/types";
 import { Fetch } from "@drupalkit/types";
-import { ParsedQs } from "qs";
 
 import { Drupalkit } from ".";
 
@@ -28,11 +28,11 @@ export type Constructor<T> = new (...args: any[]) => T;
 
 export type ReturnTypeOf<T extends AnyFunction | AnyFunction[]> =
   T extends AnyFunction
-  ? ReturnType<T>
-  : T extends AnyFunction[]
-  ? // exclude `void` from intersection
-  UnionToIntersection<Exclude<ReturnType<T[number]>, void>>
-  : never;
+    ? ReturnType<T>
+    : T extends AnyFunction[]
+    ? // exclude `void` from intersection
+      UnionToIntersection<Exclude<ReturnType<T[number]>, void>>
+    : never;
 
 /**
  * Taken from stack overflow.

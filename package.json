@@ -16,6 +16,8 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "format:check": "prettier --check 'packages/*/**/*.{ts,tsx}'",
+    "format:write": "prettier --write 'packages/*/**/*.{ts,tsx}'",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",

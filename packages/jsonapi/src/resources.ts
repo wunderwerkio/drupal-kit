@@ -41,7 +41,7 @@ import { LinkObject, ResourceObject, Response } from "ts-json-api";
  * }
  * ```
  */
-export interface JsonApiResources { }
+export interface JsonApiResources {}
 
 export interface JsonApiIndex extends Response<[]> {
   links: {
@@ -58,7 +58,7 @@ export interface JsonApiIndex extends Response<[]> {
  */
 type ResourceCreatePayload<R extends ResourceObject> = {
   data: Pick<R, "type" | "attributes" | "relationships"> &
-  Partial<Pick<R, "id">>;
+    Partial<Pick<R, "id">>;
 };
 
 /**

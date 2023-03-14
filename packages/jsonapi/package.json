@@ -13,7 +13,7 @@
     "@drupalkit/config-typescript": "workspace:0.0.0-development",
     "@drupalkit/eslint-config": "workspace:0.0.0-development",
     "@drupalkit/types": "workspace:0.0.0-development",
-    "@types/jest": "^29.4.0",
+    "@types/jest": "^29.4.1",
     "jest": "^29.5.0",
     "jest-fetch-mock": "^3.0.3",
     "ts-jest": "^29.0.5",
