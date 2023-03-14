@@ -101,6 +101,8 @@ export const DrupalkitJsonApi = (
    * @param type - The type of resource object to retrieve.
    * @param parameters - The parameters to use for the query.
    * @param options - Optional settings to override locale and default locale.
+   * @param options.localeOverride - An optional override for the locale.
+   * @param options.defaultLocaleOverride - An optional override for the default locale.
    * @returns A result object containing the resource object or an error.
    */
   const getResourceCollection = async <R extends ResourceObject>(
@@ -234,6 +236,7 @@ export const DrupalkitJsonApi = (
    * @param options - An optional object containing additional options.
    * @param options.localeOverride - An optional override for the locale.
    * @param options.defaultLocaleOverride - An optional override for the default locale.
+   * @param options.query - An optional object containing query parameters.
    * @returns The constructed URL as a string.
    */
   const buildJsonApiUrl = (

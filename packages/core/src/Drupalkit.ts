@@ -1,4 +1,4 @@
-import Hook, { HookCollection } from "before-after-hook";
+import { Collection, HookCollection } from "before-after-hook";
 import qs from "qs";
 import { Err, Ok } from "ts-results";
 import { DrupalkitError } from "@drupalkit/error";
@@ -45,14 +45,19 @@ export class Drupalkit {
   /**
    * Attach a plugin (or many) to your Drupalkit instance.
    *
+   * @param newPlugins - Array of plugins to attach.
    * @example
    * const API = Drupalkit.plugin(plugin1, plugin2, plugin3, ...)
    */
   static plugin<
-    S extends Constructor<any> & { plugins: any[] },
+    S extends Constructor<{ options: DrupalkitOptions }> & { plugins: unknown[] },
     T extends DrupalkitPlugin[],
   >(this: S, ...newPlugins: T) {
     const currentPlugins = this.plugins;
+
+    /**
+     * New class with attached plugins.
+     */
     const NewDrupalkit = class extends this {
       static plugins = currentPlugins.concat(
         newPlugins.filter((plugin) => !currentPlugins.includes(plugin)),
@@ -69,8 +74,11 @@ export class Drupalkit {
    * @param options - The drupakit options.
    */
   constructor(options: DrupalkitOptions) {
-    const hook = new Hook.Collection<Hooks>();
+    const hook = new Collection<Hooks>();
 
+    /* eslint-disable no-console */
+    /* eslint-disable jsdoc/require-jsdoc */
+    /* eslint-disable @typescript-eslint/no-empty-function */
     this.log = Object.assign(
       {
         debug: () => {},
@@ -80,6 +88,9 @@ export class Drupalkit {
       },
       options.log,
     );
+    /* eslint-enable no-console */
+    /* eslint-enable jsdoc/require-jsdoc */
+    /* eslint-disable @typescript-eslint/no-empty-function */
 
     this.hook = hook;
     this.baseUrl = trimSlashesFromSegment(options.baseUrl);
@@ -128,6 +139,7 @@ export class Drupalkit {
    * @param options - Request options.
    */
   public request<R>(url: Url, options: RequestOptions) {
+    // eslint-disable-next-line jsdoc/require-jsdoc
     const request = (options: RequestRequestOptions) => {
       return fetchWrapper<R>(options);
     };
@@ -167,6 +179,7 @@ export class Drupalkit {
    * @param options.localeOverride - An optional override for the locale.
    * @param options.defaultLocaleOverride - An optional override for the default locale.
    * @param options.customPrefix - A custom prefix to prepend to the url.
+   * @param options.query - An optional object containing query parameters.
    * @returns The constructed URL as a string.
    */
   public buildUrl(
