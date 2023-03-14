@@ -10,6 +10,10 @@ enableFetchMocks();
 describe("request", () => {
   const BASE_URL = "https://my-drupal.com";
 
+  beforeEach(() => {
+    fetchMock.resetMocks();
+  });
+
   it("should request", async () => {
     const drupalkit = new Drupalkit({
       baseUrl: BASE_URL,
@@ -135,5 +139,56 @@ describe("request", () => {
     expect(afterHook.mock.calls[0][0]).toHaveProperty("status");
     expect(afterHook.mock.calls[0][0]).toHaveProperty("data");
     expect(afterHook.mock.calls[0][0]).toHaveProperty("headers");
+  });
+
+  it("should add auth header if present", async () => {
+    const drupalkit = new Drupalkit({
+      baseUrl: BASE_URL,
+    });
+
+    mockResponse(fetchMock, drupalkit, {
+      url: "/demo-endpoint",
+    });
+
+    const authHeaderValue = "Bearer 00000";
+
+    drupalkit.setAuth(authHeaderValue);
+
+    await drupalkit.request("/demo-endpoint", {
+      method: "GET",
+    });
+
+    // @ts-ignore
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({
+      headers: {
+        authorization: authHeaderValue,
+      },
+    });
+  });
+
+  it("should not add auth header if anonymous", async () => {
+    const drupalkit = new Drupalkit({
+      baseUrl: BASE_URL,
+    });
+
+    mockResponse(fetchMock, drupalkit, {
+      url: "/demo-endpoint",
+    });
+
+    const authHeaderValue = "Bearer 00000";
+
+    drupalkit.setAuth(authHeaderValue);
+
+    await drupalkit.request("/demo-endpoint", {
+      method: "GET",
+      unauthenticated: true,
+    });
+
+    // @ts-ignore
+    expect(fetchMock.mock.calls[0][1]).not.toMatchObject({
+      headers: {
+        authorization: authHeaderValue,
+      },
+    });
   });
 });
