@@ -1,4 +1,0 @@
-
-> @drupalkit/types@0.0.0-development typecheck /home/chfoidl/workspace/wunderwerk/drupalkit/packages/types
-> tsc --project ./tsconfig.json --noEmit
-
