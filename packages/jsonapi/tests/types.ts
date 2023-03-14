@@ -11,11 +11,9 @@ interface UserResource extends ResourceObject {
 interface NodeArticleResource extends ResourceObject {
   type: "node--article";
   attributes: {
-    langcode: string;
-    status: boolean;
     title: string;
   };
-  relationshipts: {
+  relationships: {
     uid: Relationship<UserResource>;
   };
 }

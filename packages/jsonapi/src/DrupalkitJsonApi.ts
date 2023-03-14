@@ -4,11 +4,14 @@ import { Drupalkit, DrupalkitOptions, Query } from "@drupalkit/core";
 
 import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError";
 import {
+  CreateParameters,
+  DeleteParameters,
   JsonApiIndex,
   JsonApiResources,
   ReadManyParameters,
   ReadSingleParameters,
   ToParameters,
+  UpdateParameters,
 } from "./resources.js";
 import { isJsonApiRequest } from "./utils";
 
@@ -128,6 +131,103 @@ export const DrupalkitJsonApi = (
   };
 
   /**
+   * Create a JSON:API resource.
+   *
+   * @param type - The type of resource object to create.
+   * @param parameters - The parameters to use for the request.
+   * @param options - Optional settings to override locale and default locale.
+   * @param options.localeOverride - An optional override for the locale.
+   * @param options.defaultLocaleOverride - An optional override for the default locale.
+   * @returns A result object containing the resource object or an error.
+   */
+  const createResource = async <R extends ResourceObject>(
+    type: R["type"],
+    parameters: CreateParameters<R>,
+    options?: {
+      localeOverride?: string;
+      defaultLocaleOverride?: string;
+    },
+  ) => {
+    const path = type.replace("--", "/");
+
+    const url = buildJsonApiUrl(path, options);
+
+    const result = await drupalkit.request<Response<R>>(url, {
+      method: "POST",
+      headers: defaultHeaders,
+      body: JSON.stringify(parameters.payload),
+    });
+
+    if (result.err) {
+      return result;
+    }
+
+    return Ok(result.val.data);
+  };
+
+  /**
+   * Update a JSON:API resource.
+   *
+   * @param type - The type of resource object to update.
+   * @param parameters - The parameters to use for the request.
+   * @param options - Optional settings to override locale and default locale.
+   * @param options.localeOverride - An optional override for the locale.
+   * @param options.defaultLocaleOverride - An optional override for the default locale.
+   * @returns A result object containing the resource object or an error.
+   */
+  const updateResource = async <R extends ResourceObject>(
+    type: R["type"],
+    parameters: UpdateParameters<R>,
+    options?: {
+      localeOverride?: string;
+      defaultLocaleOverride?: string;
+    },
+  ) => {
+    const path = type.replace("--", "/") + "/" + parameters.uuid;
+
+    const url = buildJsonApiUrl(path, options);
+
+    const result = await drupalkit.request<Response<R>>(url, {
+      method: "PATCH",
+      headers: defaultHeaders,
+      body: JSON.stringify(parameters.payload),
+    });
+
+    if (result.err) {
+      return result;
+    }
+
+    return Ok(result.val.data);
+  };
+
+  /**
+   * Delete a JSON:API resource.
+   *
+   * @param type - The type of resource object to delete.
+   * @param parameters - The parameters to use for the request.
+   * @returns A result object containing the resource object or an error.
+   */
+  const deleteResource = async <R extends ResourceObject>(
+    type: R["type"],
+    parameters: DeleteParameters,
+  ) => {
+    const path = type.replace("--", "/") + "/" + parameters.uuid;
+
+    const url = buildJsonApiUrl(path);
+
+    const result = await drupalkit.request(url, {
+      method: "DELETE",
+      headers: defaultHeaders,
+    });
+
+    if (result.err) {
+      return result;
+    }
+
+    return Ok(true);
+  };
+
+  /**
    * Constructs a JSON API URL for use with Drupal.
    *
    * @param path - The path to the JSON API endpoint.
@@ -182,6 +282,12 @@ export const DrupalkitJsonApi = (
           ? Awaited<ReturnType<typeof getResource>>
           : "readMany" extends Operation
           ? Awaited<ReturnType<typeof getResourceCollection>>
+          : "create" extends Operation
+          ? Awaited<ReturnType<typeof createResource>>
+          : "update" extends Operation
+          ? Awaited<ReturnType<typeof updateResource>>
+          : "delete" extends Operation
+          ? Awaited<ReturnType<typeof deleteResource>>
           : Err<Error>
         >,
       >(
@@ -206,6 +312,26 @@ export const DrupalkitJsonApi = (
               type,
               parameters as ReadManyParameters,
               options,
+            )) as Return[Operation];
+
+          case "create":
+            return (await createResource(
+              type,
+              parameters as CreateParameters<Resource>,
+              options,
+            )) as Return[Operation];
+
+          case "update":
+            return (await updateResource(
+              type,
+              parameters as UpdateParameters<Resource>,
+              options,
+            )) as Return[Operation];
+
+          case "delete":
+            return (await deleteResource(
+              type,
+              parameters as DeleteParameters,
             )) as Return[Operation];
         }
 
