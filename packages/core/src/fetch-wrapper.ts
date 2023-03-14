@@ -12,7 +12,7 @@ import getBuffer from "./get-buffer-response";
  *
  * @param requestOptions - Options for the request.
  */
-export default function fetchWrapper<R extends unknown>(
+export default function fetchWrapper<R>(
   requestOptions: RequestRequestOptions & {
     redirect?: "error" | "follow" | "manual";
     fetch?: Fetch;

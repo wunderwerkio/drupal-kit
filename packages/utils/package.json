@@ -11,5 +11,9 @@
   "scripts": {
     "lint": "eslint --ext .ts,.tsx src --max-warnings 0",
     "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@drupalkit/types": "workspace:0.0.0-development",
+    "is-plain-object": "^5.0.0"
   }
 }

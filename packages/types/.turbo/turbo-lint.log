@@ -2,4 +2,3 @@
 > @drupalkit/types@0.0.0-development lint /home/chfoidl/workspace/wunderwerk/drupalkit/packages/types
 > eslint --ext .ts,.tsx src --max-warnings 0
 
- ELIFECYCLE  Command failed.

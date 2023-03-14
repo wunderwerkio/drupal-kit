@@ -1,16 +1,26 @@
+import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
 import { DrupalkitError } from "@drupalkit/error";
+import { mockResponse } from "../test-utils";
 
 import { Drupalkit } from "../src";
+import DemoEndpointResponse from "./fixtures/demo-endpoint.json";
+
+enableFetchMocks();
 
 describe("request", () => {
-  const baseUrl = "https://drupal-headless-boilerplate.ddev.site";
+  const BASE_URL = "https://my-drupal.com";
 
   it("should request", async () => {
     const drupalkit = new Drupalkit({
-      baseUrl,
+      baseUrl: BASE_URL,
     });
 
-    const result = await drupalkit.request("/jsonapi", {
+    mockResponse(fetchMock, drupalkit, {
+      url: "/demo-endpoint",
+      payloadFixture: DemoEndpointResponse,
+    });
+
+    const result = await drupalkit.request("/demo-endpoint", {
       method: "GET",
       headers: {},
     });
@@ -20,15 +30,20 @@ describe("request", () => {
     const response = result.unwrap();
 
     expect(response.status).toBe(200);
-    expect(response.url).toContain("/jsonapi");
-    expect(response.url).toContain(baseUrl);
-    expect(response.data).not.toBeNull();
+    expect(response.url).toContain("/demo-endpoint");
+    expect(response.url).toContain(BASE_URL);
+    expect(response.data).toEqual(DemoEndpointResponse);
     expect(response.headers).toHaveProperty("content-type");
   });
 
   it("should return drupalkit errors", async () => {
     const drupalkit = new Drupalkit({
-      baseUrl,
+      baseUrl: BASE_URL,
+    });
+
+    mockResponse(fetchMock, drupalkit, {
+      url: "/not-found",
+      status: 404,
     });
 
     const result = await drupalkit.request("/not-found", {
@@ -42,18 +57,24 @@ describe("request", () => {
       const error = result.val;
 
       expect(error).toBeInstanceOf(DrupalkitError);
-      expect(error.status).toBe(404);
+      expect(error.statusCode).toBe(404);
     }
   });
 
   it("should append locale to url", async () => {
     const drupalkit = new Drupalkit({
-      baseUrl,
+      baseUrl: BASE_URL,
       locale: "en",
       defaultLocale: "de",
     });
 
-    const result = await drupalkit.request("/jsonapi", {
+    mockResponse(fetchMock, drupalkit, {
+      url: "/demo-endpoint",
+      payloadFixture: DemoEndpointResponse,
+      locale: "en",
+    });
+
+    const result = await drupalkit.request("/demo-endpoint", {
       method: "GET",
       headers: {},
     });
@@ -61,17 +82,22 @@ describe("request", () => {
     expect(result.ok).toBeTruthy();
     const response = result.unwrap();
 
-    expect(response.url).toContain("/en/jsonapi");
+    expect(response.url).toContain("/en/demo-endpoint");
   });
 
   it("should append locale override to url", async () => {
     const drupalkit = new Drupalkit({
-      baseUrl,
+      baseUrl: BASE_URL,
       locale: "en",
       defaultLocale: "de",
     });
 
-    const result = await drupalkit.request("/jsonapi", {
+    mockResponse(fetchMock, drupalkit, {
+      url: "/demo-endpoint",
+      locale: "de",
+    });
+
+    const result = await drupalkit.request("/demo-endpoint", {
       method: "GET",
       headers: {},
       locale: "de",
@@ -80,12 +106,16 @@ describe("request", () => {
     expect(result.ok).toBeTruthy();
     const response = result.unwrap();
 
-    expect(response.url).not.toContain("/en/jsonapi");
+    expect(response.url).not.toContain("/en/demo-endpoint");
   });
 
   it("should execute hooks", async () => {
     const drupalkit = new Drupalkit({
-      baseUrl,
+      baseUrl: BASE_URL,
+    });
+
+    mockResponse(fetchMock, drupalkit, {
+      url: "/demo-endpoint",
     });
 
     const beforeHook = jest.fn();
@@ -94,7 +124,7 @@ describe("request", () => {
     drupalkit.hook.before("request", beforeHook);
     drupalkit.hook.after("request", afterHook);
 
-    await drupalkit.request("/jsonapi", {
+    await drupalkit.request("/demo-endpoint", {
       method: "GET",
       headers: {},
     });

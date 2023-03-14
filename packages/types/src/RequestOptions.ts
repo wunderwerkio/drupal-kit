@@ -1,4 +1,3 @@
-import { Fetch } from "./Fetch";
 import { Log } from "./Log";
 import { RequestHeaders } from "./RequestHeaders";
 
@@ -8,11 +7,13 @@ import { RequestHeaders } from "./RequestHeaders";
 export type RequestOptions = {
   method: string;
   headers: RequestHeaders;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body?: string | Array<any> | object;
 
   locale?: string;
   defaultLocale?: string;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [option: string]: any;
 };
 

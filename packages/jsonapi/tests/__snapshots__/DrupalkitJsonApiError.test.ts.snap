@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DrupalkitJsonApiError should extract errors from JSON:API response: bad-request-errors 1`] = `
+[
+  {
+    "detail": "\`wrong-field\` is not a valid relationship field name. Possible values: node_type, revision_uid, uid, menu_link, field_media.",
+    "links": {
+      "info": {
+        "href": "http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1",
+      },
+      "via": {
+        "href": "https://my-drupal.com/jsonapi/node/article/5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f",
+      },
+    },
+    "status": "400",
+    "title": "Bad Request",
+  },
+]
+`;
+
+exports[`DrupalkitJsonApiError should extract errors from JSON:API response: unprocessable-entity-errors 1`] = `
+[
+  {
+    "detail": "field_firstname: Dieser Wert sollte nicht leer sein.",
+    "source": {
+      "pointer": "/data/attributes/field_firstname",
+    },
+    "status": "422",
+    "title": "Unprocessable Entity",
+  },
+  {
+    "detail": "field_lastname: Dieser Wert sollte nicht leer sein.",
+    "source": {
+      "pointer": "/data/attributes/field_lastname",
+    },
+    "status": "422",
+    "title": "Unprocessable Entity",
+  },
+]
+`;

@@ -7,9 +7,9 @@
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
     "@wunderwerk/eslint-config": "^1.0.1",
-    "eslint": "^8.28.0",
+    "eslint": "^8.36.0",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsdoc": "^39.6.4",
+    "eslint-plugin-jsdoc": "^40.0.1",
     "typescript": "4.9.5"
   },
   "files": [

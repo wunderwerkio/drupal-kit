@@ -6,4 +6,3 @@ export * from "./ResponseHeaders";
 export * from "./RequestHeaders";
 export * from "./Url";
 export * from "./Log";
-export * from "./OpenApi";

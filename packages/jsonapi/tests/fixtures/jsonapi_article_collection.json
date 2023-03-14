@@ -1,0 +1,867 @@
+{
+    "jsonapi": {
+        "version": "1.0",
+        "meta": {
+            "links": {
+                "self": {
+                    "href": "http://jsonapi.org/format/1.0/"
+                }
+            }
+        }
+    },
+    "data": [
+        {
+            "type": "node--article",
+            "id": "58e198f6-41af-48b0-b889-596adcb9622e",
+            "links": {
+                "self": {
+                    "href": "https://my-drupal.com/jsonapi/node/article/58e198f6-41af-48b0-b889-596adcb9622e?resourceVersion=id%3A3"
+                }
+            },
+            "attributes": {
+                "drupal_internal__nid": 3,
+                "drupal_internal__vid": 3,
+                "langcode": "de",
+                "revision_timestamp": "2023-02-23T11:10:08+00:00",
+                "revision_log": null,
+                "status": true,
+                "title": "Milchfreie und köstliche Milchschokolade",
+                "created": "2023-01-27T09:38:39+00:00",
+                "changed": "2023-02-23T11:10:08+00:00",
+                "promote": true,
+                "sticky": false,
+                "default_langcode": true,
+                "revision_translation_affected": true,
+                "path": {
+                    "alias": "/articles/milchfreie-und-koestliche-milchschokolade",
+                    "pid": 4,
+                    "langcode": "de"
+                },
+                "content_translation_source": "und",
+                "content_translation_outdated": false,
+                "body": {
+                    "value": "<p>Der Kalender ist voll von Ausreden für Schokoladenliebhaber, von religiösen Festen bis zu Geburtstagen - und sogar dem Weltschokoladentag am 7. Juli. Aber auch Veganer oder Menschen, die sich milchfrei ernähren, müssen nicht leer ausgehen, denn es gibt viele köstliche vegane Schokoladensorten im Angebot.</p><p>Milchfreie Milchschokolade wird weitgehend auf die gleiche Weise hergestellt wie normale Schokolade, bis zu dem Punkt, an dem die Milch hinzugefügt wird. Die Kakaobohnen werden ein paar Stunden lang geröstet, bis sie einen reichen Geschmack entwickeln. Die äußeren Schalen werden entfernt, und die inneren Nibs werden gemahlen, um eine Paste zu erhalten, die mit Kakaobutter gemischt werden kann, um den gewünschten Prozentsatz an Schokolade herzustellen. Aromen, Zucker und Milch werden in unterschiedlichen Mengen hinzugefügt, um die gewünschte Schokoladenart zu erhalten. Die Schokolade ist zu diesem Zeitpunkt körnig und muss püriert werden, bis sie glatt ist - das kann Tage dauern! Schließlich wird sie durch Erhitzen und Abkühlen temperiert, bis sie verzehrfertig ist.</p><p>Wie also bekommen vegane Chocolatiers den cremigen Milchgeschmack und die Textur in ihre Produkte?</p>",
+                    "format": "ckeditor",
+                    "processed": "<p>Der Kalender ist voll von Ausreden für Schokoladenliebhaber, von religiösen Festen bis zu Geburtstagen - und sogar dem Weltschokoladentag am 7. Juli. Aber auch Veganer oder Menschen, die sich milchfrei ernähren, müssen nicht leer ausgehen, denn es gibt viele köstliche vegane Schokoladensorten im Angebot.</p><p>Milchfreie Milchschokolade wird weitgehend auf die gleiche Weise hergestellt wie normale Schokolade, bis zu dem Punkt, an dem die Milch hinzugefügt wird. Die Kakaobohnen werden ein paar Stunden lang geröstet, bis sie einen reichen Geschmack entwickeln. Die äußeren Schalen werden entfernt, und die inneren Nibs werden gemahlen, um eine Paste zu erhalten, die mit Kakaobutter gemischt werden kann, um den gewünschten Prozentsatz an Schokolade herzustellen. Aromen, Zucker und Milch werden in unterschiedlichen Mengen hinzugefügt, um die gewünschte Schokoladenart zu erhalten. Die Schokolade ist zu diesem Zeitpunkt körnig und muss püriert werden, bis sie glatt ist - das kann Tage dauern! Schließlich wird sie durch Erhitzen und Abkühlen temperiert, bis sie verzehrfertig ist.</p><p>Wie also bekommen vegane Chocolatiers den cremigen Milchgeschmack und die Textur in ihre Produkte?</p>",
+                    "summary": "Der Kalender ist voll von Ausreden für Schokoladenliebhaber, von religiösen Festen bis zu Geburtstagen - und sogar dem Weltschokoladentag am 7. Juli. Aber auch Veganer oder Menschen, die sich milchfrei ernähren, müssen nicht leer ausgehen, denn es gibt viele köstliche vegane Schokoladensorten im Angebot."
+                }
+            },
+            "relationships": {
+                "node_type": {
+                    "data": null,
+                    "links": {
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/58e198f6-41af-48b0-b889-596adcb9622e/relationships/node_type?resourceVersion=id%3A3"
+                        }
+                    }
+                },
+                "revision_uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/58e198f6-41af-48b0-b889-596adcb9622e/revision_uid?resourceVersion=id%3A3"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/58e198f6-41af-48b0-b889-596adcb9622e/relationships/revision_uid?resourceVersion=id%3A3"
+                        }
+                    }
+                },
+                "uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/58e198f6-41af-48b0-b889-596adcb9622e/uid?resourceVersion=id%3A3"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/58e198f6-41af-48b0-b889-596adcb9622e/relationships/uid?resourceVersion=id%3A3"
+                        }
+                    }
+                },
+                "field_media": {
+                    "data": {
+                        "type": "media--image",
+                        "id": "6530afc8-5635-45b7-a3d9-920d7e10c39e",
+                        "meta": {
+                            "drupal_internal__target_id": 8
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/58e198f6-41af-48b0-b889-596adcb9622e/field_media?resourceVersion=id%3A3"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/58e198f6-41af-48b0-b889-596adcb9622e/relationships/field_media?resourceVersion=id%3A3"
+                        }
+                    }
+                }
+            },
+            "meta": {
+                "localeInfo": [
+                    {
+                        "langcode": "en",
+                        "path": "/articles/dairy-free-and-delicious-milk-chocolate"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "node--article",
+            "id": "331b2b21-41f9-46bf-a043-4856441ec83f",
+            "links": {
+                "self": {
+                    "href": "https://my-drupal.com/jsonapi/node/article/331b2b21-41f9-46bf-a043-4856441ec83f?resourceVersion=id%3A4"
+                }
+            },
+            "attributes": {
+                "drupal_internal__nid": 4,
+                "drupal_internal__vid": 4,
+                "langcode": "de",
+                "revision_timestamp": "2023-02-23T11:10:08+00:00",
+                "revision_log": null,
+                "status": true,
+                "title": "Das richtige Angebot für den Einkauf im Supermarkt",
+                "created": "2023-01-27T10:01:50+00:00",
+                "changed": "2023-02-23T11:10:08+00:00",
+                "promote": true,
+                "sticky": false,
+                "default_langcode": true,
+                "revision_translation_affected": true,
+                "path": {
+                    "alias": "/articles/das-richtige-angebot-fuer-den-einkauf-im-supermarkt",
+                    "pid": 5,
+                    "langcode": "de"
+                },
+                "content_translation_source": "und",
+                "content_translation_outdated": false,
+                "body": {
+                    "value": "<p>Das wird Sie vielleicht nicht überraschen - aber Ihr Supermarkt ist ein heißes Pflaster für ein Marketing-Chaos, das darauf abzielt, den Gewinn zu steigern und die Verbraucher dazu zu bringen, mehr auszugeben, als sie beabsichtigen. Bei den Tricks, die alle Supermärkte anwenden, handelt es sich manchmal um sinnvolle Maßnahmen, die jeder Einzelhändler ergreifen sollte, um seinen Umsatz zu steigern - aber einige sind vielleicht subtiler und weniger offensichtlich, als Sie vielleicht denken.</p><p>Da Artikel und Dokumentarfilme, die das Bewusstsein der Verbraucher schärfen, dieses Thema häufig aufgreifen, ist es wahrscheinlich, dass es den Einzelhändlern immer schwerer fällt, mit den offensichtlichsten Tricks durchzukommen. Wir werden immer versiertere Verbraucher, und es gibt wahrscheinlich nicht viel, was uns entgeht. Aber hier sind ein paar Tricks des Einzelhandels, die Sie beachten sollten, wenn Sie im Supermarkt Ihre wöchentlichen Vorräte aufstocken.</p>",
+                    "format": "ckeditor",
+                    "processed": "<p>Das wird Sie vielleicht nicht überraschen - aber Ihr Supermarkt ist ein heißes Pflaster für ein Marketing-Chaos, das darauf abzielt, den Gewinn zu steigern und die Verbraucher dazu zu bringen, mehr auszugeben, als sie beabsichtigen. Bei den Tricks, die alle Supermärkte anwenden, handelt es sich manchmal um sinnvolle Maßnahmen, die jeder Einzelhändler ergreifen sollte, um seinen Umsatz zu steigern - aber einige sind vielleicht subtiler und weniger offensichtlich, als Sie vielleicht denken.</p><p>Da Artikel und Dokumentarfilme, die das Bewusstsein der Verbraucher schärfen, dieses Thema häufig aufgreifen, ist es wahrscheinlich, dass es den Einzelhändlern immer schwerer fällt, mit den offensichtlichsten Tricks durchzukommen. Wir werden immer versiertere Verbraucher, und es gibt wahrscheinlich nicht viel, was uns entgeht. Aber hier sind ein paar Tricks des Einzelhandels, die Sie beachten sollten, wenn Sie im Supermarkt Ihre wöchentlichen Vorräte aufstocken.</p>",
+                    "summary": "Das wird Sie vielleicht nicht überraschen - aber Ihr Supermarkt ist ein heißes Pflaster für ein Marketing-Chaos, das darauf abzielt, den Gewinn zu steigern und die Verbraucher dazu zu bringen, mehr auszugeben, als sie beabsichtigen."
+                }
+            },
+            "relationships": {
+                "node_type": {
+                    "data": null,
+                    "links": {
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/331b2b21-41f9-46bf-a043-4856441ec83f/relationships/node_type?resourceVersion=id%3A4"
+                        }
+                    }
+                },
+                "revision_uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/331b2b21-41f9-46bf-a043-4856441ec83f/revision_uid?resourceVersion=id%3A4"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/331b2b21-41f9-46bf-a043-4856441ec83f/relationships/revision_uid?resourceVersion=id%3A4"
+                        }
+                    }
+                },
+                "uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/331b2b21-41f9-46bf-a043-4856441ec83f/uid?resourceVersion=id%3A4"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/331b2b21-41f9-46bf-a043-4856441ec83f/relationships/uid?resourceVersion=id%3A4"
+                        }
+                    }
+                },
+                "field_media": {
+                    "data": {
+                        "type": "media--image",
+                        "id": "b45b811e-f377-413e-bc76-7c59f14e6b4a",
+                        "meta": {
+                            "drupal_internal__target_id": 2
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/331b2b21-41f9-46bf-a043-4856441ec83f/field_media?resourceVersion=id%3A4"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/331b2b21-41f9-46bf-a043-4856441ec83f/relationships/field_media?resourceVersion=id%3A4"
+                        }
+                    }
+                }
+            },
+            "meta": {
+                "localeInfo": [
+                    {
+                        "langcode": "en",
+                        "path": "/articles/real-deal-supermarket-savvy-shopping"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "node--article",
+            "id": "c0250ce7-7b5b-4b41-8557-647c858b29a2",
+            "links": {
+                "self": {
+                    "href": "https://my-drupal.com/jsonapi/node/article/c0250ce7-7b5b-4b41-8557-647c858b29a2?resourceVersion=id%3A5"
+                }
+            },
+            "attributes": {
+                "drupal_internal__nid": 5,
+                "drupal_internal__vid": 5,
+                "langcode": "de",
+                "revision_timestamp": "2023-02-23T11:10:08+00:00",
+                "revision_log": null,
+                "status": true,
+                "title": "Probieren Sie es aus und bauen Sie Ihre eigenen Kräuter an!",
+                "created": "2023-01-30T08:11:24+00:00",
+                "changed": "2023-02-23T11:10:08+00:00",
+                "promote": true,
+                "sticky": false,
+                "default_langcode": true,
+                "revision_translation_affected": true,
+                "path": {
+                    "alias": "/articles/probieren-sie-es-aus-und-bauen-sie-ihre-eigenen-kraeuter",
+                    "pid": 6,
+                    "langcode": "de"
+                },
+                "content_translation_source": "und",
+                "content_translation_outdated": false,
+                "body": {
+                    "value": "<p>Es gibt nichts Besseres, als einen eigenen Vorrat an frischen Kräutern zu haben, die man beim Kochen sofort verwenden kann. Egal, ob Sie einen großen Garten oder eine kleine Fensterbank in der Küche haben, es gibt immer genug Platz für etwas Selbstgezogenes.</p><h2>Außenbereich</h2><h3>Minze</h3><p>Minze ist eine großartige Pflanze, denn sie ist winterhart und kann in fast jedem Boden wachsen. Minze kann wild wachsen, also halten Sie sie in einem Topf, sonst könnte sie sich ausbreiten und Ihren ganzen Garten erobern.</p><h3>Salbei</h3><p>Wie die Minze ist auch der Salbei eine sehr wüchsige Pflanze, die sich in Ihrem Garten ausbreitet, wenn Sie es zulassen. Die hocharomatische Salbeipflanze kann in einem Topf oder einem Blumenbeet in gut durchlässigem Boden gepflanzt werden. Die beste Art, das Kraut aufzubewahren, ist, die Blätter an der Sonne zu trocknen und in einem kühlen, dunklen Schrank in einem verschlossenen Behälter aufzubewahren.</p><h3>Rosmarin</h3><p>Rosmarinpflanzen wachsen zu schönen Sträuchern heran. Rosmarin lässt sich leicht aus Stecklingen ziehen, aber er verträgt keinen Frost. Stellen Sie daher Töpfe oder gepflanzte Sträucher in der Nähe des Hauses auf, um sie vor der Kälte zu schützen. Er wächst gut in Töpfen, da er trockene Böden mag, kann aber auch gut in der Erde überleben. Wenn Sie den Rosmarin beschneiden, um ihn in eine bessere Form zu bringen, bewahren Sie die Zweige auf und hängen Sie sie kopfüber auf, um das Aroma zu bewahren und sie für Lebensmittel zu verwenden.</p>",
+                    "format": "ckeditor",
+                    "processed": "<p>Es gibt nichts Besseres, als einen eigenen Vorrat an frischen Kräutern zu haben, die man beim Kochen sofort verwenden kann. Egal, ob Sie einen großen Garten oder eine kleine Fensterbank in der Küche haben, es gibt immer genug Platz für etwas Selbstgezogenes.</p><h2>Außenbereich</h2><h3>Minze</h3><p>Minze ist eine großartige Pflanze, denn sie ist winterhart und kann in fast jedem Boden wachsen. Minze kann wild wachsen, also halten Sie sie in einem Topf, sonst könnte sie sich ausbreiten und Ihren ganzen Garten erobern.</p><h3>Salbei</h3><p>Wie die Minze ist auch der Salbei eine sehr wüchsige Pflanze, die sich in Ihrem Garten ausbreitet, wenn Sie es zulassen. Die hocharomatische Salbeipflanze kann in einem Topf oder einem Blumenbeet in gut durchlässigem Boden gepflanzt werden. Die beste Art, das Kraut aufzubewahren, ist, die Blätter an der Sonne zu trocknen und in einem kühlen, dunklen Schrank in einem verschlossenen Behälter aufzubewahren.</p><h3>Rosmarin</h3><p>Rosmarinpflanzen wachsen zu schönen Sträuchern heran. Rosmarin lässt sich leicht aus Stecklingen ziehen, aber er verträgt keinen Frost. Stellen Sie daher Töpfe oder gepflanzte Sträucher in der Nähe des Hauses auf, um sie vor der Kälte zu schützen. Er wächst gut in Töpfen, da er trockene Böden mag, kann aber auch gut in der Erde überleben. Wenn Sie den Rosmarin beschneiden, um ihn in eine bessere Form zu bringen, bewahren Sie die Zweige auf und hängen Sie sie kopfüber auf, um das Aroma zu bewahren und sie für Lebensmittel zu verwenden.</p>",
+                    "summary": "Es gibt nichts Besseres, als einen eigenen Vorrat an frischen Kräutern zu haben, die man beim Kochen sofort verwenden kann. Egal, ob Sie einen großen Garten oder eine kleine Fensterbank in der Küche haben, es gibt immer genug Platz für etwas Selbstgezogenes."
+                }
+            },
+            "relationships": {
+                "node_type": {
+                    "data": null,
+                    "links": {
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/c0250ce7-7b5b-4b41-8557-647c858b29a2/relationships/node_type?resourceVersion=id%3A5"
+                        }
+                    }
+                },
+                "revision_uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/c0250ce7-7b5b-4b41-8557-647c858b29a2/revision_uid?resourceVersion=id%3A5"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/c0250ce7-7b5b-4b41-8557-647c858b29a2/relationships/revision_uid?resourceVersion=id%3A5"
+                        }
+                    }
+                },
+                "uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/c0250ce7-7b5b-4b41-8557-647c858b29a2/uid?resourceVersion=id%3A5"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/c0250ce7-7b5b-4b41-8557-647c858b29a2/relationships/uid?resourceVersion=id%3A5"
+                        }
+                    }
+                },
+                "field_media": {
+                    "data": {
+                        "type": "media--image",
+                        "id": "e8871454-98b9-4421-988b-b63b7e749566",
+                        "meta": {
+                            "drupal_internal__target_id": 7
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/c0250ce7-7b5b-4b41-8557-647c858b29a2/field_media?resourceVersion=id%3A5"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/c0250ce7-7b5b-4b41-8557-647c858b29a2/relationships/field_media?resourceVersion=id%3A5"
+                        }
+                    }
+                }
+            },
+            "meta": {
+                "localeInfo": [
+                    {
+                        "langcode": "en",
+                        "path": "/articles/give-it-go-and-grow-your-own-herbs"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "node--article",
+            "id": "708bbe72-76d1-4e20-919c-e2785e0d7e93",
+            "links": {
+                "self": {
+                    "href": "https://my-drupal.com/jsonapi/node/article/708bbe72-76d1-4e20-919c-e2785e0d7e93?resourceVersion=id%3A6"
+                }
+            },
+            "attributes": {
+                "drupal_internal__nid": 6,
+                "drupal_internal__vid": 6,
+                "langcode": "de",
+                "revision_timestamp": "2023-02-23T11:10:08+00:00",
+                "revision_log": null,
+                "status": true,
+                "title": "Ein Applaus für Karotten",
+                "created": "2023-01-30T08:19:20+00:00",
+                "changed": "2023-02-23T11:10:08+00:00",
+                "promote": true,
+                "sticky": false,
+                "default_langcode": true,
+                "revision_translation_affected": true,
+                "path": {
+                    "alias": "/articles/ein-applaus-fuer-karotten",
+                    "pid": 7,
+                    "langcode": "de"
+                },
+                "content_translation_source": "und",
+                "content_translation_outdated": false,
+                "body": {
+                    "value": "<p>Ein Hoch auf die bescheidene Karotte! Dieses süße und gesunde \"Alltagsgemüse\" hat es in sich. Großartiger Geschmack, fantastische Farbe, und wenn man den alten Geschichten Glauben schenkt, kann sie sogar helfen, im Dunkeln besser zu sehen.</p><p>Wer kocht nicht gern mit diesem vielseitigen Wurzelgemüse? Wir braten sie, kochen sie, mischen sie in Suppen und reiben sie in Salate. Die bescheidene Karotte ist eines unserer Lieblingsgemüse und wird schon seit Tausenden von Jahren angebaut. Damals gab es aber eher lila, rote, gelbe oder weiße Karotten und nicht die orangefarbenen, die wir heute so gut kennen.</p><h3>Was ist also passiert? Seit wann ist Orange die bevorzugte Farbe?</h3><p>Es waren die Niederländer im 17. Jahrhundert, die die orangefarbene Sorte kultivierten und populär machten, wahrscheinlich wegen ihrer leuchtenden Farbe und ihres höheren Gehalts an Beta-Carotin. Es wird auch vermutet, dass sie als Hommage an Wilhelm von Oranien angebaut wurde, der den Kampf um die Unabhängigkeit der Niederlande anführte.</p><p>Aus welchem Grund auch immer, die orangefarbene Sorte hat sich durchgesetzt, aber halten Sie auf Bauernmärkten und in Lebensmittelgeschäften Ausschau nach den \"Heritage\"-Sorten, deren Mischung aus Violett, Gelb, Orange und Weiß sich besonders gut zum Kochen eignet und als Beilage absolut großartig aussieht.</p>",
+                    "format": "ckeditor",
+                    "processed": "<p>Ein Hoch auf die bescheidene Karotte! Dieses süße und gesunde \"Alltagsgemüse\" hat es in sich. Großartiger Geschmack, fantastische Farbe, und wenn man den alten Geschichten Glauben schenkt, kann sie sogar helfen, im Dunkeln besser zu sehen.</p><p>Wer kocht nicht gern mit diesem vielseitigen Wurzelgemüse? Wir braten sie, kochen sie, mischen sie in Suppen und reiben sie in Salate. Die bescheidene Karotte ist eines unserer Lieblingsgemüse und wird schon seit Tausenden von Jahren angebaut. Damals gab es aber eher lila, rote, gelbe oder weiße Karotten und nicht die orangefarbenen, die wir heute so gut kennen.</p><h3>Was ist also passiert? Seit wann ist Orange die bevorzugte Farbe?</h3><p>Es waren die Niederländer im 17. Jahrhundert, die die orangefarbene Sorte kultivierten und populär machten, wahrscheinlich wegen ihrer leuchtenden Farbe und ihres höheren Gehalts an Beta-Carotin. Es wird auch vermutet, dass sie als Hommage an Wilhelm von Oranien angebaut wurde, der den Kampf um die Unabhängigkeit der Niederlande anführte.</p><p>Aus welchem Grund auch immer, die orangefarbene Sorte hat sich durchgesetzt, aber halten Sie auf Bauernmärkten und in Lebensmittelgeschäften Ausschau nach den \"Heritage\"-Sorten, deren Mischung aus Violett, Gelb, Orange und Weiß sich besonders gut zum Kochen eignet und als Beilage absolut großartig aussieht.</p>",
+                    "summary": "Ein Hoch auf die bescheidene Karotte! Dieses süße und gesunde \"Alltagsgemüse\" hat es in sich. Großartiger Geschmack, fantastische Farbe, und wenn man den alten Geschichten Glauben schenkt, kann sie sogar helfen, im Dunkeln besser zu sehen."
+                }
+            },
+            "relationships": {
+                "node_type": {
+                    "data": null,
+                    "links": {
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/708bbe72-76d1-4e20-919c-e2785e0d7e93/relationships/node_type?resourceVersion=id%3A6"
+                        }
+                    }
+                },
+                "revision_uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/708bbe72-76d1-4e20-919c-e2785e0d7e93/revision_uid?resourceVersion=id%3A6"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/708bbe72-76d1-4e20-919c-e2785e0d7e93/relationships/revision_uid?resourceVersion=id%3A6"
+                        }
+                    }
+                },
+                "uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/708bbe72-76d1-4e20-919c-e2785e0d7e93/uid?resourceVersion=id%3A6"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/708bbe72-76d1-4e20-919c-e2785e0d7e93/relationships/uid?resourceVersion=id%3A6"
+                        }
+                    }
+                },
+                "field_media": {
+                    "data": {
+                        "type": "media--image",
+                        "id": "5560b9b2-b088-44e8-9213-18864ee7c8ae",
+                        "meta": {
+                            "drupal_internal__target_id": 5
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/708bbe72-76d1-4e20-919c-e2785e0d7e93/field_media?resourceVersion=id%3A6"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/708bbe72-76d1-4e20-919c-e2785e0d7e93/relationships/field_media?resourceVersion=id%3A6"
+                        }
+                    }
+                }
+            },
+            "meta": {
+                "localeInfo": [
+                    {
+                        "langcode": "en",
+                        "path": "/articles/lets-hear-it-carrots"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "node--article",
+            "id": "bc3ae841-d9fe-4f95-b1cd-bb5ac2ace4d3",
+            "links": {
+                "self": {
+                    "href": "https://my-drupal.com/jsonapi/node/article/bc3ae841-d9fe-4f95-b1cd-bb5ac2ace4d3?resourceVersion=id%3A7"
+                }
+            },
+            "attributes": {
+                "drupal_internal__nid": 7,
+                "drupal_internal__vid": 7,
+                "langcode": "de",
+                "revision_timestamp": "2023-02-23T11:10:08+00:00",
+                "revision_log": null,
+                "status": true,
+                "title": "Verleihen Sie Ihren Haferflocken das ultimative Makeover",
+                "created": "2023-01-30T08:26:39+00:00",
+                "changed": "2023-02-23T11:10:08+00:00",
+                "promote": true,
+                "sticky": false,
+                "default_langcode": true,
+                "revision_translation_affected": true,
+                "path": {
+                    "alias": "/articles/verleihen-sie-ihren-haferflocken-das-ultimative-makeover",
+                    "pid": 8,
+                    "langcode": "de"
+                },
+                "content_translation_source": "und",
+                "content_translation_outdated": false,
+                "body": {
+                    "value": "<p>Sie sind vegan, glutenfrei, fettarm, ballaststoffreich und können sogar den Cholesterinspiegel senken - aber Haferflocken sind doch langweilig, oder? Bevor Sie die langweiligen Haferflocken in die Tonne kloppen, sollten Sie sich von unseren Topping-Ideen inspirieren lassen, die Ihre Haferflocken in nur wenigen Minuten von fade zu kreativ und köstlich machen.</p><p>Ob Haferflocken, Haferbrei, heiße Müsli oder einfach nur Haferflocken - Haferflocken sind auf der ganzen Welt beliebt, aber in letzter Zeit bekommt der einfache Hafer ein neues Gesicht. Vorbei sind die Zeiten der faden Frühstücksschalen mit dickem Brei, denn Haferflocken werden jetzt als köstliche Mahlzeit serviert, die zu jeder Tageszeit passt. Trendige Haferflockenriegel, die man sich selbst zusammenstellen kann, tauchen immer häufiger auf und bieten das ultimative Haferflockenerlebnis. Die Gäste können wählen, ob die Haferflocken mit Milch oder Wasser zubereitet werden sollen, und dann nach Belieben süße, herzhafte oder sogar pikante Beläge hinzufügen.</p><p>Klingt toll, nicht wahr? Bevor Sie also die Tür des Schranks mit dem unscheinbaren Glas Haferflocken schließen, sollten Sie einige dieser leckeren Garnier-Ideen ausprobieren, um Ihre eigenen Haferflocken neu zu gestalten.</p>",
+                    "format": "ckeditor",
+                    "processed": "<p>Sie sind vegan, glutenfrei, fettarm, ballaststoffreich und können sogar den Cholesterinspiegel senken - aber Haferflocken sind doch langweilig, oder? Bevor Sie die langweiligen Haferflocken in die Tonne kloppen, sollten Sie sich von unseren Topping-Ideen inspirieren lassen, die Ihre Haferflocken in nur wenigen Minuten von fade zu kreativ und köstlich machen.</p><p>Ob Haferflocken, Haferbrei, heiße Müsli oder einfach nur Haferflocken - Haferflocken sind auf der ganzen Welt beliebt, aber in letzter Zeit bekommt der einfache Hafer ein neues Gesicht. Vorbei sind die Zeiten der faden Frühstücksschalen mit dickem Brei, denn Haferflocken werden jetzt als köstliche Mahlzeit serviert, die zu jeder Tageszeit passt. Trendige Haferflockenriegel, die man sich selbst zusammenstellen kann, tauchen immer häufiger auf und bieten das ultimative Haferflockenerlebnis. Die Gäste können wählen, ob die Haferflocken mit Milch oder Wasser zubereitet werden sollen, und dann nach Belieben süße, herzhafte oder sogar pikante Beläge hinzufügen.</p><p>Klingt toll, nicht wahr? Bevor Sie also die Tür des Schranks mit dem unscheinbaren Glas Haferflocken schließen, sollten Sie einige dieser leckeren Garnier-Ideen ausprobieren, um Ihre eigenen Haferflocken neu zu gestalten.</p>",
+                    "summary": "Sie sind vegan, glutenfrei, fettarm, ballaststoffreich und können sogar den Cholesterinspiegel senken - aber Haferflocken sind doch langweilig, oder? "
+                }
+            },
+            "relationships": {
+                "node_type": {
+                    "data": null,
+                    "links": {
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/bc3ae841-d9fe-4f95-b1cd-bb5ac2ace4d3/relationships/node_type?resourceVersion=id%3A7"
+                        }
+                    }
+                },
+                "revision_uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/bc3ae841-d9fe-4f95-b1cd-bb5ac2ace4d3/revision_uid?resourceVersion=id%3A7"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/bc3ae841-d9fe-4f95-b1cd-bb5ac2ace4d3/relationships/revision_uid?resourceVersion=id%3A7"
+                        }
+                    }
+                },
+                "uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/bc3ae841-d9fe-4f95-b1cd-bb5ac2ace4d3/uid?resourceVersion=id%3A7"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/bc3ae841-d9fe-4f95-b1cd-bb5ac2ace4d3/relationships/uid?resourceVersion=id%3A7"
+                        }
+                    }
+                },
+                "field_media": {
+                    "data": {
+                        "type": "media--image",
+                        "id": "f1af4452-15a1-46ec-9b7e-871212a0ee4c",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/bc3ae841-d9fe-4f95-b1cd-bb5ac2ace4d3/field_media?resourceVersion=id%3A7"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/bc3ae841-d9fe-4f95-b1cd-bb5ac2ace4d3/relationships/field_media?resourceVersion=id%3A7"
+                        }
+                    }
+                }
+            },
+            "meta": {
+                "localeInfo": [
+                    {
+                        "langcode": "en",
+                        "path": "/articles/give-your-oatmeal-ultimate-makeover"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "node--article",
+            "id": "7ba6c26b-b6b6-4fdf-8566-c9dc1d2133ad",
+            "links": {
+                "self": {
+                    "href": "https://my-drupal.com/jsonapi/node/article/7ba6c26b-b6b6-4fdf-8566-c9dc1d2133ad?resourceVersion=id%3A8"
+                }
+            },
+            "attributes": {
+                "drupal_internal__nid": 8,
+                "drupal_internal__vid": 8,
+                "langcode": "de",
+                "revision_timestamp": "2023-02-23T11:10:08+00:00",
+                "revision_log": null,
+                "status": true,
+                "title": "Überspringen Sie die Spirituosen mit köstlichen Mocktails",
+                "created": "2023-01-30T08:24:15+00:00",
+                "changed": "2023-02-23T11:10:08+00:00",
+                "promote": true,
+                "sticky": false,
+                "default_langcode": true,
+                "revision_translation_affected": true,
+                "path": {
+                    "alias": "/articles/ueberspringen-sie-die-spirituosen-mit-koestlichen-mocktails",
+                    "pid": 9,
+                    "langcode": "de"
+                },
+                "content_translation_source": "und",
+                "content_translation_outdated": false,
+                "body": {
+                    "value": "<p>Feiern Sie eine Cocktailparty? Warum dann nicht etwas ebenso Besonderes für diejenigen auftischen, die keinen Alkohol trinken, aber trotzdem mitfeiern wollen? Denn was wäre eine Cocktailparty ohne die tollen Gläser mit gemischten Früchten, die bunten Farben und natürlich die kleinen Schirmchen? Tragen Sie Ihren Teil zum Umweltschutz bei, indem Sie auf Plastikstrohhalme verzichten und sich stattdessen ein paar tolle Alternativen aus Glas, Metall oder sogar Bambus besorgen. Vergessen Sie nicht die klassischen Cocktailgläser und die coolen Becher, die diese Rezepte erst so richtig zum Leben erwecken.</p><p>Also, schnappen Sie sich den Cocktailmixer, lassen Sie die Spirituosen weg und schütteln Sie diese köstlich erfrischenden Mocktails, die weder Ihnen noch Ihren Gästen an Geschmack oder Stil mangeln werden.</p><h3>Mango-Köstlich</h3><p>Dieser köstliche Drink hat einen raffinierten Geschmack, der ideal für Erwachsene ist, und die Farbe passt perfekt zu einem spätsommerlichen BBQ.</p><p><strong>Anleitung</strong></p><p>Schütteln Sie ein paar Gurkenscheiben und etwas Honig in einem Cocktailshaker gut durch. Einen Schuss Mangopüree und den Saft einer Limette hinzufügen. Etwas Eis hinzufügen und kräftig schütteln. Durch ein Sieb in ein schickes Glas gießen und mit Ginger Beer auffüllen. Ein paar Limettenscheiben, und schon kann es losgehen.</p>",
+                    "format": "ckeditor",
+                    "processed": "<p>Feiern Sie eine Cocktailparty? Warum dann nicht etwas ebenso Besonderes für diejenigen auftischen, die keinen Alkohol trinken, aber trotzdem mitfeiern wollen? Denn was wäre eine Cocktailparty ohne die tollen Gläser mit gemischten Früchten, die bunten Farben und natürlich die kleinen Schirmchen? Tragen Sie Ihren Teil zum Umweltschutz bei, indem Sie auf Plastikstrohhalme verzichten und sich stattdessen ein paar tolle Alternativen aus Glas, Metall oder sogar Bambus besorgen. Vergessen Sie nicht die klassischen Cocktailgläser und die coolen Becher, die diese Rezepte erst so richtig zum Leben erwecken.</p><p>Also, schnappen Sie sich den Cocktailmixer, lassen Sie die Spirituosen weg und schütteln Sie diese köstlich erfrischenden Mocktails, die weder Ihnen noch Ihren Gästen an Geschmack oder Stil mangeln werden.</p><h3>Mango-Köstlich</h3><p>Dieser köstliche Drink hat einen raffinierten Geschmack, der ideal für Erwachsene ist, und die Farbe passt perfekt zu einem spätsommerlichen BBQ.</p><p><strong>Anleitung</strong></p><p>Schütteln Sie ein paar Gurkenscheiben und etwas Honig in einem Cocktailshaker gut durch. Einen Schuss Mangopüree und den Saft einer Limette hinzufügen. Etwas Eis hinzufügen und kräftig schütteln. Durch ein Sieb in ein schickes Glas gießen und mit Ginger Beer auffüllen. Ein paar Limettenscheiben, und schon kann es losgehen.</p>",
+                    "summary": "Feiern Sie eine Cocktailparty? Warum dann nicht etwas ebenso Besonderes für diejenigen auftischen, die keinen Alkohol trinken, aber trotzdem mitfeiern wollen? "
+                }
+            },
+            "relationships": {
+                "node_type": {
+                    "data": null,
+                    "links": {
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/7ba6c26b-b6b6-4fdf-8566-c9dc1d2133ad/relationships/node_type?resourceVersion=id%3A8"
+                        }
+                    }
+                },
+                "revision_uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/7ba6c26b-b6b6-4fdf-8566-c9dc1d2133ad/revision_uid?resourceVersion=id%3A8"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/7ba6c26b-b6b6-4fdf-8566-c9dc1d2133ad/relationships/revision_uid?resourceVersion=id%3A8"
+                        }
+                    }
+                },
+                "uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/7ba6c26b-b6b6-4fdf-8566-c9dc1d2133ad/uid?resourceVersion=id%3A8"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/7ba6c26b-b6b6-4fdf-8566-c9dc1d2133ad/relationships/uid?resourceVersion=id%3A8"
+                        }
+                    }
+                },
+                "field_media": {
+                    "data": {
+                        "type": "media--image",
+                        "id": "de14673c-55ac-41ff-823d-3047e9ce2e72",
+                        "meta": {
+                            "drupal_internal__target_id": 3
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/7ba6c26b-b6b6-4fdf-8566-c9dc1d2133ad/field_media?resourceVersion=id%3A8"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/7ba6c26b-b6b6-4fdf-8566-c9dc1d2133ad/relationships/field_media?resourceVersion=id%3A8"
+                        }
+                    }
+                }
+            },
+            "meta": {
+                "localeInfo": [
+                    {
+                        "langcode": "en",
+                        "path": "/articles/skip-spirits-delicious-mocktails"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "node--article",
+            "id": "5e462a38-de37-4769-add2-998db91fd839",
+            "links": {
+                "self": {
+                    "href": "https://my-drupal.com/jsonapi/node/article/5e462a38-de37-4769-add2-998db91fd839?resourceVersion=id%3A9"
+                }
+            },
+            "attributes": {
+                "drupal_internal__nid": 9,
+                "drupal_internal__vid": 9,
+                "langcode": "de",
+                "revision_timestamp": "2023-02-23T11:10:08+00:00",
+                "revision_log": null,
+                "status": true,
+                "title": "Der Umami-Führer für unsere Lieblingspilze",
+                "created": "2023-01-30T08:17:34+00:00",
+                "changed": "2023-02-23T11:10:08+00:00",
+                "promote": true,
+                "sticky": false,
+                "default_langcode": true,
+                "revision_translation_affected": true,
+                "path": {
+                    "alias": "/articles/der-umami-fuehrer-fuer-unsere-lieblingspilze",
+                    "pid": 10,
+                    "langcode": "de"
+                },
+                "content_translation_source": "und",
+                "content_translation_outdated": false,
+                "body": {
+                    "value": "<p>Wir sind der Meinung, dass Pilze eine der besten Zutaten sind, mit denen man kochen kann. Es gibt viele essbare Sorten, jede mit ihrer eigenen, unverwechselbaren Form, Größe und Geschmack. Und wer würde bei so kuriosen Namen wie Pfifferling, Zigeunerpilz, Füllhorn oder Waldhenne nicht gerne mehr über das Kochen mit dem mächtigen Pilz erfahren?</p><p>Eines der besten Dinge an Pilzen ist ihre Vielseitigkeit. Sie können gebraten, geröstet, gegrillt, gedünstet oder sogar in der Mikrowelle gegart werden. Und sie können als Hauptzutat für ein Gericht serviert oder einfach als Teil der Mischung hinzugefügt werden. Das macht Pilze zu einer idealen Wahl für die Zubereitung absolut köstlicher vegetarischer Gerichte.</p><p>Werfen wir also einen Blick auf einige unserer Lieblingspilzsorten. Vielleicht haben Sie noch nie mit ihnen gekocht, aber das sollte Sie nicht abschrecken. Mit ihren köstlichen, unverwechselbaren Aromen können Sie Suppen, Vorspeisen und Soßen ganz einfach verwandeln und erstaunliche Nudel- oder Pfannengerichte kreieren.</p><p>Probieren Sie die lieblichen Shiitake. Sie werden in der asiatischen Küche verwendet und können getrocknet und rehydriert gekauft werden, um einen kräftigen, tiefen Geschmack zu erhalten. Oder Sie kaufen ihn frisch und fügen ihn zu Suppen und Pfannengerichten hinzu. Dieser Pilz hat nicht nur einen intensiven Geschmack, sondern sieht auch schön aus. Das tiefe Braun und die glatten Formen geben Ihrem Gericht eine besondere Textur. In getrockneter Form und rehydriert sind sie die perfekte Ergänzung für eine tiefe und würzige Brühe für ein Risotto.</p><p>Der prächtige sonnige Pfifferling mit seinem gelben Fruchtfleisch hat einen fruchtigen Geschmack - aber es ist erwähnenswert, dass es viele Nachahmer gibt, und man sollte darauf achten, dass man die richtigen isst. Diese sehen in einem Omelett oder einer asiatischen Suppe großartig aus, um die Gelbtöne zu ergänzen.</p><p>Die braune Morchel bietet einen fleischigen und unverwechselbaren Geschmack, und Sie werden wahrscheinlich lieben, wie außergewöhnlich sie in einer Mahlzeit aussieht. Die Morchel ist ein beliebter Pilz im Frühjahr, wenn ihr Angebot besonders groß ist.</p><p>Eine Delikatesse ist der Enoki mit seinen winzigen weißen Köpfen, die in Büscheln wachsen. Sie können sogar roh in Salaten verzehrt werden. Schließlich können Sie den beliebten Austernpilz wählen. Sie heißen so, weil sie nicht wie ein Pilz aussehen, sondern den Innereien einer Auster ähneln, und ihr süßer Geschmack ist köstlich.</p>",
+                    "format": "ckeditor",
+                    "processed": "<p>Wir sind der Meinung, dass Pilze eine der besten Zutaten sind, mit denen man kochen kann. Es gibt viele essbare Sorten, jede mit ihrer eigenen, unverwechselbaren Form, Größe und Geschmack. Und wer würde bei so kuriosen Namen wie Pfifferling, Zigeunerpilz, Füllhorn oder Waldhenne nicht gerne mehr über das Kochen mit dem mächtigen Pilz erfahren?</p><p>Eines der besten Dinge an Pilzen ist ihre Vielseitigkeit. Sie können gebraten, geröstet, gegrillt, gedünstet oder sogar in der Mikrowelle gegart werden. Und sie können als Hauptzutat für ein Gericht serviert oder einfach als Teil der Mischung hinzugefügt werden. Das macht Pilze zu einer idealen Wahl für die Zubereitung absolut köstlicher vegetarischer Gerichte.</p><p>Werfen wir also einen Blick auf einige unserer Lieblingspilzsorten. Vielleicht haben Sie noch nie mit ihnen gekocht, aber das sollte Sie nicht abschrecken. Mit ihren köstlichen, unverwechselbaren Aromen können Sie Suppen, Vorspeisen und Soßen ganz einfach verwandeln und erstaunliche Nudel- oder Pfannengerichte kreieren.</p><p>Probieren Sie die lieblichen Shiitake. Sie werden in der asiatischen Küche verwendet und können getrocknet und rehydriert gekauft werden, um einen kräftigen, tiefen Geschmack zu erhalten. Oder Sie kaufen ihn frisch und fügen ihn zu Suppen und Pfannengerichten hinzu. Dieser Pilz hat nicht nur einen intensiven Geschmack, sondern sieht auch schön aus. Das tiefe Braun und die glatten Formen geben Ihrem Gericht eine besondere Textur. In getrockneter Form und rehydriert sind sie die perfekte Ergänzung für eine tiefe und würzige Brühe für ein Risotto.</p><p>Der prächtige sonnige Pfifferling mit seinem gelben Fruchtfleisch hat einen fruchtigen Geschmack - aber es ist erwähnenswert, dass es viele Nachahmer gibt, und man sollte darauf achten, dass man die richtigen isst. Diese sehen in einem Omelett oder einer asiatischen Suppe großartig aus, um die Gelbtöne zu ergänzen.</p><p>Die braune Morchel bietet einen fleischigen und unverwechselbaren Geschmack, und Sie werden wahrscheinlich lieben, wie außergewöhnlich sie in einer Mahlzeit aussieht. Die Morchel ist ein beliebter Pilz im Frühjahr, wenn ihr Angebot besonders groß ist.</p><p>Eine Delikatesse ist der Enoki mit seinen winzigen weißen Köpfen, die in Büscheln wachsen. Sie können sogar roh in Salaten verzehrt werden. Schließlich können Sie den beliebten Austernpilz wählen. Sie heißen so, weil sie nicht wie ein Pilz aussehen, sondern den Innereien einer Auster ähneln, und ihr süßer Geschmack ist köstlich.</p>",
+                    "summary": "Wir sind der Meinung, dass Pilze eine der besten Zutaten sind, mit denen man kochen kann. Es gibt viele essbare Sorten, jede mit ihrer eigenen, unverwechselbaren Form, Größe und Geschmack. "
+                }
+            },
+            "relationships": {
+                "node_type": {
+                    "data": null,
+                    "links": {
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/5e462a38-de37-4769-add2-998db91fd839/relationships/node_type?resourceVersion=id%3A9"
+                        }
+                    }
+                },
+                "revision_uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/5e462a38-de37-4769-add2-998db91fd839/revision_uid?resourceVersion=id%3A9"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/5e462a38-de37-4769-add2-998db91fd839/relationships/revision_uid?resourceVersion=id%3A9"
+                        }
+                    }
+                },
+                "uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/5e462a38-de37-4769-add2-998db91fd839/uid?resourceVersion=id%3A9"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/5e462a38-de37-4769-add2-998db91fd839/relationships/uid?resourceVersion=id%3A9"
+                        }
+                    }
+                },
+                "field_media": {
+                    "data": {
+                        "type": "media--image",
+                        "id": "8f8895dc-d6e4-469f-8a89-f6729cdfed0f",
+                        "meta": {
+                            "drupal_internal__target_id": 4
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/5e462a38-de37-4769-add2-998db91fd839/field_media?resourceVersion=id%3A9"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/5e462a38-de37-4769-add2-998db91fd839/relationships/field_media?resourceVersion=id%3A9"
+                        }
+                    }
+                }
+            },
+            "meta": {
+                "localeInfo": [
+                    {
+                        "langcode": "en",
+                        "path": "/articles/umami-guide-our-favorite-mushrooms"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "node--article",
+            "id": "79cb4f78-4ae0-4db1-b4e7-5fa9758b9a30",
+            "links": {
+                "self": {
+                    "href": "https://my-drupal.com/jsonapi/node/article/79cb4f78-4ae0-4db1-b4e7-5fa9758b9a30?resourceVersion=id%3A10"
+                }
+            },
+            "attributes": {
+                "drupal_internal__nid": 10,
+                "drupal_internal__vid": 10,
+                "langcode": "de",
+                "revision_timestamp": "2023-02-23T11:10:08+00:00",
+                "revision_log": null,
+                "status": true,
+                "title": "Missgeschicke beim Backen - unsere Tipps zur Fehlerbehebung",
+                "created": "2023-01-30T08:21:41+00:00",
+                "changed": "2023-02-23T11:10:08+00:00",
+                "promote": true,
+                "sticky": false,
+                "default_langcode": true,
+                "revision_translation_affected": true,
+                "path": {
+                    "alias": "/articles/missgeschicke-beim-backen-unsere-tipps-zur-fehlerbehebung",
+                    "pid": 11,
+                    "langcode": "de"
+                },
+                "content_translation_source": "und",
+                "content_translation_outdated": false,
+                "body": {
+                    "value": "<p>Sie halten sich an das Rezept, wiegen alle Zutaten ab, verwenden die richtige Ofentemperatur und nehmen sich Zeit - und trotzdem wird Ihr Gebäck am Ende matschig, geht nicht auf oder schmeckt einfach nur furchtbar. Wir haben eine Liste mit den frustrierendsten Backproblemen und den Techniken, die Sie anwenden können, um sie zu vermeiden, zusammengestellt.</p><h3>Ihr Kuchen ist nicht aufgegangen</h3><p>Öffnen Sie auf keinen Fall die Ofentür mitten in der Backzeit. Die Hitze zischt heraus und zerstört die chemische Reaktion, die in Ihrem Kuchen stattfindet. Ihr Backtriebmittel braucht die Hitze, um aktiviert zu werden, und Sie könnten es abtöten.</p><h3>Ihr Kuchen ist zäh und hart</h3><p>Wenn Ihr heller Biskuit die Konsistenz eines Reservereifens hat, haben Sie Ihren Teig möglicherweise zu stark gemischt. Behalten Sie die Leichtigkeit Ihres Kuchenteigs bei, indem Sie die Zutaten vorsichtig und behutsam unterheben, aber nur so weit, bis sie gerade vermischt sind. Wenn Sie zu viel unterheben, tritt das Gluten im Mehl aus und Sie backen eher Brot als Kuchen.</p>",
+                    "format": "ckeditor",
+                    "processed": "<p>Sie halten sich an das Rezept, wiegen alle Zutaten ab, verwenden die richtige Ofentemperatur und nehmen sich Zeit - und trotzdem wird Ihr Gebäck am Ende matschig, geht nicht auf oder schmeckt einfach nur furchtbar. Wir haben eine Liste mit den frustrierendsten Backproblemen und den Techniken, die Sie anwenden können, um sie zu vermeiden, zusammengestellt.</p><h3>Ihr Kuchen ist nicht aufgegangen</h3><p>Öffnen Sie auf keinen Fall die Ofentür mitten in der Backzeit. Die Hitze zischt heraus und zerstört die chemische Reaktion, die in Ihrem Kuchen stattfindet. Ihr Backtriebmittel braucht die Hitze, um aktiviert zu werden, und Sie könnten es abtöten.</p><h3>Ihr Kuchen ist zäh und hart</h3><p>Wenn Ihr heller Biskuit die Konsistenz eines Reservereifens hat, haben Sie Ihren Teig möglicherweise zu stark gemischt. Behalten Sie die Leichtigkeit Ihres Kuchenteigs bei, indem Sie die Zutaten vorsichtig und behutsam unterheben, aber nur so weit, bis sie gerade vermischt sind. Wenn Sie zu viel unterheben, tritt das Gluten im Mehl aus und Sie backen eher Brot als Kuchen.</p>",
+                    "summary": "Man hält sich an das Rezept, wiegt alle Zutaten ab, wählt die richtige Ofentemperatur und nimmt sich Zeit, und trotzdem wird das Backwerk am Ende matschig, geht nicht auf oder schmeckt einfach nur furchtbar."
+                }
+            },
+            "relationships": {
+                "node_type": {
+                    "data": null,
+                    "links": {
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/79cb4f78-4ae0-4db1-b4e7-5fa9758b9a30/relationships/node_type?resourceVersion=id%3A10"
+                        }
+                    }
+                },
+                "revision_uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/79cb4f78-4ae0-4db1-b4e7-5fa9758b9a30/revision_uid?resourceVersion=id%3A10"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/79cb4f78-4ae0-4db1-b4e7-5fa9758b9a30/relationships/revision_uid?resourceVersion=id%3A10"
+                        }
+                    }
+                },
+                "uid": {
+                    "data": {
+                        "type": "user--user",
+                        "id": "f0d79a17-a6b1-4c34-ba1b-ae298826f68a",
+                        "meta": {
+                            "drupal_internal__target_id": 1
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/79cb4f78-4ae0-4db1-b4e7-5fa9758b9a30/uid?resourceVersion=id%3A10"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/79cb4f78-4ae0-4db1-b4e7-5fa9758b9a30/relationships/uid?resourceVersion=id%3A10"
+                        }
+                    }
+                },
+                "field_media": {
+                    "data": {
+                        "type": "media--image",
+                        "id": "e1a3b027-8983-44a7-bbea-403898ba0260",
+                        "meta": {
+                            "drupal_internal__target_id": 6
+                        }
+                    },
+                    "links": {
+                        "related": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/79cb4f78-4ae0-4db1-b4e7-5fa9758b9a30/field_media?resourceVersion=id%3A10"
+                        },
+                        "self": {
+                            "href": "https://my-drupal.com/jsonapi/node/article/79cb4f78-4ae0-4db1-b4e7-5fa9758b9a30/relationships/field_media?resourceVersion=id%3A10"
+                        }
+                    }
+                }
+            },
+            "meta": {
+                "localeInfo": [
+                    {
+                        "langcode": "en",
+                        "path": "/articles/baking-mishaps-our-troubleshooting-tips"
+                    }
+                ]
+            }
+        }
+    ],
+    "links": {
+        "self": {
+            "href": "https://my-drupal.com/jsonapi/node/article"
+        }
+    }
+}

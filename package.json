@@ -17,14 +17,9 @@
   "scripts": {
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "test:watch": "turbo run test:watch"
+    "test:watch": "turbo run test:watch",
+    "typecheck": "turbo run typecheck"
   },
-  "packageManager": "pnpm@7.26.3",
-  "pnpm": {
-    "patchedDependencies": {
-      "is-plain-object@5.0.0": "patches/is-plain-object@5.0.0.patch"
-    }
-  }
+  "packageManager": "pnpm@7.26.3"
 }

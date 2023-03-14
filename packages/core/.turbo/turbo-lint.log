@@ -2,4 +2,23 @@
 > @drupalkit/core@0.0.0-development lint /home/chfoidl/workspace/wunderwerk/drupalkit/packages/core
 > eslint --ext .ts,.tsx src --max-warnings 0
 
- ELIFECYCLE  Command failed.
+
+/home/chfoidl/workspace/wunderwerk/drupalkit/packages/core/src/Drupalkit.ts
+   45:3   warning  Missing JSDoc @param "newPlugins" declaration     jsdoc/require-param
+   52:27  warning  Unexpected any. Specify a different type          @typescript-eslint/no-explicit-any
+   52:45  warning  Unexpected any. Specify a different type          @typescript-eslint/no-explicit-any
+   56:26  error    Missing JSDoc comment                             jsdoc/require-jsdoc
+   76:16  error    Missing JSDoc comment                             jsdoc/require-jsdoc
+   76:22  error    Unexpected empty method 'debug'                   @typescript-eslint/no-empty-function
+   77:15  error    Missing JSDoc comment                             jsdoc/require-jsdoc
+   77:21  error    Unexpected empty method 'info'                    @typescript-eslint/no-empty-function
+   78:15  warning  Unexpected console statement                      no-console
+   79:16  warning  Unexpected console statement                      no-console
+  131:21  error    Missing JSDoc comment                             jsdoc/require-jsdoc
+  162:3   warning  Missing JSDoc @param "options.query" declaration  jsdoc/require-param
+  165:1   warning  Missing @param "options.query"                    jsdoc/check-param-names
+
+✖ 13 problems (6 errors, 7 warnings)
+  4 errors and 2 warnings potentially fixable with the `--fix` option.
+
+ ELIFECYCLE  Command failed with exit code 1.

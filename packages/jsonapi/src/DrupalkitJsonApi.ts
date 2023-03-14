@@ -1,7 +1,8 @@
 import { ResourceObject, Response } from "ts-json-api";
-import { Ok } from "ts-results";
+import { Err, Ok } from "ts-results";
 import { Drupalkit, DrupalkitOptions, Query } from "@drupalkit/core";
 
+import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError";
 import {
   JsonApiIndex,
   JsonApiResources,
@@ -9,6 +10,7 @@ import {
   ReadSingleParameters,
   ToParameters,
 } from "./resources.js";
+import { isJsonApiRequest } from "./utils";
 
 declare module "@drupalkit/core" {
   interface DrupalkitOptions {
@@ -151,6 +153,18 @@ export const DrupalkitJsonApi = (
   };
 
   /**
+   * Create DrupalkitJsonApiError for JSON:API failed requests.
+   */
+  drupalkit.hook.error("request", (error) => {
+    // Only care about JSON:API requests.
+    if (isJsonApiRequest(error.request)) {
+      throw DrupalkitJsonApiError.fromDrupalkitError(error);
+    }
+
+    throw error;
+  });
+
+  /**
    * Extend the Drupalkit instance.
    */
   return {
@@ -162,6 +176,14 @@ export const DrupalkitJsonApi = (
         Resource extends JsonApiResources[Type]["resource"],
         Operation extends JsonApiResources[Type]["operations"],
         Params extends ToParameters<Operation, Resource>,
+        Return extends Record<
+          Operation,
+          "readSingle" extends Operation
+          ? Awaited<ReturnType<typeof getResource>>
+          : "readMany" extends Operation
+          ? Awaited<ReturnType<typeof getResourceCollection>>
+          : Err<Error>
+        >,
       >(
         type: Type,
         operation: Operation,
@@ -170,21 +192,26 @@ export const DrupalkitJsonApi = (
           localeOverride?: string;
           defaultLocaleOverride?: string;
         },
-      ) {
+      ): Promise<Return[Operation]> {
         switch (operation) {
           case "readSingle":
-            return getResource(
+            return (await getResource(
               type,
               parameters as ReadSingleParameters,
               options,
-            );
+            )) as Return[Operation];
+
           case "readMany":
-            return getResourceCollection(
+            return (await getResourceCollection(
               type,
               parameters as ReadManyParameters,
               options,
-            );
+            )) as Return[Operation];
         }
+
+        return Err(
+          new Error(`Unknown operation "${operation}"`),
+        ) as Return[Operation];
       },
     },
   };

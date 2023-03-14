@@ -1,6 +1,8 @@
 import * as DrupalkitTypes from "@drupalkit/types";
 
-import { RequestErrorOptions as DrupalkitErrorOptions } from "./types";
+import { RequestErrorOptions } from "./types";
+
+export type DrupalkitErrorOptions = RequestErrorOptions;
 
 /**
  * Custom error class to help with error handling.
@@ -9,22 +11,22 @@ export class DrupalkitError extends Error {
   /**
    * Error name.
    */
-  name: "HttpError";
+  readonly name: "HttpError";
 
   /**
    * HTTP status code.
    */
-  status: number;
+  readonly statusCode: number;
 
   /**
    * Request options that lead to the error.
    */
-  request: DrupalkitTypes.RequestOptions;
+  readonly request: DrupalkitTypes.RequestOptions;
 
   /**
    * Response object if a response was received.
    */
-  response?: DrupalkitTypes.DrupalkitResponse<unknown>;
+  readonly response?: DrupalkitTypes.DrupalkitResponse<unknown>;
 
   /**
    * Construct a new DrupalkitError.
@@ -48,7 +50,7 @@ export class DrupalkitError extends Error {
     }
 
     this.name = "HttpError";
-    this.status = statusCode;
+    this.statusCode = statusCode;
 
     if (options.response) {
       this.response = options.response;

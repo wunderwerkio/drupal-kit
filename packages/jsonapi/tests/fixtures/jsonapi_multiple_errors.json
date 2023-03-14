@@ -1,0 +1,43 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http://jsonapi.org/format/1.0/"
+        }
+      }
+    }
+  },
+  "errors": [
+    {
+      "title": "Bad Request",
+      "status": "400",
+      "detail": "`wrong-field` is not a valid relationship field name. Possible values: node_type, revision_uid, uid, menu_link, field_media.",
+      "links": {
+        "via": {
+          "href": "https://my-drupal.com/jsonapi/node/article/5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f"
+        },
+        "info": {
+          "href": "http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1"
+        }
+      }
+    },
+    {
+      "title": "Unprocessable Entity",
+      "status": "422",
+      "detail": "field_firstname: Dieser Wert sollte nicht leer sein.",
+      "source": {
+        "pointer": "/data/attributes/field_firstname"
+      }
+    },
+    {
+      "title": "Unprocessable Entity",
+      "status": "422",
+      "detail": "field_lastname: Dieser Wert sollte nicht leer sein.",
+      "source": {
+        "pointer": "/data/attributes/field_lastname"
+      }
+    }
+  ]
+}

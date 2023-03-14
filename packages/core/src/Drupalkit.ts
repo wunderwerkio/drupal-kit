@@ -73,8 +73,8 @@ export class Drupalkit {
 
     this.log = Object.assign(
       {
-        debug: () => { },
-        info: () => { },
+        debug: () => {},
+        info: () => {},
         warn: console.warn.bind(console),
         error: console.error.bind(console),
       },
@@ -127,7 +127,7 @@ export class Drupalkit {
    * @param url - Relative or absolute url.
    * @param options - Request options.
    */
-  public request<R extends unknown>(url: Url, options: RequestOptions) {
+  public request<R>(url: Url, options: RequestOptions) {
     const request = (options: RequestRequestOptions) => {
       return fetchWrapper<R>(options);
     };
@@ -198,7 +198,10 @@ export class Drupalkit {
       finalUrl += "/" + trimSlashesFromSegment(options.customPrefix);
     }
 
-    finalUrl += "/" + trimSlashesFromSegment(url);
+    // Only append url if not empty.
+    if (url) {
+      finalUrl += "/" + trimSlashesFromSegment(url);
+    }
 
     if (options?.query) {
       finalUrl += "?" + qs.stringify(options.query);

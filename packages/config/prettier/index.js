@@ -12,6 +12,7 @@ module.exports = {
   ],
   "pluginSearchDirs": false,
   importOrder: [
+    "^(jest-fetch-mock)$",
     "<THIRD_PARTY_MODULES>",
     "^@drupalkit/(.*)$",
     "",
