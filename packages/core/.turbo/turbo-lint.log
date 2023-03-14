@@ -2,27 +2,4 @@
 > @drupalkit/core@0.0.0-development lint /home/chfoidl/workspace/wunderwerk/drupalkit/packages/core
 > eslint --ext .ts,.tsx src --max-warnings 0
 
-
-/home/chfoidl/workspace/wunderwerk/drupalkit/packages/core/src/index.ts
-   48:3   warning  Missing JSDoc @param "newPlugins" declaration                                                  jsdoc/require-param
-   55:27  warning  Unexpected any. Specify a different type                                                       @typescript-eslint/no-explicit-any
-   55:45  warning  Unexpected any. Specify a different type                                                       @typescript-eslint/no-explicit-any
-   59:26  error    Missing JSDoc comment                                                                          jsdoc/require-jsdoc
-   79:16  error    Missing JSDoc comment                                                                          jsdoc/require-jsdoc
-   79:22  error    Unexpected empty method 'debug'                                                                @typescript-eslint/no-empty-function
-   80:15  error    Missing JSDoc comment                                                                          jsdoc/require-jsdoc
-   80:21  error    Unexpected empty method 'info'                                                                 @typescript-eslint/no-empty-function
-   81:15  warning  Unexpected console statement                                                                   no-console
-   82:16  warning  Unexpected console statement                                                                   no-console
-  134:21  error    Missing JSDoc comment                                                                          jsdoc/require-jsdoc
-  150:27  warning  A function with a name starting with an uppercase letter should only be used as a constructor  new-cap
-  152:53  warning  A function with a name starting with an uppercase letter should only be used as a constructor  new-cap
-  154:16  warning  A function with a name starting with an uppercase letter should only be used as a constructor  new-cap
-  162:3   warning  Missing JSDoc @param "url" declaration                                                         jsdoc/require-param
-  162:3   warning  Missing JSDoc @param "localeOverride" declaration                                              jsdoc/require-param
-  162:3   warning  Missing JSDoc @param "defaultLocaleOverride" declaration                                       jsdoc/require-param
-
-✖ 17 problems (6 errors, 11 warnings)
-  4 errors and 4 warnings potentially fixable with the `--fix` option.
-
- ELIFECYCLE  Command failed with exit code 1.
+ ELIFECYCLE  Command failed.

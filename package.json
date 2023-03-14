@@ -21,5 +21,10 @@
     "test": "turbo run test",
     "test:watch": "turbo run test:watch"
   },
-  "packageManager": "pnpm@7.26.3"
+  "packageManager": "pnpm@7.26.3",
+  "pnpm": {
+    "patchedDependencies": {
+      "is-plain-object@5.0.0": "patches/is-plain-object@5.0.0.patch"
+    }
+  }
 }

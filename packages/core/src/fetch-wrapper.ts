@@ -12,7 +12,7 @@ import getBuffer from "./get-buffer-response";
  *
  * @param requestOptions - Options for the request.
  */
-export default function fetchWrapper(
+export default function fetchWrapper<R extends unknown>(
   requestOptions: RequestRequestOptions & {
     redirect?: "error" | "follow" | "manual";
     fetch?: Fetch;
@@ -96,7 +96,7 @@ export default function fetchWrapper(
         status,
         url,
         headers,
-        data,
+        data: data as R,
       };
     })
     .catch((error) => {
@@ -117,7 +117,7 @@ export default function fetchWrapper(
 async function getResponseData(response: Response) {
   const contentType = response.headers.get("content-type");
 
-  if (contentType && /application\/json/.test(contentType)) {
+  if (contentType && /application\/(vnd\.api\+json|json)/.test(contentType)) {
     return response.json();
   }
 

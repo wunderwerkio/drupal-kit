@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`resources should build json api url: simple 1`] = `"https://my-drupal.com/jsonapi/node/article"`;
+
+exports[`resources should build json api url: with-base-locale 1`] = `"https://my-drupal.com/jsonapi/node/article"`;
+
+exports[`resources should build json api url: with-locale 1`] = `"https://my-drupal.com/es/jsonapi/node/article"`;
+
+exports[`resources should build json api url: with-locale-and-query 1`] = `"https://my-drupal.com/es/jsonapi/node/article?filter%5Bgroup%5D%5Bgroup%5D%5Bconjunction%5D=OR&filter%5Bstatus%5D%5Bcondition%5D%5Bpath%5D=status&filter%5Bstatus%5D%5Bcondition%5D%5Bvalue%5D=1&filter%5Bstatus%5D%5Bcondition%5D%5BmemberOf%5D=test&include=one%2Ctwo&sort=name&revision=5"`;
+
+exports[`resources should build json api url: with-query 1`] = `"https://my-drupal.com/jsonapi/node/article?filter%5Bgroup%5D%5Bgroup%5D%5Bconjunction%5D=OR&filter%5Bstatus%5D%5Bcondition%5D%5Bpath%5D=status&filter%5Bstatus%5D%5Bcondition%5D%5Bvalue%5D=1&filter%5Bstatus%5D%5Bcondition%5D%5BmemberOf%5D=test&include=one%2Ctwo&sort=name&revision=5"`;
+
+exports[`resources should get jsonapi index: jsonapi-index 1`] = `"{"jsonapi":{"version":"1.0","meta":{"links":{"self":{"href":"http://jsonapi.org/format/1.0/"}}}},"data":[],"links":{"file--file":{"href":"https://my-drupal.com/jsonapi/file/file"},"media--image":{"href":"https://my-drupal.com/jsonapi/media/image"},"node--article":{"href":"https://my-drupal.com/jsonapi/node/article"},"node--page":{"href":"https://my-drupal.com/jsonapi/node/page"},"self":{"href":"https://my-drupal.com/jsonapi"},"user--user":{"href":"https://my-drupal.com/jsonapi/user/user"}}}"`;

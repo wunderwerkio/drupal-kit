@@ -1,0 +1,33 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http://jsonapi.org/format/1.0/"
+        }
+      }
+    }
+  },
+  "data": [],
+  "links": {
+    "file--file": {
+      "href": "https://my-drupal.com/jsonapi/file/file"
+    },
+    "media--image": {
+      "href": "https://my-drupal.com/jsonapi/media/image"
+    },
+    "node--article": {
+      "href": "https://my-drupal.com/jsonapi/node/article"
+    },
+    "node--page": {
+      "href": "https://my-drupal.com/jsonapi/node/page"
+    },
+    "self": {
+      "href": "https://my-drupal.com/jsonapi"
+    },
+    "user--user": {
+      "href": "https://my-drupal.com/jsonapi/user/user"
+    }
+  }
+}

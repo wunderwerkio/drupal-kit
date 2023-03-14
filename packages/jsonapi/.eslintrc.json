@@ -1,0 +1,3 @@
+{
+  "extends": ["@drupalkit/eslint-config"]
+}

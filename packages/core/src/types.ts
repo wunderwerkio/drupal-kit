@@ -1,6 +1,7 @@
 import { DrupalkitError } from "@drupalkit/error";
 import * as DrupalkitTypes from "@drupalkit/types";
 import { Fetch } from "@drupalkit/types";
+import { ParsedQs } from "qs";
 
 import { Drupalkit } from ".";
 
@@ -18,6 +19,8 @@ export interface DrupalkitOptions {
   request?: DrupalkitTypes.RequestOptions;
   fetch?: Fetch;
 }
+
+export type Query = ParsedQs | object;
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
