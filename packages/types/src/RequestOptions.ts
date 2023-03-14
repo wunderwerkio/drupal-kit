@@ -5,12 +5,30 @@ import { RequestHeaders } from "./RequestHeaders";
  * Drupalkit-specific request options.
  */
 export type RequestOptions = {
+  /**
+   * Request method.
+   */
   method: string;
-  headers: RequestHeaders;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body?: string | Array<any> | object;
 
+  /**
+   * Additional request headers.
+   */
+  headers?: RequestHeaders;
+
+  /**
+   * Request body.
+   */
+  body?: string | Array<unknown> | object;
+
+  /**
+   * Override the locale for the request.
+   */
   locale?: string;
+
+  /**
+   * If true, the request will be unauthenticated.
+   */
+  unauthenticated?: boolean;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [option: string]: any;

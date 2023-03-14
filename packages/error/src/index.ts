@@ -58,7 +58,7 @@ export class DrupalkitError extends Error {
 
     // redact request credentials without mutating original request options
     const requestCopy = Object.assign({}, options.request);
-    if (options.request.headers.authorization) {
+    if (options.request.headers?.authorization) {
       requestCopy.headers = Object.assign({}, options.request.headers, {
         authorization: options.request.headers.authorization.replace(
           / .*$/,

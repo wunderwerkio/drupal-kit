@@ -41,6 +41,7 @@ export class Drupalkit {
   readonly agent = "drupalkit/0.0.0-development";
   readonly log: Log;
   readonly hook: HookCollection<Hooks>;
+  private auth?: string;
 
   /**
    * Attach a plugin (or many) to your Drupalkit instance.
@@ -144,6 +145,18 @@ export class Drupalkit {
       return fetchWrapper<R>(options);
     };
 
+    const headers = {
+      ...options.headers,
+      "user-agent": this.agent,
+    };
+
+    // Delete auth header if unauthenticated is true.
+    if (options.unauthenticated) {
+      delete headers.authorization;
+    } else if (this.auth) {
+      headers.authorization = this.auth;
+    }
+
     const requestOptions = {
       ...options,
       url: this.buildUrl(url, {
@@ -151,10 +164,7 @@ export class Drupalkit {
       }),
       baseUrl: this.baseUrl,
       log: this.log,
-      headers: {
-        ...options.headers,
-        "user-agent": this.agent,
-      },
+      headers,
     };
 
     return this.hook("request", request, requestOptions)
@@ -168,6 +178,15 @@ export class Drupalkit {
           }),
         );
       });
+  }
+
+  /**
+   * Set authorization header value.
+   *
+   * @param auth - The authorization header value.
+   */
+  public setAuth(auth: string) {
+    this.auth = auth;
   }
 
   /**
