@@ -50,7 +50,7 @@ export class Drupalkit {
    * const API = Drupalkit.plugin(plugin1, plugin2, plugin3, ...)
    */
   static plugin<
-    S extends Constructor<{ options: DrupalkitOptions }> & { plugins: unknown[] },
+    S extends Constructor<object> & { plugins: unknown[] },
     T extends DrupalkitPlugin[],
   >(this: S, ...newPlugins: T) {
     const currentPlugins = this.plugins;
