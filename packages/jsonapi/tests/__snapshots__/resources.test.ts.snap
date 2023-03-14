@@ -2,8 +2,6 @@
 
 exports[`resources should build json api url: simple 1`] = `"https://my-drupal.com/jsonapi/node/article"`;
 
-exports[`resources should build json api url: with-base-locale 1`] = `"https://my-drupal.com/jsonapi/node/article"`;
-
 exports[`resources should build json api url: with-locale 1`] = `"https://my-drupal.com/es/jsonapi/node/article"`;
 
 exports[`resources should build json api url: with-locale-and-query 1`] = `"https://my-drupal.com/es/jsonapi/node/article?filter%5Bgroup%5D%5Bgroup%5D%5Bconjunction%5D=OR&filter%5Bstatus%5D%5Bcondition%5D%5Bpath%5D=status&filter%5Bstatus%5D%5Bcondition%5D%5Bvalue%5D=1&filter%5Bstatus%5D%5Bcondition%5D%5BmemberOf%5D=test&include=one%2Ctwo&sort=name&revision=5"`;

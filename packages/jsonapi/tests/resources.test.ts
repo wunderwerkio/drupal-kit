@@ -64,13 +64,6 @@ describe("resources", () => {
     });
     expect(url).toMatchSnapshot("with-locale");
 
-    // With base locale.
-    url = drupalkit.jsonApi.buildJsonApiUrl("node/article", {
-      localeOverride: "es",
-      defaultLocaleOverride: "es",
-    });
-    expect(url).toMatchSnapshot("with-base-locale");
-
     // With locale and query.
     url = drupalkit.jsonApi.buildJsonApiUrl("node/article", {
       localeOverride: "es",

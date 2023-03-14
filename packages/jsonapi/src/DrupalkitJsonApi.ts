@@ -65,7 +65,6 @@ export const DrupalkitJsonApi = (
    * @param parameters - The parameters to use for the query.
    * @param options - Optional settings to override locale and default locale.
    * @param options.localeOverride - An optional override for the locale.
-   * @param options.defaultLocaleOverride - An optional override for the default locale.
    * @returns A result object containing the resource object or an error.
    */
   const getResource = async <R extends ResourceObject>(
@@ -73,7 +72,6 @@ export const DrupalkitJsonApi = (
     parameters: ReadSingleParameters,
     options?: {
       localeOverride?: string;
-      defaultLocaleOverride?: string;
     },
   ) => {
     const path = type.replace("--", "/") + "/" + parameters.uuid;
@@ -102,7 +100,6 @@ export const DrupalkitJsonApi = (
    * @param parameters - The parameters to use for the query.
    * @param options - Optional settings to override locale and default locale.
    * @param options.localeOverride - An optional override for the locale.
-   * @param options.defaultLocaleOverride - An optional override for the default locale.
    * @returns A result object containing the resource object or an error.
    */
   const getResourceCollection = async <R extends ResourceObject>(
@@ -110,7 +107,6 @@ export const DrupalkitJsonApi = (
     parameters: ReadManyParameters,
     options?: {
       localeOverride?: string;
-      defaultLocaleOverride?: string;
     },
   ) => {
     const path = type.replace("--", "/");
@@ -139,7 +135,6 @@ export const DrupalkitJsonApi = (
    * @param parameters - The parameters to use for the request.
    * @param options - Optional settings to override locale and default locale.
    * @param options.localeOverride - An optional override for the locale.
-   * @param options.defaultLocaleOverride - An optional override for the default locale.
    * @returns A result object containing the resource object or an error.
    */
   const createResource = async <R extends ResourceObject>(
@@ -147,7 +142,6 @@ export const DrupalkitJsonApi = (
     parameters: CreateParameters<R>,
     options?: {
       localeOverride?: string;
-      defaultLocaleOverride?: string;
     },
   ) => {
     const path = type.replace("--", "/");
@@ -174,7 +168,6 @@ export const DrupalkitJsonApi = (
    * @param parameters - The parameters to use for the request.
    * @param options - Optional settings to override locale and default locale.
    * @param options.localeOverride - An optional override for the locale.
-   * @param options.defaultLocaleOverride - An optional override for the default locale.
    * @returns A result object containing the resource object or an error.
    */
   const updateResource = async <R extends ResourceObject>(
@@ -182,7 +175,6 @@ export const DrupalkitJsonApi = (
     parameters: UpdateParameters<R>,
     options?: {
       localeOverride?: string;
-      defaultLocaleOverride?: string;
     },
   ) => {
     const path = type.replace("--", "/") + "/" + parameters.uuid;
@@ -235,7 +227,6 @@ export const DrupalkitJsonApi = (
    * @param path - The path to the JSON API endpoint.
    * @param options - An optional object containing additional options.
    * @param options.localeOverride - An optional override for the locale.
-   * @param options.defaultLocaleOverride - An optional override for the default locale.
    * @param options.query - An optional object containing query parameters.
    * @returns The constructed URL as a string.
    */
@@ -243,7 +234,6 @@ export const DrupalkitJsonApi = (
     path: string,
     options?: {
       localeOverride?: string;
-      defaultLocaleOverride?: string;
       query?: Query;
     },
   ) => {
@@ -299,7 +289,6 @@ export const DrupalkitJsonApi = (
         parameters: Params,
         options?: {
           localeOverride?: string;
-          defaultLocaleOverride?: string;
         },
       ): Promise<Return[Operation]> {
         switch (operation) {

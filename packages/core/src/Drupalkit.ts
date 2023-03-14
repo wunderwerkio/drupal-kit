@@ -148,7 +148,6 @@ export class Drupalkit {
       ...options,
       url: this.buildUrl(url, {
         localeOverride: options.locale,
-        defaultLocaleOverride: options.defaultLocale,
       }),
       baseUrl: this.baseUrl,
       log: this.log,
@@ -177,7 +176,6 @@ export class Drupalkit {
    * @param url - The url for the request. Can be relative or absolute.
    * @param options - An optional object containing additional options.
    * @param options.localeOverride - An optional override for the locale.
-   * @param options.defaultLocaleOverride - An optional override for the default locale.
    * @param options.customPrefix - A custom prefix to prepend to the url.
    * @param options.query - An optional object containing query parameters.
    * @returns The constructed URL as a string.
@@ -186,7 +184,6 @@ export class Drupalkit {
     url: Url,
     options?: {
       localeOverride?: string;
-      defaultLocaleOverride?: string;
       customPrefix?: string;
       query?: Query;
     },
@@ -197,12 +194,11 @@ export class Drupalkit {
     }
 
     const locale = options?.localeOverride ?? this.locale;
-    const defaultLocale = options?.defaultLocaleOverride ?? this.defaultLocale;
 
     let finalUrl = this.baseUrl;
 
     // Prepend locale to url if the locale is not the default one.
-    if (locale && locale !== defaultLocale) {
+    if (locale && locale !== this.defaultLocale) {
       finalUrl += "/" + locale;
     }
 

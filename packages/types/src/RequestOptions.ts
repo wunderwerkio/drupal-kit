@@ -11,7 +11,6 @@ export type RequestOptions = {
   body?: string | Array<any> | object;
 
   locale?: string;
-  defaultLocale?: string;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [option: string]: any;
