@@ -4,5 +4,5 @@
  * @param segment - The segment or url.
  */
 export const trimSlashesFromSegment = (segment: string) => {
-  return segment.replace(/^\/+|\/+$/g, "");
+  return segment.replace(/^\/+|(?<!\/)\/+$/g, "");
 };

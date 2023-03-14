@@ -61,7 +61,7 @@ export class DrupalkitError extends Error {
     if (options.request.headers?.authorization) {
       requestCopy.headers = Object.assign({}, options.request.headers, {
         authorization: options.request.headers.authorization.replace(
-          / .*$/,
+          /(?!\w).*$/,
           " [REDACTED]",
         ),
       });
