@@ -1,4 +1,4 @@
 {
-  "extends": "@drupalkit/config-typescript/base.json",
+  "extends": "@drupal-kit/config-typescript/base.json",
   "include": ["src/**/*.ts", "test-utils/**/*.ts"]
 }

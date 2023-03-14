@@ -14,7 +14,7 @@ module.exports = {
   importOrder: [
     "^(jest-fetch-mock)$",
     "<THIRD_PARTY_MODULES>",
-    "^@drupalkit/(.*)$",
+    "^@drupal-kit/(.*)$",
     "",
     "^~/utils/(.*)$",
     "^~/(.*)$",

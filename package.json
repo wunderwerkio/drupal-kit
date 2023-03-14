@@ -10,7 +10,7 @@
   "license": "ISC",
   "private": true,
   "devDependencies": {
-    "@drupalkit/config-prettier": "workspace:0.0.0-development",
+    "@drupal-kit/config-prettier": "workspace:0.0.0-development",
     "syncpack": "^9.8.4",
     "turbo": "^1.8.3"
   },

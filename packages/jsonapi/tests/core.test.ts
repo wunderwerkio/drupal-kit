@@ -1,4 +1,4 @@
-import { Drupalkit } from "@drupalkit/core";
+import { Drupalkit } from "@drupal-kit/core";
 
 import { DrupalkitJsonApi } from "../src/index";
 

@@ -1,5 +1,5 @@
 {
-  "name": "@drupalkit/eslint-config",
+  "name": "@drupal-kit/eslint-config",
   "version": "0.0.0-development",
   "main": "index.js",
   "private": true,

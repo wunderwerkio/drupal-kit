@@ -31,7 +31,7 @@ import { LinkObject, ResourceObject, Response } from "ts-json-api";
  *
  * @example
  * ```ts
- * declare module "@drupalkit/jsonapi" {
+ * declare module "@drupal-kit/jsonapi" {
  *   interface JsonApiResources {
  *     "file--file": {
  *       resource: FileResource;

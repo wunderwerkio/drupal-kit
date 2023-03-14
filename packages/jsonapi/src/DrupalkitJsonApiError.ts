@@ -1,4 +1,4 @@
-import { DrupalkitError, DrupalkitErrorOptions } from "@drupalkit/error";
+import { DrupalkitError, DrupalkitErrorOptions } from "@drupal-kit/error";
 
 type JsonApiError = {
   title: string;

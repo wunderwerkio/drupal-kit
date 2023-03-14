@@ -1,4 +1,4 @@
-import { RequestOptions } from "@drupalkit/types";
+import { RequestOptions } from "@drupal-kit/types";
 
 /**
  * Get header from request.

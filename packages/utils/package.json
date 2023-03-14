@@ -1,15 +1,15 @@
 {
-  "name": "@drupalkit/utils",
+  "name": "@drupal-kit/utils",
   "version": "0.0.0-development",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "dependencies": {
-    "@drupalkit/types": "workspace:0.0.0-development",
+    "@drupal-kit/types": "workspace:0.0.0-development",
     "is-plain-object": "^5.0.0"
   },
   "devDependencies": {
-    "@drupalkit/config-typescript": "workspace:0.0.0-development",
-    "@drupalkit/eslint-config": "workspace:0.0.0-development",
+    "@drupal-kit/config-typescript": "workspace:0.0.0-development",
+    "@drupal-kit/eslint-config": "workspace:0.0.0-development",
     "typescript": "4.9.5"
   },
   "scripts": {

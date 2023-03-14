@@ -1,8 +1,8 @@
 import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
-import { Drupalkit } from "@drupalkit/core";
-import { mockNetworkError, mockResponse } from "@drupalkit/core/test-utils";
-import { DrupalkitError } from "@drupalkit/error";
+import { Drupalkit } from "@drupal-kit/core";
+import { mockNetworkError, mockResponse } from "@drupal-kit/core/test-utils";
+import { DrupalkitError } from "@drupal-kit/error";
 
 import { DrupalkitJsonApi, DrupalkitJsonApiError } from "../src/index";
 import JsonApiArticleCollection from "./fixtures/jsonapi_article_collection.json";

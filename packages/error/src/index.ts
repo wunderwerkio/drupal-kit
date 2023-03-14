@@ -1,4 +1,4 @@
-import * as DrupalkitTypes from "@drupalkit/types";
+import * as DrupalkitTypes from "@drupal-kit/types";
 
 import { RequestErrorOptions } from "./types";
 

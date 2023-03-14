@@ -1,6 +1,6 @@
 import { ResourceObject, Response } from "ts-json-api";
 import { Err, Ok } from "ts-results";
-import { Drupalkit, DrupalkitOptions, Query } from "@drupalkit/core";
+import { Drupalkit, DrupalkitOptions, Query } from "@drupal-kit/core";
 
 import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError";
 import {
@@ -15,7 +15,7 @@ import {
 } from "./resources.js";
 import { isJsonApiRequest } from "./utils";
 
-declare module "@drupalkit/core" {
+declare module "@drupal-kit/core" {
   interface DrupalkitOptions {
     jsonApiPrefix?: string;
   }

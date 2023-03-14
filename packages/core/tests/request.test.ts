@@ -1,5 +1,5 @@
 import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
-import { DrupalkitError } from "@drupalkit/error";
+import { DrupalkitError } from "@drupal-kit/error";
 
 import { Drupalkit } from "../src";
 import { mockNetworkError, mockResponse } from "../test-utils";

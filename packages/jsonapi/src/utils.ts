@@ -1,5 +1,5 @@
-import { RequestOptions } from "@drupalkit/types";
-import { getHeader } from "@drupalkit/utils";
+import { RequestOptions } from "@drupal-kit/types";
+import { getHeader } from "@drupal-kit/utils";
 
 /**
  * Checks if request is a JSON:API request.

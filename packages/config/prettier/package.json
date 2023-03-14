@@ -1,5 +1,5 @@
 {
-  "name": "@drupalkit/config-prettier",
+  "name": "@drupal-kit/config-prettier",
   "version": "0.0.0-development",
   "main": "index.js",
   "private": true,

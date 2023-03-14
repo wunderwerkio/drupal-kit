@@ -1,6 +1,6 @@
 import type { FetchMock } from "jest-fetch-mock";
 
-import type { Drupalkit } from "../src";
+import type { Drupalkit } from "..";
 
 export const mockResponse = (
   fm: FetchMock,

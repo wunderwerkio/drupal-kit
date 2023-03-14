@@ -1,7 +1,7 @@
 import { ParsedQs } from "qs";
-import { DrupalkitError } from "@drupalkit/error";
-import * as DrupalkitTypes from "@drupalkit/types";
-import { Fetch } from "@drupalkit/types";
+import { DrupalkitError } from "@drupal-kit/error";
+import * as DrupalkitTypes from "@drupal-kit/types";
+import { Fetch } from "@drupal-kit/types";
 
 import { Drupalkit } from ".";
 
