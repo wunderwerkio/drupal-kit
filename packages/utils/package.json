@@ -1,0 +1,15 @@
+{
+  "name": "@drupalkit/utils",
+  "version": "0.0.0-development",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "devDependencies": {
+    "@drupalkit/config-typescript": "workspace:0.0.0-development",
+    "@drupalkit/eslint-config": "workspace:0.0.0-development",
+    "typescript": "4.9.5"
+  },
+  "scripts": {
+    "lint": "eslint --ext .ts,.tsx src --max-warnings 0",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  }
+}

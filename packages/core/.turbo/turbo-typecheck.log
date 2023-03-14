@@ -1,0 +1,4 @@
+
+> @drupalkit/core@0.0.0-development typecheck /home/chfoidl/workspace/wunderwerk/drupalkit/packages/core
+> tsc --project ./tsconfig.json --noEmit
+

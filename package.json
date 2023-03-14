@@ -1,22 +1,23 @@
 {
   "name": "drupalkit",
   "version": "0.0.0-development",
-  "keywords": [
-    "drupalkit",
-    "drupal",
-    "api"
-  ],
   "author": "Christian Foidl <christian@wunderwerk.io> (https://www.wunderwerk.io)",
+  "keywords": [
+    "api",
+    "drupal",
+    "drupalkit"
+  ],
   "license": "ISC",
   "private": true,
+  "devDependencies": {
+    "@drupalkit/config-prettier": "workspace:0.0.0-development",
+    "syncpack": "^9.8.4",
+    "turbo": "^1.8.3"
+  },
   "scripts": {
     "build": "turbo run build",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck"
   },
-  "devDependencies": {
-    "syncpack": "^9.8.4",
-    "turbo": "^1.8.3"
-  },
-  "packageManager": "pnpm@7.26.3",
+  "packageManager": "pnpm@7.26.3"
 }

@@ -1,0 +1,4 @@
+
+> @drupalkit/utils@0.0.0-development lint /home/chfoidl/workspace/wunderwerk/drupalkit/packages/utils
+> eslint --ext .ts,.tsx src --max-warnings 0
+

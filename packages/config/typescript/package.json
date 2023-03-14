@@ -1,0 +1,11 @@
+{
+  "name": "@drupalkit/config-typescript",
+  "version": "0.0.0-development",
+  "private": true,
+  "devDependencies": {
+    "typescript": "4.9.5"
+  },
+  "files": [
+    "base.json"
+  ]
+}
