@@ -11,6 +11,7 @@ export const mockResponse = (
     payloadFixture?: object;
     locale?: string;
     contentType?: string;
+    headers?: Record<string, string>;
   },
 ) => {
   const url =
@@ -27,6 +28,7 @@ export const mockResponse = (
     return {
       body: payload ? JSON.stringify(payload) : "{}",
       headers: {
+        ...options.headers,
         "content-type": options.contentType ?? "application/json",
       },
       url: req.url,

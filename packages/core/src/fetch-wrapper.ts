@@ -53,24 +53,12 @@ export default function fetchWrapper<R>(
       url = response.url;
       status = response.status;
 
-      for (const keyAndValue of response.headers) {
-        headers[keyAndValue[0]] = keyAndValue[1];
+      for (const [key, value] of response.headers) {
+        headers[key] = value;
       }
 
       if (status === 204 || status === 205) {
         return;
-      }
-
-      if (status === 304) {
-        throw new DrupalkitError("Not modified", status, {
-          response: {
-            url,
-            status,
-            headers,
-            data: await getResponseData(response),
-          },
-          request: requestOptions,
-        });
       }
 
       if (status >= 400) {
@@ -101,7 +89,8 @@ export default function fetchWrapper<R>(
     })
     .catch((error) => {
       if (error instanceof DrupalkitError) throw error;
-      else if (error.name === "AbortError") throw error;
+      // @todo Uncomment if AbortSignal is implemented.
+      //else if (error.name === "AbortError") throw error;
 
       throw new DrupalkitError(error.message, 500, {
         request: requestOptions,

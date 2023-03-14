@@ -2,7 +2,7 @@ import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
 import { DrupalkitError } from "@drupalkit/error";
 
 import { Drupalkit } from "../src";
-import { mockResponse } from "../test-utils";
+import { mockNetworkError, mockResponse } from "../test-utils";
 import DemoEndpointResponse from "./fixtures/demo-endpoint.json";
 
 enableFetchMocks();
@@ -38,6 +38,82 @@ describe("request", () => {
     expect(response.url).toContain(BASE_URL);
     expect(response.data).toEqual(DemoEndpointResponse);
     expect(response.headers).toHaveProperty("content-type");
+  });
+
+  it("should request with payload", async () => {
+    const drupalkit = new Drupalkit({
+      baseUrl: BASE_URL,
+    });
+
+    mockResponse(fetchMock, drupalkit, {
+      url: "/demo-endpoint",
+    });
+
+    const headers = {
+      "X-Custom": "value",
+    };
+    const body = {
+      hello: "world",
+    };
+
+    const result = await drupalkit.request("/demo-endpoint", {
+      method: "POST",
+      headers,
+      body,
+    });
+
+    expect(result.ok).toBeTruthy();
+
+    // @ts-ignore
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
+  });
+
+  it("should add response data to custom response", async () => {
+    const drupalkit = new Drupalkit({
+      baseUrl: BASE_URL,
+    });
+
+    const headers = {
+      "x-custom": "value",
+    };
+
+    mockResponse(fetchMock, drupalkit, {
+      url: "/demo-endpoint",
+      headers,
+    });
+
+    const result = await drupalkit.request("/demo-endpoint", {
+      method: "GET",
+    });
+
+    expect(result.ok).toBeTruthy();
+    if (result.ok) {
+      expect(result.val.headers).toMatchObject(headers);
+    }
+  });
+
+  it("should not add response body for 204 and 205 response", async () => {
+    const drupalkit = new Drupalkit({
+      baseUrl: BASE_URL,
+    });
+
+    mockResponse(fetchMock, drupalkit, {
+      url: "/demo-endpoint",
+      status: 204,
+    });
+
+    const result = await drupalkit.request("/demo-endpoint", {
+      method: "GET",
+    });
+
+    expect(result.ok).toBeTruthy();
+    if (result.ok) {
+      expect(result.val.data).toBeUndefined();
+    }
   });
 
   it("should return drupalkit errors", async () => {
@@ -190,5 +266,26 @@ describe("request", () => {
         authorization: authHeaderValue,
       },
     });
+  });
+
+  /**
+   * Handle network errors.
+   */
+  it("should handle network errors", async () => {
+    const drupalkit = new Drupalkit({
+      baseUrl: BASE_URL,
+    });
+
+    mockNetworkError(fetchMock);
+
+    const result = await drupalkit.request("/demo-endpoint", {
+      method: "GET",
+    });
+
+    expect(result.err).toBeTruthy();
+    if (result.err) {
+      expect(result.val.message).toBe("Network Error");
+      expect(result.val.response).toBeUndefined();
+    }
   });
 });
