@@ -55,7 +55,7 @@ export type DrupalkitPlugin = (
 
 export type Hooks = {
   request: {
-    Options: any;
+    Options: DrupalkitTypes.RequestRequestOptions;
     Result: DrupalkitTypes.DrupalkitResponse<any>;
     Error: DrupalkitError;
   };

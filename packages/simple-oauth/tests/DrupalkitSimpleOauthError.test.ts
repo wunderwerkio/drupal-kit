@@ -14,7 +14,7 @@ describe("DrupalkitSimpleOauthError", () => {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     baseUrl: "https://example.com",
-    url: "/endpoint"
+    url: "/endpoint",
   };
 
   it("should instanciate from DrupalkitError", () => {

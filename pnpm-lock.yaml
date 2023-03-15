@@ -160,9 +160,14 @@ importers:
       '@drupal-kit/eslint-config': workspace:0.0.0-development
       '@drupal-kit/types': workspace:0.0.0-development
       '@drupal-kit/utils': workspace:0.0.0-development
+      '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
+      esbuild: ^0.17.11
       jest: ^29.5.0
       jest-fetch-mock: ^3.0.3
+      rollup: ^3.19.1
+      rollup-plugin-dts: ^5.2.0
+      rollup-plugin-esbuild: ^5.0.0
       ts-jest: ^29.0.5
       ts-results: ^3.3.0
       tslib: ^2.5.0
@@ -176,10 +181,56 @@ importers:
       '@drupal-kit/config-typescript': link:../config/typescript
       '@drupal-kit/eslint-config': link:../config/eslint
       '@drupal-kit/types': link:../types
+      '@rollup/plugin-typescript': 11.0.0_6xpx4ownnv75244cfyuvoru6ci
       '@types/jest': 29.4.1
+      esbuild: 0.17.11
       jest: 29.5.0
       jest-fetch-mock: 3.0.3
-      ts-jest: 29.0.5_doipufordlnvh5g4adbwayvyvy
+      rollup: 3.19.1
+      rollup-plugin-dts: 5.2.0_h4kaxwm6ctjivrsm4cpxaz7nqu
+      rollup-plugin-esbuild: 5.0.0_caszwlkzzxo5hzxqu45fmzwfye
+      ts-jest: 29.0.5_ivkjeorb4e2rsgyad75gkex2q4
+      tslib: 2.5.0
+      typescript: 4.9.5
+
+  packages/simple-oauth-auth-code:
+    specifiers:
+      '@drupal-kit/config-typescript': workspace:0.0.0-development
+      '@drupal-kit/core': workspace:0.0.0-development
+      '@drupal-kit/error': workspace:0.0.0-development
+      '@drupal-kit/eslint-config': workspace:0.0.0-development
+      '@drupal-kit/types': workspace:0.0.0-development
+      '@drupal-kit/utils': workspace:0.0.0-development
+      '@rollup/plugin-typescript': ^11.0.0
+      '@types/jest': ^29.4.1
+      esbuild: ^0.17.11
+      jest: ^29.5.0
+      jest-fetch-mock: ^3.0.3
+      rollup: ^3.19.1
+      rollup-plugin-dts: ^5.2.0
+      rollup-plugin-esbuild: ^5.0.0
+      ts-jest: ^29.0.5
+      ts-results: ^3.3.0
+      tslib: ^2.5.0
+      typescript: 4.9.5
+    dependencies:
+      '@drupal-kit/core': link:../core
+      '@drupal-kit/error': link:../error
+      '@drupal-kit/utils': link:../utils
+      ts-results: 3.3.0
+    devDependencies:
+      '@drupal-kit/config-typescript': link:../config/typescript
+      '@drupal-kit/eslint-config': link:../config/eslint
+      '@drupal-kit/types': link:../types
+      '@rollup/plugin-typescript': 11.0.0_6xpx4ownnv75244cfyuvoru6ci
+      '@types/jest': 29.4.1
+      esbuild: 0.17.11
+      jest: 29.5.0
+      jest-fetch-mock: 3.0.3
+      rollup: 3.19.1
+      rollup-plugin-dts: 5.2.0_h4kaxwm6ctjivrsm4cpxaz7nqu
+      rollup-plugin-esbuild: 5.0.0_caszwlkzzxo5hzxqu45fmzwfye
+      ts-jest: 29.0.5_ivkjeorb4e2rsgyad75gkex2q4
       tslib: 2.5.0
       typescript: 4.9.5
 
@@ -206,6 +257,47 @@ importers:
     devDependencies:
       '@drupal-kit/config-typescript': link:../config/typescript
       '@drupal-kit/eslint-config': link:../config/eslint
+      typescript: 4.9.5
+
+  packages/verification:
+    specifiers:
+      '@drupal-kit/config-typescript': workspace:0.0.0-development
+      '@drupal-kit/core': workspace:0.0.0-development
+      '@drupal-kit/error': workspace:0.0.0-development
+      '@drupal-kit/eslint-config': workspace:0.0.0-development
+      '@drupal-kit/types': workspace:0.0.0-development
+      '@drupal-kit/utils': workspace:0.0.0-development
+      '@rollup/plugin-typescript': ^11.0.0
+      '@types/jest': ^29.4.1
+      esbuild: ^0.17.11
+      jest: ^29.5.0
+      jest-fetch-mock: ^3.0.3
+      rollup: ^3.19.1
+      rollup-plugin-dts: ^5.2.0
+      rollup-plugin-esbuild: ^5.0.0
+      ts-jest: ^29.0.5
+      ts-results: ^3.3.0
+      tslib: ^2.5.0
+      typescript: 4.9.5
+    dependencies:
+      '@drupal-kit/core': link:../core
+      '@drupal-kit/error': link:../error
+      '@drupal-kit/utils': link:../utils
+      ts-results: 3.3.0
+    devDependencies:
+      '@drupal-kit/config-typescript': link:../config/typescript
+      '@drupal-kit/eslint-config': link:../config/eslint
+      '@drupal-kit/types': link:../types
+      '@rollup/plugin-typescript': 11.0.0_6xpx4ownnv75244cfyuvoru6ci
+      '@types/jest': 29.4.1
+      esbuild: 0.17.11
+      jest: 29.5.0
+      jest-fetch-mock: 3.0.3
+      rollup: 3.19.1
+      rollup-plugin-dts: 5.2.0_h4kaxwm6ctjivrsm4cpxaz7nqu
+      rollup-plugin-esbuild: 5.0.0_caszwlkzzxo5hzxqu45fmzwfye
+      ts-jest: 29.0.5_ivkjeorb4e2rsgyad75gkex2q4
+      tslib: 2.5.0
       typescript: 4.9.5
 
 packages:
@@ -4103,39 +4195,6 @@ packages:
 
   /tr46/0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
-    dev: true
-
-  /ts-jest/29.0.5_doipufordlnvh5g4adbwayvyvy:
-    resolution: {integrity: sha512-PL3UciSgIpQ7f6XjVOmbi96vmDHUqAyqDr8YxzopDqX3kfgYtX1cuNeBjP+L9sFXi6nzsGGA6R3fP3DDDJyrxA==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    hasBin: true
-    peerDependencies:
-      '@babel/core': '>=7.0.0-beta.0 <8'
-      '@jest/types': ^29.0.0
-      babel-jest: ^29.0.0
-      esbuild: '*'
-      jest: ^29.0.0
-      typescript: '>=4.3'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@jest/types':
-        optional: true
-      babel-jest:
-        optional: true
-      esbuild:
-        optional: true
-    dependencies:
-      bs-logger: 0.2.6
-      fast-json-stable-stringify: 2.1.0
-      jest: 29.5.0
-      jest-util: 29.5.0
-      json5: 2.2.3
-      lodash.memoize: 4.1.2
-      make-error: 1.3.6
-      semver: 7.3.8
-      typescript: 4.9.5
-      yargs-parser: 21.1.1
     dev: true
 
   /ts-jest/29.0.5_ivkjeorb4e2rsgyad75gkex2q4:

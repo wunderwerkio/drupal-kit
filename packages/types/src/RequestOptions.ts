@@ -40,5 +40,6 @@ export type RequestOptions = {
 export type RequestRequestOptions = RequestOptions & {
   url: string;
   baseUrl: string;
+  headers: RequestHeaders;
   log?: Log;
 };

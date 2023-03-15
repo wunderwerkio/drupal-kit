@@ -1,5 +1,5 @@
 {
-  "name": "@drupal-kit/simple-oauth",
+  "name": "@drupal-kit/simple-oauth-auth-code",
   "version": "0.0.0-development",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
