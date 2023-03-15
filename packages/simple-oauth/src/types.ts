@@ -1,3 +1,28 @@
+/**
+ * Augment this interface if you want to implement your
+ * own OAuth grant types.
+ */
+export interface SimpleOauthGrantTypes {
+  authorization_code: SimpleOauthAuthCodeGrant;
+  client_credentials: SimpleOauthClientCredentialsGrant;
+  refresh_token: SimpleOauthRefreshTokenGrant;
+  password: SimpleOauthPasswordGrant;
+}
+
+/**
+ * Augment this interface to suit your needs.
+ */
+export interface SimpleOauthUserInfo {
+  sub: string;
+  name: string;
+  preferred_username: string;
+  email: string;
+  email_verified: boolean;
+  locale: string;
+  zoneinfo: string | null;
+  profile: string;
+}
+
 export interface SimpleOauthTokenResponse {
   token_type: "Bearer";
   expires_in: number;
@@ -34,17 +59,6 @@ export interface SimpleOauthPasswordGrant extends SimpleOauthGrant {
   username: string;
   password: string;
   scope?: string;
-}
-
-/**
- * Augment this interface if you want to implement your
- * own OAuth grant types.
- */
-export interface SimpleOauthGrantTypes {
-  authorization_code: SimpleOauthAuthCodeGrant;
-  client_credentials: SimpleOauthClientCredentialsGrant;
-  refresh_token: SimpleOauthRefreshTokenGrant;
-  password: SimpleOauthPasswordGrant;
 }
 
 export type SimpleOauthError =

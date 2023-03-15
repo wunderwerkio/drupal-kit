@@ -5,6 +5,7 @@ import { mockNetworkError, mockResponse } from "@drupal-kit/core/test-utils";
 import { DrupalkitSimpleOauth, DrupalkitSimpleOauthError } from "../src/index";
 import ErrorResponse from "./fixtures/error_response.json";
 import TokenResponse from "./fixtures/token_response.json";
+import UserInfoResponse from "./fixtures/userinfo_response.json";
 
 enableFetchMocks();
 
@@ -154,5 +155,56 @@ describe("DrupalkitSimpleOauth", () => {
 
     expect(result.err).toBeTruthy();
     expect(result.val).not.toBeInstanceOf(DrupalkitSimpleOauthError);
+  });
+
+  it("should request user info", async () => {
+    const drupalkit = createDrupalkit();
+
+    mockResponse(fetchMock, drupalkit, {
+      url: "/oauth/userinfo",
+      status: 200,
+      payloadFixture: UserInfoResponse,
+    });
+
+    const result = await drupalkit.simpleOauth.getUserInfo();
+
+    expect(result.ok).toBeTruthy();
+
+    if (result.ok) {
+      expect(result.val).toMatchSnapshot("userinfo-response");
+    }
+  });
+
+  it("should handle errors when requesting user info", async () => {
+    const drupalkit = createDrupalkit();
+
+    mockResponse(fetchMock, drupalkit, {
+      url: "/oauth/userinfo",
+      status: 400,
+      payloadFixture: ErrorResponse,
+    });
+
+    const result = await drupalkit.simpleOauth.getUserInfo();
+
+    expect(result.err).toBeTruthy();
+  });
+
+  it("should request user info with explicit endpoint", async () => {
+    const endpoint = "/custom/userinfo";
+
+    const drupalkit = createDrupalkit({
+      baseUrl: BASE_URL,
+      oauthUserInfoEndpoint: endpoint,
+    });
+
+    mockResponse(fetchMock, drupalkit, {
+      url: endpoint,
+      status: 200,
+      payloadFixture: UserInfoResponse,
+    });
+
+    const result = await drupalkit.simpleOauth.getUserInfo();
+
+    expect(result.ok).toBeTruthy();
   });
 });

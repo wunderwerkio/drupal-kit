@@ -10,3 +10,17 @@ exports[`DrupalkitSimpleOauth should request token with client credentials grant
   "token_type": "Bearer",
 }
 `;
+
+exports[`DrupalkitSimpleOauth should request user info: userinfo-response 1`] = `
+{
+  "email": "Patience_Larkin75@example.org",
+  "email_verified": true,
+  "locale": "de",
+  "name": "Marcelo.Ziemann61",
+  "preferred_username": "Marcelo.Ziemann61",
+  "profile": "https://my-drupal.com/users/marceloziemann61",
+  "sub": "45",
+  "updated_at": "1678809645",
+  "zoneinfo": null,
+}
+`;
