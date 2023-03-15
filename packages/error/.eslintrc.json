@@ -1,5 +1,5 @@
 {
-  "extends": ["@drupalkit/eslint-config"],
+  "extends": ["@drupal-kit/eslint-config"],
   "rules": {
     "@typescript-eslint/ban-ts-comment": "off"
   }

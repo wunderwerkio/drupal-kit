@@ -1,3 +1,3 @@
 {
-  "extends": ["@drupalkit/eslint-config"]
+  "extends": ["@drupal-kit/eslint-config"]
 }
