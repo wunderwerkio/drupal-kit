@@ -2,6 +2,7 @@ import { Ok } from "ts-results";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
 import { SimpleOauthGrantTypes, SimpleOauthTokenResponse } from "./types";
+import { DrupalkitSimpleOauthError } from "./DrupalkitSimpleOauthError";
 
 declare module "@drupal-kit/core" {
   interface DrupalkitOptions {
@@ -22,6 +23,19 @@ export const DrupalkitSimpleOauth = (
   drupalkit: Drupalkit,
   drupalkitOptions: DrupalkitOptions,
 ) => {
+  const oauthTokenEndpoint = drupalkitOptions.oauthTokenEndpoint ?? "/oauth/token";
+
+  /**
+   * Create DrupalkitJsonApiError for JSON:API failed requests.
+   */
+  drupalkit.hook.error("request", (error) => {
+    if (error.request.url.includes(oauthTokenEndpoint)) {
+      throw DrupalkitSimpleOauthError.fromDrupalkitError(error);
+    }
+
+    throw error;
+  });
+
   /**
    * Extend the Drupalkit instance.
    */
@@ -31,8 +45,7 @@ export const DrupalkitSimpleOauth = (
         GrantType extends keyof SimpleOauthGrantTypes,
         Grant extends SimpleOauthGrantTypes[GrantType],
       >(grantType: GrantType, grant: Grant) {
-        const path = drupalkitOptions.oauthTokenEndpoint ?? "/oauth/token";
-        const url = drupalkit.buildUrl(path);
+        const url = drupalkit.buildUrl(oauthTokenEndpoint);
 
         const body = new URLSearchParams();
         body.append("grant_type", grantType);

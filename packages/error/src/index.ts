@@ -21,7 +21,7 @@ export class DrupalkitError extends Error {
   /**
    * Request options that lead to the error.
    */
-  readonly request: DrupalkitTypes.RequestOptions;
+  readonly request: DrupalkitTypes.RequestRequestOptions;
 
   /**
    * Response object if a response was received.

@@ -2,7 +2,7 @@ import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 import { mockNetworkError, mockResponse } from "@drupal-kit/core/test-utils";
 
-import { DrupalkitSimpleOauth } from "../src/index";
+import { DrupalkitSimpleOauth, DrupalkitSimpleOauthError } from "../src/index";
 import ErrorResponse from "./fixtures/error_response.json";
 import TokenResponse from "./fixtures/token_response.json";
 
@@ -118,6 +118,7 @@ describe("DrupalkitSimpleOauth", () => {
     expect(result.err).toBeTruthy();
 
     if (result.err) {
+      expect(result.val).toBeInstanceOf(DrupalkitSimpleOauthError);
       expect(result.val.statusCode).toEqual(400);
     }
   });
@@ -136,5 +137,22 @@ describe("DrupalkitSimpleOauth", () => {
     );
 
     expect(result.err).toBeTruthy();
+    expect(result.val).not.toBeInstanceOf(DrupalkitSimpleOauthError);
+  });
+
+  it("should not produce DrupalkitSimpleOauthErrors when not requesting token", async () => {
+    const drupalkit = createDrupalkit();
+
+    mockResponse(fetchMock, drupalkit, {
+      url: "/not/oauth/related",
+      status: 400,
+    });
+
+    const result = await drupalkit.request("/not/oauth/related", {
+      method: "POST",
+    });
+
+    expect(result.err).toBeTruthy();
+    expect(result.val).not.toBeInstanceOf(DrupalkitSimpleOauthError);
   });
 });

@@ -9,6 +9,8 @@ describe("DrupalkitJsonApiError", () => {
     headers: {
       "Content-Type": "application/vnd.api+json",
     },
+    url: "https://example.com",
+    baseUrl: "https://example.com",
   };
 
   it("should instanciate from DrupalkitError", () => {
