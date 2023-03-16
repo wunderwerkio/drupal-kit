@@ -1,13 +1,17 @@
+name: Lint & Test
+
 on:
   - push
   - pull_request
 
-jobs:
-  cache-and-install:
-    runs-on: ubuntu-latest
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+jobs:
+  lint-and-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repo
         uses: actions/checkout@v3
 
       - name: Install Node.js
@@ -38,10 +42,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          echo '//npm.wunderwerk.dev/:_authToken=${NPM_TOKEN}' > ~/.npmrc
           pnpm install
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Lint
         run: pnpm lint
@@ -60,5 +61,10 @@ jobs:
 
       - name: Test
         run: pnpm test
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+
+      - name: Check format
+        run: pnpm format:check
         env:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
