@@ -10,6 +10,7 @@
   "license": "ISC",
   "private": true,
   "devDependencies": {
+    "@changesets/cli": "^2.26.0",
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
     "@drupal-kit/config-prettier": "workspace:0.0.0-development",
