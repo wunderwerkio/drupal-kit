@@ -6,7 +6,6 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@drupal-kit/core": "workspace:0.1.0",
-    "@drupal-kit/utils": "workspace:0.1.0",
     "ts-results": "^3.3.0"
   },
   "devDependencies": {

@@ -1,6 +1,3 @@
-import { Collection, HookCollection } from "before-after-hook";
-import qs from "qs";
-import { Err, Ok } from "ts-results";
 import {
   DrupalkitResponse,
   Fetch,
@@ -9,7 +6,9 @@ import {
   RequestRequestOptions,
   Url,
 } from "@drupal-kit/types";
-import { trimSlashesFromSegment } from "@drupal-kit/utils";
+import { Collection, HookCollection } from "before-after-hook";
+import qs from "qs";
+import { Err, Ok } from "ts-results";
 
 import { DrupalkitError } from "./DrupalkitError";
 import fetchWrapper from "./fetch-wrapper";
@@ -22,6 +21,7 @@ import {
   ReturnTypeOf,
   UnionToIntersection,
 } from "./types";
+import { trimSlashesFromSegment } from "./utils";
 
 /**
  * Drupalkit base calss.
@@ -82,8 +82,8 @@ export class Drupalkit {
     /* eslint-disable @typescript-eslint/no-empty-function */
     this.log = Object.assign(
       {
-        debug: () => {},
-        info: () => {},
+        debug: () => { },
+        info: () => { },
         warn: console.warn.bind(console),
         error: console.error.bind(console),
       },
