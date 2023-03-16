@@ -1,7 +1,5 @@
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
-import "@drupal-kit/error";
-
 declare module "@drupal-kit/core" {
   interface DrupalkitOptions {
     consumerHeaderName?: string;

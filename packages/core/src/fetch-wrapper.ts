@@ -1,8 +1,8 @@
 import { isPlainObject } from "is-plain-object";
 import nodeFetch, { HeadersInit, Response } from "node-fetch";
-import { DrupalkitError } from "@drupal-kit/error";
 import { Fetch, RequestRequestOptions } from "@drupal-kit/types";
 
+import { DrupalkitError } from "./DrupalkitError";
 import getBuffer from "./get-buffer-response";
 
 /**

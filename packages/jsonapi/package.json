@@ -6,7 +6,6 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@drupal-kit/core": "workspace:0.0.0",
-    "@drupal-kit/error": "workspace:0.0.0",
     "@drupal-kit/utils": "workspace:0.0.0",
     "drupal-jsonapi-params": "^2.2.0",
     "ts-json-api": "^1.2.0",

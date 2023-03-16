@@ -1,7 +1,6 @@
 import { Ok } from "ts-results";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
-import "@drupal-kit/error";
 import { RegisterPayload, RegisterResponse } from "./types";
 
 declare module "@drupal-kit/core" {

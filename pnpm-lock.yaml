@@ -58,7 +58,6 @@ importers:
     specifiers:
       '@drupal-kit/config-typescript': workspace:0.0.0
       '@drupal-kit/core': workspace:0.0.0
-      '@drupal-kit/error': workspace:0.0.0
       '@drupal-kit/eslint-config': workspace:0.0.0
       '@drupal-kit/types': workspace:0.0.0
       '@drupal-kit/utils': workspace:0.0.0
@@ -76,7 +75,6 @@ importers:
       typescript: 4.9.5
     dependencies:
       '@drupal-kit/core': link:../core
-      '@drupal-kit/error': link:../error
       '@drupal-kit/utils': link:../utils
       ts-results: 3.3.0
     devDependencies:
@@ -98,7 +96,6 @@ importers:
   packages/core:
     specifiers:
       '@drupal-kit/config-typescript': workspace:0.0.0
-      '@drupal-kit/error': workspace:0.0.0
       '@drupal-kit/eslint-config': workspace:0.0.0
       '@drupal-kit/types': workspace:0.0.0
       '@drupal-kit/utils': workspace:0.0.0
@@ -120,7 +117,6 @@ importers:
       tslib: ^2.5.0
       typescript: 4.9.5
     dependencies:
-      '@drupal-kit/error': link:../error
       '@drupal-kit/utils': link:../utils
       before-after-hook: 2.2.3
       is-plain-object: 5.0.0
@@ -144,23 +140,10 @@ importers:
       tslib: 2.5.0
       typescript: 4.9.5
 
-  packages/error:
-    specifiers:
-      '@drupal-kit/config-typescript': workspace:0.0.0
-      '@drupal-kit/eslint-config': workspace:0.0.0
-      '@drupal-kit/types': workspace:0.0.0
-      typescript: 4.9.5
-    devDependencies:
-      '@drupal-kit/config-typescript': link:../config/typescript
-      '@drupal-kit/eslint-config': link:../config/eslint
-      '@drupal-kit/types': link:../types
-      typescript: 4.9.5
-
   packages/jsonapi:
     specifiers:
       '@drupal-kit/config-typescript': workspace:0.0.0
       '@drupal-kit/core': workspace:0.0.0
-      '@drupal-kit/error': workspace:0.0.0
       '@drupal-kit/eslint-config': workspace:0.0.0
       '@drupal-kit/types': workspace:0.0.0
       '@drupal-kit/utils': workspace:0.0.0
@@ -180,7 +163,6 @@ importers:
       typescript: 4.9.5
     dependencies:
       '@drupal-kit/core': link:../core
-      '@drupal-kit/error': link:../error
       '@drupal-kit/utils': link:../utils
       drupal-jsonapi-params: 2.2.0
       ts-json-api: 1.2.0
@@ -205,7 +187,6 @@ importers:
     specifiers:
       '@drupal-kit/config-typescript': workspace:0.0.0
       '@drupal-kit/core': workspace:0.0.0
-      '@drupal-kit/error': workspace:0.0.0
       '@drupal-kit/eslint-config': workspace:0.0.0
       '@drupal-kit/types': workspace:0.0.0
       '@drupal-kit/utils': workspace:0.0.0
@@ -223,7 +204,6 @@ importers:
       typescript: 4.9.5
     dependencies:
       '@drupal-kit/core': link:../core
-      '@drupal-kit/error': link:../error
       '@drupal-kit/utils': link:../utils
       ts-results: 3.3.0
     devDependencies:
@@ -246,7 +226,6 @@ importers:
     specifiers:
       '@drupal-kit/config-typescript': workspace:0.0.0
       '@drupal-kit/core': workspace:0.0.0
-      '@drupal-kit/error': workspace:0.0.0
       '@drupal-kit/eslint-config': workspace:0.0.0
       '@drupal-kit/types': workspace:0.0.0
       '@drupal-kit/utils': workspace:0.0.0
@@ -264,7 +243,6 @@ importers:
       typescript: 4.9.5
     dependencies:
       '@drupal-kit/core': link:../core
-      '@drupal-kit/error': link:../error
       '@drupal-kit/utils': link:../utils
       ts-results: 3.3.0
     devDependencies:
@@ -297,7 +275,6 @@ importers:
     specifiers:
       '@drupal-kit/config-typescript': workspace:0.0.0
       '@drupal-kit/core': workspace:0.0.0
-      '@drupal-kit/error': workspace:0.0.0
       '@drupal-kit/eslint-config': workspace:0.0.0
       '@drupal-kit/types': workspace:0.0.0
       '@drupal-kit/utils': workspace:0.0.0
@@ -315,7 +292,6 @@ importers:
       typescript: 4.9.5
     dependencies:
       '@drupal-kit/core': link:../core
-      '@drupal-kit/error': link:../error
       '@drupal-kit/utils': link:../utils
       ts-results: 3.3.0
     devDependencies:
@@ -353,7 +329,6 @@ importers:
     specifiers:
       '@drupal-kit/config-typescript': workspace:0.0.0
       '@drupal-kit/core': workspace:0.0.0
-      '@drupal-kit/error': workspace:0.0.0
       '@drupal-kit/eslint-config': workspace:0.0.0
       '@drupal-kit/types': workspace:0.0.0
       '@drupal-kit/utils': workspace:0.0.0
@@ -371,7 +346,6 @@ importers:
       typescript: 4.9.5
     dependencies:
       '@drupal-kit/core': link:../core
-      '@drupal-kit/error': link:../error
       '@drupal-kit/utils': link:../utils
       ts-results: 3.3.0
     devDependencies:

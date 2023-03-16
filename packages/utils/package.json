@@ -1,9 +1,9 @@
 {
   "name": "@drupal-kit/utils",
   "version": "0.0.0",
-  "private": true,
   "main": "./src/index.ts",
   "types": "./src/index.ts",
+  "private": true,
   "dependencies": {
     "@drupal-kit/types": "workspace:0.0.0",
     "is-plain-object": "^5.0.0"

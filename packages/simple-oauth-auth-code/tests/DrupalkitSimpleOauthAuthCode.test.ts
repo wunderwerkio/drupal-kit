@@ -1,7 +1,6 @@
 import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 import { mockNetworkError, mockResponse } from "@drupal-kit/core/test-utils";
-import { DrupalkitError } from "@drupal-kit/error";
 
 import { DrupalkitSimpleOauthAuthCode } from "../src/index";
 import AuthCodeResponse from "./fixtures/auth_code_response.json";

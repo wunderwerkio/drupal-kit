@@ -1,4 +1,4 @@
-import { DrupalkitError } from "@drupal-kit/error";
+import { DrupalkitError } from "@drupal-kit/core";
 
 import { DrupalkitJsonApiError } from "../src";
 import JsonApiErrorResponse from "./fixtures/jsonapi_multiple_errors.json";

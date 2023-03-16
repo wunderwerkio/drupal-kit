@@ -1,4 +1,4 @@
-import { DrupalkitError, DrupalkitErrorOptions } from "@drupal-kit/error";
+import { DrupalkitError, DrupalkitErrorOptions } from "@drupal-kit/core";
 
 import { SimpleOauthError, SimpleOauthInvalidRequest } from "./types";
 
