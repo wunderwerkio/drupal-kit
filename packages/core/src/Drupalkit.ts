@@ -1,3 +1,6 @@
+import { Collection, HookCollection } from "before-after-hook";
+import qs from "qs";
+import { Err, Ok } from "ts-results";
 import {
   DrupalkitResponse,
   Fetch,
@@ -6,9 +9,6 @@ import {
   RequestRequestOptions,
   Url,
 } from "@drupal-kit/types";
-import { Collection, HookCollection } from "before-after-hook";
-import qs from "qs";
-import { Err, Ok } from "ts-results";
 
 import { DrupalkitError } from "./DrupalkitError";
 import fetchWrapper from "./fetch-wrapper";
@@ -82,8 +82,8 @@ export class Drupalkit {
     /* eslint-disable @typescript-eslint/no-empty-function */
     this.log = Object.assign(
       {
-        debug: () => { },
-        info: () => { },
+        debug: () => {},
+        info: () => {},
         warn: console.warn.bind(console),
         error: console.error.bind(console),
       },
