@@ -10,7 +10,10 @@
   "license": "ISC",
   "private": true,
   "devDependencies": {
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
     "@drupal-kit/config-prettier": "workspace:0.0.0-development",
+    "husky": "^8.0.3",
     "syncpack": "^9.8.4",
     "turbo": "^1.8.3"
   },
