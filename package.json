@@ -26,7 +26,8 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "publish-packages": "turbo run build lint test typecheck && changeset version && changeset publish"
   },
   "packageManager": "pnpm@7.26.3"
 }
