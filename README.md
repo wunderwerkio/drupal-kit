@@ -40,6 +40,14 @@ This plugin integrates with the `simple_oauth_auth_code` drupal module.
 
 - [x] `/simple-oauth/auth-code` endpoint
 
+### Consumers
+
+This plugin integrates with the [`consumers`](https://www.drupal.org/project/consumers) drupal module.
+
+**Features:**
+
+- [x] Set `X-Consumer-ID` header
+
 ### Verification
 
 This plugin integrates with the `verification` drupal module.
