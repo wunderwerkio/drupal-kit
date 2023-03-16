@@ -1,12 +1,12 @@
 {
   "name": "@drupal-kit/error",
-  "version": "0.0.0-development",
+  "version": "0.0.0",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "devDependencies": {
-    "@drupal-kit/config-typescript": "workspace:0.0.0-development",
-    "@drupal-kit/eslint-config": "workspace:0.0.0-development",
-    "@drupal-kit/types": "workspace:0.0.0-development",
+    "@drupal-kit/config-typescript": "workspace:0.0.0",
+    "@drupal-kit/eslint-config": "workspace:0.0.0",
+    "@drupal-kit/types": "workspace:0.0.0",
     "typescript": "4.9.5"
   },
   "scripts": {

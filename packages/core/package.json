@@ -1,12 +1,12 @@
 {
   "name": "@drupal-kit/core",
-  "version": "0.0.0-development",
+  "version": "0.0.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@drupal-kit/error": "workspace:0.0.0-development",
-    "@drupal-kit/utils": "workspace:0.0.0-development",
+    "@drupal-kit/error": "workspace:0.0.0",
+    "@drupal-kit/utils": "workspace:0.0.0",
     "before-after-hook": "^2.2.3",
     "is-plain-object": "^5.0.0",
     "node-fetch": "^3.3.1",
@@ -14,9 +14,9 @@
     "ts-results": "^3.3.0"
   },
   "devDependencies": {
-    "@drupal-kit/config-typescript": "workspace:0.0.0-development",
-    "@drupal-kit/eslint-config": "workspace:0.0.0-development",
-    "@drupal-kit/types": "workspace:0.0.0-development",
+    "@drupal-kit/config-typescript": "workspace:0.0.0",
+    "@drupal-kit/eslint-config": "workspace:0.0.0",
+    "@drupal-kit/types": "workspace:0.0.0",
     "@rollup/plugin-typescript": "^11.0.0",
     "@types/jest": "^29.4.1",
     "@types/qs": "^6.9.7",
