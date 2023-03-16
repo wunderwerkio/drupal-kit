@@ -1,0 +1,36 @@
+{
+  "name": "@drupal-kit/consumers",
+  "version": "0.0.0-development",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@drupal-kit/core": "workspace:0.0.0-development",
+    "@drupal-kit/error": "workspace:0.0.0-development",
+    "@drupal-kit/utils": "workspace:0.0.0-development",
+    "ts-results": "^3.3.0"
+  },
+  "devDependencies": {
+    "@drupal-kit/config-typescript": "workspace:0.0.0-development",
+    "@drupal-kit/eslint-config": "workspace:0.0.0-development",
+    "@drupal-kit/types": "workspace:0.0.0-development",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/jest": "^29.4.1",
+    "esbuild": "^0.17.11",
+    "jest": "^29.5.0",
+    "jest-fetch-mock": "^3.0.3",
+    "rollup": "^3.19.1",
+    "rollup-plugin-dts": "^5.2.0",
+    "rollup-plugin-esbuild": "^5.0.0",
+    "ts-jest": "^29.0.5",
+    "tslib": "^2.5.0",
+    "typescript": "4.9.5"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "lint": "eslint --ext .ts,.tsx src --max-warnings 0",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  }
+}
