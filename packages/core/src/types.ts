@@ -1,9 +1,9 @@
 import { ParsedQs } from "qs";
-import { DrupalkitError } from "@drupal-kit/error";
 import * as DrupalkitTypes from "@drupal-kit/types";
 import { Fetch } from "@drupal-kit/types";
 
 import { Drupalkit } from ".";
+import { DrupalkitError } from "./DrupalkitError";
 
 export interface DrupalkitOptions {
   baseUrl: string;
@@ -64,4 +64,9 @@ export type Hooks = {
     Result: unknown;
     Error: unknown;
   };
+};
+
+export type RequestErrorOptions = {
+  response?: DrupalkitTypes.DrupalkitResponse<unknown>;
+  request: DrupalkitTypes.RequestRequestOptions;
 };

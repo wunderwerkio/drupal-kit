@@ -1,6 +1,6 @@
 import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
-import { mockNetworkError, mockResponse } from "@drupal-kit/core/test-utils";
+import { mockResponse } from "@drupal-kit/core/test-utils";
 
 import { DrupalkitVerification } from "../src/index";
 import { hashVerification, magicCodeVerification } from "../src/verification";

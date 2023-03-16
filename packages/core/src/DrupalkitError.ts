@@ -2,6 +2,8 @@ import * as DrupalkitTypes from "@drupal-kit/types";
 
 import { RequestErrorOptions } from "./types";
 
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 export type DrupalkitErrorOptions = RequestErrorOptions;
 
 /**

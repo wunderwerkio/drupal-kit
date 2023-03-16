@@ -1,7 +1,6 @@
 import { Collection, HookCollection } from "before-after-hook";
 import qs from "qs";
 import { Err, Ok } from "ts-results";
-import { DrupalkitError } from "@drupal-kit/error";
 import {
   DrupalkitResponse,
   Fetch,
@@ -12,6 +11,7 @@ import {
 } from "@drupal-kit/types";
 import { trimSlashesFromSegment } from "@drupal-kit/utils";
 
+import { DrupalkitError } from "./DrupalkitError";
 import fetchWrapper from "./fetch-wrapper";
 import {
   Constructor,

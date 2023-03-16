@@ -1,4 +1,4 @@
-import { DrupalkitError } from "@drupal-kit/error";
+import { DrupalkitError } from "@drupal-kit/core";
 import { DrupalkitResponse } from "@drupal-kit/types";
 
 import {
