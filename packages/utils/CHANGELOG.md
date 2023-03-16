@@ -1,5 +1,15 @@
 # @drupal-kit/utils
 
+## 0.1.0
+
+### Minor Changes
+
+- 3f81d28: Improve module structure
+
+### Patch Changes
+
+- @drupal-kit/types@0.1.0
+
 ## 0.0.0
 
 ### Minor Changes

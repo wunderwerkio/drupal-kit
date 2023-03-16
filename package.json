@@ -28,7 +28,7 @@
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
     "typecheck": "turbo run typecheck",
-    "version-packages": "turbo run build lint test typecheck && changeset version"
+    "version-packages": "turbo run build lint test typecheck && changeset version && pnpm install --lockfile-only"
   },
   "packageManager": "pnpm@7.26.3"
 }
