@@ -7,7 +7,7 @@ importers:
       '@changesets/cli': ^2.26.0
       '@commitlint/cli': ^17.4.4
       '@commitlint/config-conventional': ^17.4.4
-      '@drupal-kit/config-prettier': workspace:0.0.0-development
+      '@drupal-kit/config-prettier': workspace:*
       husky: ^8.0.3
       syncpack: ^9.8.4
       turbo: ^1.8.3
@@ -56,12 +56,12 @@ importers:
 
   packages/consumers:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.0.0-development
-      '@drupal-kit/core': workspace:0.0.0-development
-      '@drupal-kit/error': workspace:0.0.0-development
-      '@drupal-kit/eslint-config': workspace:0.0.0-development
-      '@drupal-kit/types': workspace:0.0.0-development
-      '@drupal-kit/utils': workspace:0.0.0-development
+      '@drupal-kit/config-typescript': workspace:0.0.0
+      '@drupal-kit/core': workspace:0.0.0
+      '@drupal-kit/error': workspace:0.0.0
+      '@drupal-kit/eslint-config': workspace:0.0.0
+      '@drupal-kit/types': workspace:0.0.0
+      '@drupal-kit/utils': workspace:0.0.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       esbuild: ^0.17.11
@@ -97,11 +97,11 @@ importers:
 
   packages/core:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.0.0-development
-      '@drupal-kit/error': workspace:0.0.0-development
-      '@drupal-kit/eslint-config': workspace:0.0.0-development
-      '@drupal-kit/types': workspace:0.0.0-development
-      '@drupal-kit/utils': workspace:0.0.0-development
+      '@drupal-kit/config-typescript': workspace:0.0.0
+      '@drupal-kit/error': workspace:0.0.0
+      '@drupal-kit/eslint-config': workspace:0.0.0
+      '@drupal-kit/types': workspace:0.0.0
+      '@drupal-kit/utils': workspace:0.0.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       '@types/qs': ^6.9.7
@@ -146,9 +146,9 @@ importers:
 
   packages/error:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.0.0-development
-      '@drupal-kit/eslint-config': workspace:0.0.0-development
-      '@drupal-kit/types': workspace:0.0.0-development
+      '@drupal-kit/config-typescript': workspace:0.0.0
+      '@drupal-kit/eslint-config': workspace:0.0.0
+      '@drupal-kit/types': workspace:0.0.0
       typescript: 4.9.5
     devDependencies:
       '@drupal-kit/config-typescript': link:../config/typescript
@@ -158,12 +158,12 @@ importers:
 
   packages/jsonapi:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.0.0-development
-      '@drupal-kit/core': workspace:0.0.0-development
-      '@drupal-kit/error': workspace:0.0.0-development
-      '@drupal-kit/eslint-config': workspace:0.0.0-development
-      '@drupal-kit/types': workspace:0.0.0-development
-      '@drupal-kit/utils': workspace:0.0.0-development
+      '@drupal-kit/config-typescript': workspace:0.0.0
+      '@drupal-kit/core': workspace:0.0.0
+      '@drupal-kit/error': workspace:0.0.0
+      '@drupal-kit/eslint-config': workspace:0.0.0
+      '@drupal-kit/types': workspace:0.0.0
+      '@drupal-kit/utils': workspace:0.0.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       drupal-jsonapi-params: ^2.2.0
@@ -203,12 +203,12 @@ importers:
 
   packages/simple-oauth:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.0.0-development
-      '@drupal-kit/core': workspace:0.0.0-development
-      '@drupal-kit/error': workspace:0.0.0-development
-      '@drupal-kit/eslint-config': workspace:0.0.0-development
-      '@drupal-kit/types': workspace:0.0.0-development
-      '@drupal-kit/utils': workspace:0.0.0-development
+      '@drupal-kit/config-typescript': workspace:0.0.0
+      '@drupal-kit/core': workspace:0.0.0
+      '@drupal-kit/error': workspace:0.0.0
+      '@drupal-kit/eslint-config': workspace:0.0.0
+      '@drupal-kit/types': workspace:0.0.0
+      '@drupal-kit/utils': workspace:0.0.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       esbuild: ^0.17.11
@@ -244,12 +244,12 @@ importers:
 
   packages/simple-oauth-auth-code:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.0.0-development
-      '@drupal-kit/core': workspace:0.0.0-development
-      '@drupal-kit/error': workspace:0.0.0-development
-      '@drupal-kit/eslint-config': workspace:0.0.0-development
-      '@drupal-kit/types': workspace:0.0.0-development
-      '@drupal-kit/utils': workspace:0.0.0-development
+      '@drupal-kit/config-typescript': workspace:0.0.0
+      '@drupal-kit/core': workspace:0.0.0
+      '@drupal-kit/error': workspace:0.0.0
+      '@drupal-kit/eslint-config': workspace:0.0.0
+      '@drupal-kit/types': workspace:0.0.0
+      '@drupal-kit/utils': workspace:0.0.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       esbuild: ^0.17.11
@@ -285,8 +285,8 @@ importers:
 
   packages/types:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.0.0-development
-      '@drupal-kit/eslint-config': workspace:0.0.0-development
+      '@drupal-kit/config-typescript': workspace:0.0.0
+      '@drupal-kit/eslint-config': workspace:0.0.0
       typescript: 4.9.5
     devDependencies:
       '@drupal-kit/config-typescript': link:../config/typescript
@@ -295,12 +295,12 @@ importers:
 
   packages/user-api:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.0.0-development
-      '@drupal-kit/core': workspace:0.0.0-development
-      '@drupal-kit/error': workspace:0.0.0-development
-      '@drupal-kit/eslint-config': workspace:0.0.0-development
-      '@drupal-kit/types': workspace:0.0.0-development
-      '@drupal-kit/utils': workspace:0.0.0-development
+      '@drupal-kit/config-typescript': workspace:0.0.0
+      '@drupal-kit/core': workspace:0.0.0
+      '@drupal-kit/error': workspace:0.0.0
+      '@drupal-kit/eslint-config': workspace:0.0.0
+      '@drupal-kit/types': workspace:0.0.0
+      '@drupal-kit/utils': workspace:0.0.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       esbuild: ^0.17.11
@@ -336,9 +336,9 @@ importers:
 
   packages/utils:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.0.0-development
-      '@drupal-kit/eslint-config': workspace:0.0.0-development
-      '@drupal-kit/types': workspace:0.0.0-development
+      '@drupal-kit/config-typescript': workspace:0.0.0
+      '@drupal-kit/eslint-config': workspace:0.0.0
+      '@drupal-kit/types': workspace:0.0.0
       is-plain-object: ^5.0.0
       typescript: 4.9.5
     dependencies:
@@ -351,12 +351,12 @@ importers:
 
   packages/verification:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.0.0-development
-      '@drupal-kit/core': workspace:0.0.0-development
-      '@drupal-kit/error': workspace:0.0.0-development
-      '@drupal-kit/eslint-config': workspace:0.0.0-development
-      '@drupal-kit/types': workspace:0.0.0-development
-      '@drupal-kit/utils': workspace:0.0.0-development
+      '@drupal-kit/config-typescript': workspace:0.0.0
+      '@drupal-kit/core': workspace:0.0.0
+      '@drupal-kit/error': workspace:0.0.0
+      '@drupal-kit/eslint-config': workspace:0.0.0
+      '@drupal-kit/types': workspace:0.0.0
+      '@drupal-kit/utils': workspace:0.0.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       esbuild: ^0.17.11

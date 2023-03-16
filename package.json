@@ -1,6 +1,6 @@
 {
   "name": "drupalkit",
-  "version": "0.0.0-development",
+  "version": "0.0.0",
   "author": "Christian Foidl <christian@wunderwerk.io> (https://www.wunderwerk.io)",
   "keywords": [
     "api",
@@ -13,7 +13,7 @@
     "@changesets/cli": "^2.26.0",
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
-    "@drupal-kit/config-prettier": "workspace:0.0.0-development",
+    "@drupal-kit/config-prettier": "workspace:*",
     "husky": "^8.0.3",
     "syncpack": "^9.8.4",
     "turbo": "^1.8.3"
