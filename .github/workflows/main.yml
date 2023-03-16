@@ -3,6 +3,7 @@ name: Lint & Test
 on:
   - push
   - pull_request
+  - pull_request_target
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
