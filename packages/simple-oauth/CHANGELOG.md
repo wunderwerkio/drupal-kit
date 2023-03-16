@@ -1,5 +1,16 @@
 # @drupal-kit/simple-oauth
 
+## 0.2.0
+
+### Minor Changes
+
+- 0ff2181: Removed utils module
+
+### Patch Changes
+
+- Updated dependencies [0ff2181]
+  - @drupal-kit/core@0.2.0
+
 ## 0.1.0
 
 ### Minor Changes
