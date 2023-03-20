@@ -56,10 +56,10 @@ importers:
 
   packages/consumers:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.2.0
-      '@drupal-kit/core': workspace:0.2.0
-      '@drupal-kit/eslint-config': workspace:0.2.0
-      '@drupal-kit/types': workspace:0.2.0
+      '@drupal-kit/config-typescript': workspace:0.3.0
+      '@drupal-kit/core': workspace:0.3.0
+      '@drupal-kit/eslint-config': workspace:0.3.0
+      '@drupal-kit/types': workspace:0.3.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       '@wunderwerk/ts-results': ^0.1.1
@@ -93,9 +93,9 @@ importers:
 
   packages/core:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.2.0
-      '@drupal-kit/eslint-config': workspace:0.2.0
-      '@drupal-kit/types': workspace:0.2.0
+      '@drupal-kit/config-typescript': workspace:0.3.0
+      '@drupal-kit/eslint-config': workspace:0.3.0
+      '@drupal-kit/types': workspace:0.3.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       '@types/node-fetch': ^2.6.2
@@ -140,10 +140,10 @@ importers:
 
   packages/jsonapi:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.2.0
-      '@drupal-kit/core': workspace:0.2.0
-      '@drupal-kit/eslint-config': workspace:0.2.0
-      '@drupal-kit/types': workspace:0.2.0
+      '@drupal-kit/config-typescript': workspace:0.3.0
+      '@drupal-kit/core': workspace:0.3.0
+      '@drupal-kit/eslint-config': workspace:0.3.0
+      '@drupal-kit/types': workspace:0.3.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       '@wunderwerk/ts-results': ^0.1.1
@@ -181,10 +181,10 @@ importers:
 
   packages/simple-oauth:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.2.0
-      '@drupal-kit/core': workspace:0.2.0
-      '@drupal-kit/eslint-config': workspace:0.2.0
-      '@drupal-kit/types': workspace:0.2.0
+      '@drupal-kit/config-typescript': workspace:0.3.0
+      '@drupal-kit/core': workspace:0.3.0
+      '@drupal-kit/eslint-config': workspace:0.3.0
+      '@drupal-kit/types': workspace:0.3.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       '@wunderwerk/ts-results': ^0.1.1
@@ -218,10 +218,10 @@ importers:
 
   packages/simple-oauth-auth-code:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.2.0
-      '@drupal-kit/core': workspace:0.2.0
-      '@drupal-kit/eslint-config': workspace:0.2.0
-      '@drupal-kit/types': workspace:0.2.0
+      '@drupal-kit/config-typescript': workspace:0.3.0
+      '@drupal-kit/core': workspace:0.3.0
+      '@drupal-kit/eslint-config': workspace:0.3.0
+      '@drupal-kit/types': workspace:0.3.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       '@wunderwerk/ts-results': ^0.1.1
@@ -255,8 +255,8 @@ importers:
 
   packages/types:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.2.0
-      '@drupal-kit/eslint-config': workspace:0.2.0
+      '@drupal-kit/config-typescript': workspace:0.3.0
+      '@drupal-kit/eslint-config': workspace:0.3.0
       typescript: 4.9.5
     devDependencies:
       '@drupal-kit/config-typescript': link:../config/typescript
@@ -265,10 +265,10 @@ importers:
 
   packages/user-api:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.2.0
-      '@drupal-kit/core': workspace:0.2.0
-      '@drupal-kit/eslint-config': workspace:0.2.0
-      '@drupal-kit/types': workspace:0.2.0
+      '@drupal-kit/config-typescript': workspace:0.3.0
+      '@drupal-kit/core': workspace:0.3.0
+      '@drupal-kit/eslint-config': workspace:0.3.0
+      '@drupal-kit/types': workspace:0.3.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       '@wunderwerk/ts-results': ^0.1.1
@@ -302,10 +302,10 @@ importers:
 
   packages/verification:
     specifiers:
-      '@drupal-kit/config-typescript': workspace:0.2.0
-      '@drupal-kit/core': workspace:0.2.0
-      '@drupal-kit/eslint-config': workspace:0.2.0
-      '@drupal-kit/types': workspace:0.2.0
+      '@drupal-kit/config-typescript': workspace:0.3.0
+      '@drupal-kit/core': workspace:0.3.0
+      '@drupal-kit/eslint-config': workspace:0.3.0
+      '@drupal-kit/types': workspace:0.3.0
       '@rollup/plugin-typescript': ^11.0.0
       '@types/jest': ^29.4.1
       '@wunderwerk/ts-results': ^0.1.1

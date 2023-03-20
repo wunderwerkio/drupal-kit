@@ -1,5 +1,11 @@
 # @drupal-kit/core
 
+## 0.3.0
+
+### Minor Changes
+
+- 784f38c: Downgrade node-fetch to ^2 to support commonjs
+
 ## 0.2.0
 
 ### Minor Changes
