@@ -1,6 +1,3 @@
-import { Collection, HookCollection } from "before-after-hook";
-import qs from "qs";
-import { Err, Ok } from "ts-results";
 import {
   DrupalkitResponse,
   Fetch,
@@ -9,6 +6,9 @@ import {
   RequestRequestOptions,
   Url,
 } from "@drupal-kit/types";
+import { Collection, HookCollection } from "before-after-hook";
+import qs from "qs";
+import { Result } from "@wunderwerk/ts-results";
 
 import { DrupalkitError } from "./DrupalkitError";
 import fetchWrapper from "./fetch-wrapper";
@@ -35,12 +35,12 @@ export class Drupalkit {
   // assigned during constructor
   readonly fetch?: Fetch;
   readonly baseUrl: string;
-  readonly locale?: string;
   readonly availableLocales: string[] = [];
   readonly defaultLocale?: string;
   readonly agent = "drupalkit/0.0.0-development";
   readonly log: Log;
   readonly hook: HookCollection<Hooks>;
+  private locale?: string;
   private auth?: string;
 
   /**
@@ -82,8 +82,8 @@ export class Drupalkit {
     /* eslint-disable @typescript-eslint/no-empty-function */
     this.log = Object.assign(
       {
-        debug: () => {},
-        info: () => {},
+        debug: () => { },
+        info: () => { },
         warn: console.warn.bind(console),
         error: console.error.bind(console),
       },
@@ -125,12 +125,7 @@ export class Drupalkit {
       this.fetch = options.fetch;
     }
 
-    // apply plugins
-    // https://stackoverflow.com/a/16345172
-    const classConstructor = this.constructor as typeof Drupalkit;
-    classConstructor.plugins.forEach((plugin) => {
-      Object.assign(this, plugin(this, options));
-    });
+    this.applyPlugins(options);
   }
 
   /**
@@ -168,11 +163,11 @@ export class Drupalkit {
     };
 
     return this.hook("request", request, requestOptions)
-      .then((response) => Ok(response as DrupalkitResponse<R, number>))
+      .then((response) => Result.Ok(response as DrupalkitResponse<R, number>))
       .catch((error) => {
-        if (error instanceof DrupalkitError) return Err(error);
+        if (error instanceof DrupalkitError) return Result.Err(error);
 
-        return Err(
+        return Result.Err(
           new DrupalkitError(error.message, 500, {
             request: requestOptions,
           }),
@@ -187,6 +182,15 @@ export class Drupalkit {
    */
   public setAuth(auth: string) {
     this.auth = auth;
+  }
+
+  /**
+   * Set the locale.
+   *
+   * @param locale - The locale.
+   */
+  public setLocale(locale: string) {
+    this.locale = locale;
   }
 
   /**
@@ -236,5 +240,41 @@ export class Drupalkit {
     }
 
     return finalUrl;
+  }
+
+  /**
+   * Applies all plugins to the drupalkit instance.
+   *
+   * Plugin data will be merged up to two levels.
+   *
+   * @param options - The drupalkit options.
+   * @see https://stackoverflow.com/a/16345172
+   */
+  private applyPlugins(options: DrupalkitOptions) {
+    const classConstructor = this.constructor as typeof Drupalkit;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mergedPluginData: Record<string, any> = {};
+
+    classConstructor.plugins.forEach((plugin) => {
+      const pluginData = plugin(this, options);
+      if (!pluginData) {
+        return;
+      }
+
+      for (const [key, value] of Object.entries(pluginData)) {
+        if (!mergedPluginData[key]) {
+          mergedPluginData[key] = {};
+        }
+
+        if (typeof value === "object") {
+          Object.assign(mergedPluginData[key], value);
+        } else {
+          mergedPluginData[key] = value;
+        }
+      }
+    });
+
+    Object.assign(this, mergedPluginData);
   }
 }

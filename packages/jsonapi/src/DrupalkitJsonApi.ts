@@ -1,6 +1,11 @@
+import {
+  Drupalkit,
+  DrupalkitError,
+  DrupalkitOptions,
+  Query,
+} from "@drupal-kit/core";
 import { ResourceObject, Response } from "ts-json-api";
 import { Err, Ok } from "ts-results";
-import { Drupalkit, DrupalkitOptions, Query } from "@drupal-kit/core";
 
 import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError";
 import {
@@ -272,9 +277,9 @@ export const DrupalkitJsonApi = (
         Return extends Record<
           Operation,
           "readSingle" extends Operation
-            ? Awaited<ReturnType<typeof getResource>>
+            ? Err<DrupalkitError> | Ok<Response<Resource>>
             : "readMany" extends Operation
-            ? Awaited<ReturnType<typeof getResourceCollection>>
+            ? Err<DrupalkitError> | Ok<Response<Resource[]>>
             : "create" extends Operation
             ? Awaited<ReturnType<typeof createResource>>
             : "update" extends Operation
