@@ -48,6 +48,10 @@ export const DrupalkitUserApi = (
   const verifyEmailEndpoint =
     drupalkitOptions.userApiVerifyEmailEndpoint ?? "/user-api/verify-email";
 
+  const headers = {
+    "content-type": "application/json",
+  };
+
   /**
    * Register a new user.
    *
@@ -63,6 +67,7 @@ export const DrupalkitUserApi = (
     const result = await drupalkit.request<RegisterResponse>(url, {
       method: "POST",
       body: payload,
+      headers,
     });
 
     if (result.err) {
@@ -85,6 +90,7 @@ export const DrupalkitUserApi = (
 
     const result = await drupalkit.request<{ status: "success" }>(url, {
       method: "POST",
+      headers,
     });
 
     if (result.err) {
@@ -108,6 +114,7 @@ export const DrupalkitUserApi = (
 
     const result = await drupalkit.request<{ status: "success" }>(url, {
       method: "POST",
+      headers,
     });
 
     if (result.err) {
@@ -133,6 +140,7 @@ export const DrupalkitUserApi = (
     const result = await drupalkit.request<{ status: "success" }>(url, {
       method: "POST",
       body: { email },
+      headers,
     });
 
     if (result.err) {
@@ -167,6 +175,7 @@ export const DrupalkitUserApi = (
     const result = await drupalkit.request<{ status: "success" }>(url, {
       method: "POST",
       body: payload,
+      headers,
     });
 
     if (result.err) {
@@ -192,6 +201,7 @@ export const DrupalkitUserApi = (
     const result = await drupalkit.request<{ status: "success" }>(url, {
       method: "POST",
       body: { email },
+      headers,
     });
 
     if (result.err) {
@@ -217,6 +227,7 @@ export const DrupalkitUserApi = (
     const result = await drupalkit.request<{ status: "success" }>(url, {
       method: "POST",
       body: { email },
+      headers,
     });
 
     if (result.err) {
@@ -240,6 +251,7 @@ export const DrupalkitUserApi = (
     const result = await drupalkit.request<{ status: "success" }>(url, {
       method: "POST",
       body: { email },
+      headers,
     });
 
     if (result.err) {

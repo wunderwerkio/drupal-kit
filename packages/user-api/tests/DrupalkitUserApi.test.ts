@@ -61,6 +61,9 @@ describe("DrupalkitUserApi", () => {
     expect(fetchMock.mock.calls[0][1]).toMatchObject({
       method: "POST",
       body: JSON.stringify(payload),
+      headers: {
+        "content-type": "application/json",
+      },
     });
   });
 
@@ -125,6 +128,9 @@ describe("DrupalkitUserApi", () => {
     // @ts-ignore
     expect(fetchMock.mock.calls[0][1]).toMatchObject({
       method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
     });
   });
 
@@ -180,6 +186,9 @@ describe("DrupalkitUserApi", () => {
     // @ts-ignore
     expect(fetchMock.mock.calls[0][1]).toMatchObject({
       method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
     });
   });
 
@@ -237,6 +246,9 @@ describe("DrupalkitUserApi", () => {
     expect(fetchMock.mock.calls[0][1]).toMatchObject({
       method: "POST",
       body: JSON.stringify({ email }),
+      headers: {
+        "content-type": "application/json",
+      },
     });
   });
 
@@ -296,6 +308,9 @@ describe("DrupalkitUserApi", () => {
     expect(fetchMock.mock.calls[0][1]).toMatchObject({
       method: "POST",
       body: JSON.stringify({ newPassword }),
+      headers: {
+        "content-type": "application/json",
+      },
     });
 
     // With current password.
@@ -369,6 +384,9 @@ describe("DrupalkitUserApi", () => {
     expect(fetchMock.mock.calls[0][1]).toMatchObject({
       method: "POST",
       body: JSON.stringify({ email }),
+      headers: {
+        "content-type": "application/json",
+      },
     });
   });
 
@@ -428,6 +446,9 @@ describe("DrupalkitUserApi", () => {
     expect(fetchMock.mock.calls[0][1]).toMatchObject({
       method: "POST",
       body: JSON.stringify({ email }),
+      headers: {
+        "content-type": "application/json",
+      },
     });
   });
 
@@ -487,6 +508,9 @@ describe("DrupalkitUserApi", () => {
     expect(fetchMock.mock.calls[0][1]).toMatchObject({
       method: "POST",
       body: JSON.stringify({ email }),
+      headers: {
+        "content-type": "application/json",
+      },
     });
   });
 
