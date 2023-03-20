@@ -57,6 +57,7 @@ export const DrupalkitSimpleOauth = (
     const result = await drupalkit.request<SimpleOauthTokenResponse>(url, {
       method: "POST",
       body,
+      unauthenticated: true,
       headers: {
         "content-type": "application/x-www-form-urlencoded",
       },
