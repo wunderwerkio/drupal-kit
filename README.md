@@ -104,7 +104,7 @@ It may return an object that is than merged with the core `Drupalkit` class to e
 
 List of built-in plugins:
 
-- [`@drupal-kit/jsonapi`](#json:api)
+- [`@drupal-kit/jsonapi`](#jsonapi)
 - [`@drupal-kit/simple-oauth`](#simple-oauth)
 - [`@drupal-kit/simple-oauth-auth-code`](#simple-oauth-auth-code)
 - [`@drupal-kit/consumers`](#consumers)
