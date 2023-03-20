@@ -1,4 +1,4 @@
-import { Ok } from "ts-results";
+import { Result } from "@wunderwerk/ts-results";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
 import { AuthCodeResponse } from "./types";
@@ -49,7 +49,7 @@ export const DrupalkitSimpleOauthAuthCode = <Operation extends string>(
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**

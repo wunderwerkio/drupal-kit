@@ -5,12 +5,11 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@wunderwerk/ts-results": "^0.1.0",
+    "@wunderwerk/ts-results": "^0.1.1",
     "before-after-hook": "^2.2.3",
     "is-plain-object": "^5.0.0",
     "node-fetch": "^2.6.9",
-    "qs": "^6.11.1",
-    "ts-results": "^3.3.0"
+    "qs": "^6.11.1"
   },
   "devDependencies": {
     "@drupal-kit/config-typescript": "workspace:0.2.0",

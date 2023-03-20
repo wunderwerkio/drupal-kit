@@ -6,9 +6,9 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@drupal-kit/core": "workspace:0.2.0",
+    "@wunderwerk/ts-results": "^0.1.1",
     "drupal-jsonapi-params": "^2.2.0",
-    "ts-json-api": "^1.2.0",
-    "ts-results": "^3.3.0"
+    "ts-json-api": "^1.2.0"
   },
   "devDependencies": {
     "@drupal-kit/config-typescript": "workspace:0.2.0",

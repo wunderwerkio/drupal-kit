@@ -5,7 +5,7 @@ import {
   Query,
 } from "@drupal-kit/core";
 import { ResourceObject, Response } from "ts-json-api";
-import { Err, Ok } from "ts-results";
+import { Err, Ok, Result } from "@wunderwerk/ts-results";
 
 import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError";
 import {
@@ -60,7 +60,7 @@ export const DrupalkitJsonApi = (
       return response;
     }
 
-    return Ok(response.val.data);
+    return Result.Ok(response.val.data);
   };
 
   /**
@@ -95,7 +95,7 @@ export const DrupalkitJsonApi = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -130,7 +130,7 @@ export const DrupalkitJsonApi = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -163,7 +163,7 @@ export const DrupalkitJsonApi = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -196,7 +196,7 @@ export const DrupalkitJsonApi = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -223,7 +223,7 @@ export const DrupalkitJsonApi = (
       return result;
     }
 
-    return Ok(true);
+    return Result.Ok(true);
   };
 
   /**
@@ -332,7 +332,7 @@ export const DrupalkitJsonApi = (
             )) as Return[Operation];
         }
 
-        return Err(
+        return Result.Err(
           new Error(`Unknown operation "${operation}"`),
         ) as Return[Operation];
       },

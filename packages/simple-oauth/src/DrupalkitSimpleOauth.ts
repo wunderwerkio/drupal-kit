@@ -1,4 +1,4 @@
-import { Ok } from "ts-results";
+import { Result } from "@wunderwerk/ts-results";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
 import { DrupalkitSimpleOauthError } from "./DrupalkitSimpleOauthError";
@@ -66,7 +66,7 @@ export const DrupalkitSimpleOauth = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -92,7 +92,7 @@ export const DrupalkitSimpleOauth = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**

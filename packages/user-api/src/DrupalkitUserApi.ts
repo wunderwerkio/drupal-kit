@@ -1,4 +1,4 @@
-import { Ok } from "ts-results";
+import { Result } from "@wunderwerk/ts-results";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
 import { RegisterPayload, RegisterResponse } from "./types";
@@ -74,7 +74,7 @@ export const DrupalkitUserApi = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -97,7 +97,7 @@ export const DrupalkitUserApi = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -121,7 +121,7 @@ export const DrupalkitUserApi = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -147,7 +147,7 @@ export const DrupalkitUserApi = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -182,7 +182,7 @@ export const DrupalkitUserApi = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -208,7 +208,7 @@ export const DrupalkitUserApi = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -234,7 +234,7 @@ export const DrupalkitUserApi = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -258,7 +258,7 @@ export const DrupalkitUserApi = (
       return result;
     }
 
-    return Ok(result.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
