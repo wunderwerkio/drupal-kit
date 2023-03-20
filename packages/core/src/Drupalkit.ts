@@ -185,6 +185,13 @@ export class Drupalkit {
   }
 
   /**
+   * Checks if auth data is set.
+   */
+  public hasAuth() {
+    return !!this.auth;
+  }
+
+  /**
    * Set the locale.
    *
    * @param locale - The locale.
