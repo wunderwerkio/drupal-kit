@@ -1,11 +1,11 @@
+import { Err, Ok, Result } from "@wunderwerk/ts-results";
+import { ResourceObject, Response } from "ts-json-api";
 import {
   Drupalkit,
   DrupalkitError,
   DrupalkitOptions,
   Query,
 } from "@drupal-kit/core";
-import { ResourceObject, Response } from "ts-json-api";
-import { Err, Ok, Result } from "@wunderwerk/ts-results";
 
 import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError";
 import {
