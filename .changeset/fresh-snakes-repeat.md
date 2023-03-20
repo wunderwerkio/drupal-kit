@@ -1,5 +1,5 @@
 ---
-"@drupal-kit/core": patch
+"@drupal-kit/core": minor
 ---
 
 Downgrade node-fetch to ^2 to support commonjs
