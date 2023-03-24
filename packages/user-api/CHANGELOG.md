@@ -1,5 +1,12 @@
 # @drupal-kit/user-api
 
+## 0.3.1
+
+### Patch Changes
+
+- c8c15fb: Request passwordless login as unauthenticated
+  - @drupal-kit/core@0.3.1
+
 ## 0.3.0
 
 ### Patch Changes

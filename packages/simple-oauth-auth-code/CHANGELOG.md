@@ -1,5 +1,12 @@
 # @drupal-kit/simple-oauth-auth-code
 
+## 0.3.1
+
+### Patch Changes
+
+- 11bd183: Request auth-code unauthorized
+  - @drupal-kit/core@0.3.1
+
 ## 0.3.0
 
 ### Patch Changes
