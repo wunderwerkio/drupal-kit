@@ -201,6 +201,7 @@ export const DrupalkitUserApi = (
     const result = await drupalkit.request<{ status: "success" }>(url, {
       method: "POST",
       body: { email },
+      unauthenticated: true,
       headers,
     });
 
