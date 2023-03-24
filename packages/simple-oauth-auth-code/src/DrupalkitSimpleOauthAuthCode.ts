@@ -40,6 +40,7 @@ export const DrupalkitSimpleOauthAuthCode = <Operation extends string>(
     const result = await drupalkit.request<AuthCodeResponse>(url, {
       method: "POST",
       body: { operation, email },
+      unauthenticated: true,
       headers: {
         "content-type": "application/json",
       },
