@@ -1,3 +1,3 @@
-export * from "./Drupalkit";
-export * from "./DrupalkitError";
-export * from "./types";
+export * from "./Drupalkit.js";
+export * from "./DrupalkitError.js";
+export * from "./types.js";

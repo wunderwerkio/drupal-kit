@@ -1,38 +1,40 @@
-import { Drupalkit } from "../src";
+import test from "ava";
 
-describe("core", () => {
-  it("should instanciate", () => {
-    new Drupalkit({
-      baseUrl: "https://drupal-headless-boilerplate.ddev.site",
-    });
+import { Drupalkit } from "../src/index.js";
+
+test("Instanciate drupalkit", (t) => {
+  new Drupalkit({
+    baseUrl: "https://drupal-headless-boilerplate.ddev.site",
   });
 
-  it("should allow deep merge plugins", async () => {
-    const pluginOne = () => {
-      return {
-        oneUniq: true,
-        shared: {
-          propFromOne: "one",
-        },
-      };
-    };
-
-    const pluginTwo = () => {
-      return {
-        twoUniq: true,
-        shared: {
-          propFromTwo: "two",
-        },
-      };
-    };
-
-    const EnhancedDrupalkit = Drupalkit.plugin(pluginOne, pluginTwo);
-
-    const instance = new EnhancedDrupalkit({ baseUrl: "some-url" });
-
-    expect(instance).toHaveProperty("oneUniq");
-    expect(instance).toHaveProperty("twoUniq");
-    expect(instance.shared).toHaveProperty("propFromOne");
-    expect(instance.shared).toHaveProperty("propFromTwo");
-  });
+  t.pass();
 });
+
+test("Deep merge plugins",  t => {
+  const pluginOne = () => {
+    return {
+      oneUniq: true,
+      shared: {
+        propFromOne: "one",
+      },
+    };
+  };
+
+  const pluginTwo = () => {
+    return {
+      twoUniq: true,
+      shared: {
+        propFromTwo: "two",
+      },
+    };
+  };
+
+  const EnhancedDrupalkit = Drupalkit.plugin(pluginOne, pluginTwo);
+
+  const instance = new EnhancedDrupalkit({ baseUrl: "some-url" });
+
+  t.assert(Object.keys(instance).includes('oneUniq'));
+  t.assert(Object.keys(instance).includes('twoUniq'));
+  t.assert(Object.keys(instance.shared).includes('propFromOne'));
+  t.assert(Object.keys(instance.shared).includes('propFromTwo'));
+})
