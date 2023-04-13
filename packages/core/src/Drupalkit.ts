@@ -1,5 +1,5 @@
 import { Result } from "@wunderwerk/ts-results";
-import { Collection, HookCollection } from "before-after-hook";
+import Hook, { HookCollection } from "before-after-hook";
 import qs from "qs";
 import {
   DrupalkitResponse,
@@ -10,8 +10,8 @@ import {
   Url,
 } from "@drupal-kit/types";
 
-import { DrupalkitError } from "./DrupalkitError";
-import fetchWrapper from "./fetch-wrapper";
+import { DrupalkitError } from "./DrupalkitError.js";
+import fetchWrapper from "./fetch-wrapper.js";
 import {
   Constructor,
   DrupalkitOptions,
@@ -20,8 +20,8 @@ import {
   Query,
   ReturnTypeOf,
   UnionToIntersection,
-} from "./types";
-import { trimSlashesFromSegment } from "./utils";
+} from "./types.js";
+import { trimSlashesFromSegment } from "./utils.js";
 
 /**
  * Drupalkit base calss.
@@ -75,7 +75,7 @@ export class Drupalkit {
    * @param options - The drupakit options.
    */
   constructor(options: DrupalkitOptions) {
-    const hook = new Collection<Hooks>();
+    const hook = new Hook.Collection<Hooks>();
 
     /* eslint-disable no-console */
     /* eslint-disable jsdoc/require-jsdoc */
