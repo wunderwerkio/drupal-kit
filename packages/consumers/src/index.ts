@@ -1,1 +1,1 @@
-export * from "./DrupalkitConsumers";
+export * from "./DrupalkitConsumers.js";
