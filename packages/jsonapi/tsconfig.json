@@ -1,4 +1,8 @@
 {
   "extends": "@drupal-kit/config-typescript/base.json",
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "ts-node": {
+    "swc": true,
+    "transpileOnly": true,
+  }
 }
