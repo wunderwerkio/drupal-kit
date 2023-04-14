@@ -1,2 +1,2 @@
-export * from "./DrupalkitSimpleOauthAuthCode";
-export * from "./types";
+export * from "./DrupalkitSimpleOauthAuthCode.js";
+export * from "./types.js";
