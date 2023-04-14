@@ -1,92 +1,93 @@
-import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
+import test from "ava";
+import { rest } from "msw";
+import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
-import { mockNetworkError, mockResponse } from "@drupal-kit/core/test-utils";
 
-import { DrupalkitSimpleOauthAuthCode } from "../src/index";
-import AuthCodeResponse from "./fixtures/auth_code_response.json";
+import { DrupalkitSimpleOauthAuthCode } from "../src/index.js";
+import AuthCodeResponse from "./fixtures/auth_code_response.json" assert { type: "json" };
 
-enableFetchMocks();
+const BASE_URL = "https://my-drupal.com";
 
-describe("DrupalkitSimpleOauthAuthCode", () => {
-  const BASE_URL = "https://my-drupal.com";
+const createDrupalkit = (
+  options: DrupalkitOptions = {
+    baseUrl: BASE_URL,
+  },
+) => {
+  const EnhancedDrupalkit = Drupalkit.plugin(DrupalkitSimpleOauthAuthCode);
 
-  const createDrupalkit = (
-    options: DrupalkitOptions = {
-      baseUrl: BASE_URL,
-    },
-  ) => {
-    const EnhancedDrupalkit = Drupalkit.plugin(DrupalkitSimpleOauthAuthCode);
+  return new EnhancedDrupalkit({
+    locale: "de",
+    defaultLocale: "de",
+    ...options,
+  });
+};
 
-    return new EnhancedDrupalkit({
-      locale: "de",
-      defaultLocale: "de",
-      ...options,
-    });
-  };
+const server = setupServer();
 
-  beforeEach(() => {
-    fetchMock.resetMocks();
+test.before(() => {
+  server.listen();
+});
+
+test.afterEach(() => {
+  server.resetHandlers();
+});
+
+test.after(() => {
+  server.close();
+});
+
+test.serial("Request auth code", async (t) => {
+  const drupalkit = createDrupalkit();
+
+  const operation = "register";
+  const email = "F3f6Z@example.com";
+
+  server.use(
+    rest.post("*/simple-oauth/auth-code", async (req, res, ctx) =>
+      res(ctx.json(AuthCodeResponse)),
+    ),
+  );
+
+  const result = await drupalkit.simpleOauth.requestAuthCode(operation, email);
+
+  const res = result.unwrap();
+  t.deepEqual(res, AuthCodeResponse);
+});
+
+test.serial("Request auth code with explicit endpoint", async (t) => {
+  const endpoint = "/custom/auth-code";
+  const drupalkit = createDrupalkit({
+    baseUrl: BASE_URL,
+    authCodeEndpoint: endpoint,
   });
 
-  it("should request auth code", async () => {
-    const drupalkit = createDrupalkit();
+  const operation = "register";
+  const email = "F3f6Z@example.com";
 
-    const operation = "register";
-    const email = "F3f6Z@example.com";
+  server.use(
+    rest.post("*/custom/auth-code", async (_req, res, ctx) =>
+      res(ctx.json(AuthCodeResponse)),
+    ),
+  );
 
-    mockResponse(fetchMock, drupalkit, {
-      url: "/simple-oauth/auth-code",
-      payloadFixture: AuthCodeResponse,
-    });
+  const result = await drupalkit.simpleOauth.requestAuthCode(operation, email);
 
-    const result = await drupalkit.simpleOauth.requestAuthCode(
-      operation,
-      email,
-    );
+  t.assert(result.ok);
+});
 
-    expect(result.ok).toBeTruthy();
+test.serial("Handle network error", async (t) => {
+  const drupalkit = createDrupalkit();
 
-    if (result.ok) {
-      expect(result.val).toEqual(AuthCodeResponse);
-    }
-  });
+  const operation = "register";
+  const email = "F3f6Z@example.com";
 
-  it("should request auth code with explicit endpoint", async () => {
-    const endpoint = "/custom/auth-code";
-    const drupalkit = createDrupalkit({
-      baseUrl: BASE_URL,
-      authCodeEndpoint: endpoint,
-    });
+  server.use(
+    rest.post("*/simple-oauth/auth-code", async (_req, res) =>
+      res.networkError("Network Error"),
+    ),
+  );
 
-    const operation = "register";
-    const email = "F3f6Z@example.com";
+  const result = await drupalkit.simpleOauth.requestAuthCode(operation, email);
 
-    mockResponse(fetchMock, drupalkit, {
-      url: endpoint,
-      payloadFixture: AuthCodeResponse,
-    });
-
-    const result = await drupalkit.simpleOauth.requestAuthCode(
-      operation,
-      email,
-    );
-
-    expect(result.ok).toBeTruthy();
-  });
-
-  it("should handle network error", async () => {
-    const drupalkit = createDrupalkit();
-
-    const operation = "register";
-    const email = "F3f6Z@example.com";
-
-    mockNetworkError(fetchMock);
-
-    const result = await drupalkit.simpleOauth.requestAuthCode(
-      operation,
-      email,
-    );
-
-    expect(result.err).toBeTruthy();
-  });
+  t.assert(result.err);
 });

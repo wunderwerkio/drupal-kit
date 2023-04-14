@@ -1,7 +1,7 @@
 import { Result } from "@wunderwerk/ts-results";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
-import { AuthCodeResponse } from "./types";
+import { AuthCodeResponse } from "./types.js";
 
 declare module "@drupal-kit/core" {
   interface DrupalkitOptions {
