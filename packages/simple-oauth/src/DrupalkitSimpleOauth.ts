@@ -1,12 +1,12 @@
 import { Result } from "@wunderwerk/ts-results";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
-import { DrupalkitSimpleOauthError } from "./DrupalkitSimpleOauthError";
+import { DrupalkitSimpleOauthError } from "./DrupalkitSimpleOauthError.js";
 import {
   SimpleOauthGrantTypes,
   SimpleOauthTokenResponse,
   SimpleOauthUserInfo,
-} from "./types";
+} from "./types.js";
 
 declare module "@drupal-kit/core" {
   interface DrupalkitOptions {

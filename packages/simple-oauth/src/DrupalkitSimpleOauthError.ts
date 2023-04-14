@@ -1,6 +1,6 @@
 import { DrupalkitError, DrupalkitErrorOptions } from "@drupal-kit/core";
 
-import { SimpleOauthError, SimpleOauthInvalidRequest } from "./types";
+import { SimpleOauthError, SimpleOauthInvalidRequest } from "./types.js";
 
 const InvalidRequestHintMap = {
   auth_code_revoked: "Authorization code has been revoked",

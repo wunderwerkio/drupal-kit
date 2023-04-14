@@ -1,210 +1,224 @@
-import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
-import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
-import { mockNetworkError, mockResponse } from "@drupal-kit/core/test-utils";
+import test from "ava";
+import { rest } from "msw";
+import { setupServer } from "msw/node";
+import { Drupalkit, DrupalkitError, DrupalkitOptions } from "@drupal-kit/core";
 
-import { DrupalkitSimpleOauth, DrupalkitSimpleOauthError } from "../src/index";
-import ErrorResponse from "./fixtures/error_response.json";
-import TokenResponse from "./fixtures/token_response.json";
-import UserInfoResponse from "./fixtures/userinfo_response.json";
+import {
+  DrupalkitSimpleOauth,
+  DrupalkitSimpleOauthError,
+} from "../src/index.js";
+import ErrorResponse from "./fixtures/error_response.json" assert { type: "json" };
+import TokenResponse from "./fixtures/token_response.json" assert { type: "json" };
+import UserInfoResponse from "./fixtures/userinfo_response.json" assert { type: "json" };
 
-enableFetchMocks();
+const BASE_URL = "https://my-drupal.com";
 
-describe("DrupalkitSimpleOauth", () => {
-  const BASE_URL = "https://my-drupal.com";
+const CLIENT_ID = "12345678901234567890123456789012";
+const CLIENT_SECRET = "F9w1cM0GQw7GjjQUaZcscWHtxnMOvn4d";
 
-  const CLIENT_ID = "12345678901234567890123456789012";
-  const CLIENT_SECRET = "F9w1cM0GQw7GjjQUaZcscWHtxnMOvn4d";
+const createDrupalkit = (
+  options: DrupalkitOptions = {
+    baseUrl: BASE_URL,
+  },
+) => {
+  const EnhancedDrupalkit = Drupalkit.plugin(DrupalkitSimpleOauth);
 
-  const createDrupalkit = (
-    options: DrupalkitOptions = {
-      baseUrl: BASE_URL,
+  return new EnhancedDrupalkit({
+    locale: "de",
+    defaultLocale: "de",
+    ...options,
+  });
+};
+
+const server = setupServer();
+
+test.before(() => {
+  server.listen();
+});
+
+test.afterEach(() => {
+  server.resetHandlers();
+});
+
+test.after(() => {
+  server.close();
+});
+
+test("Instanciate with plugin", (t) => {
+  const drupalkit = createDrupalkit();
+
+  t.assert(drupalkit.hasOwnProperty("simpleOauth"));
+});
+
+test.serial("Request token with client credentials grant", async (t) => {
+  t.plan(3);
+
+  const drupalkit = createDrupalkit();
+
+  server.use(
+    rest.post("*/oauth/token", async (req, res, ctx) => {
+      const body = await req.text();
+
+      t.is(
+        req.headers.get("content-type"),
+        "application/x-www-form-urlencoded",
+      );
+      t.snapshot(body);
+
+      return res(ctx.json(TokenResponse));
+    }),
+  );
+
+  const result = await drupalkit.simpleOauth.requestToken(
+    "client_credentials",
+    {
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
     },
-  ) => {
-    const EnhancedDrupalkit = Drupalkit.plugin(DrupalkitSimpleOauth);
+  );
 
-    return new EnhancedDrupalkit({
-      locale: "de",
-      defaultLocale: "de",
-      ...options,
-    });
-  };
+  const res = result.unwrap();
 
-  beforeEach(() => {
-    fetchMock.resetMocks();
+  t.snapshot(res);
+});
+
+test.serial("Request token with explicit endpoint", async (t) => {
+  const drupalkit = createDrupalkit({
+    baseUrl: BASE_URL,
+    oauthTokenEndpoint: "/custom/token",
   });
 
-  it("should instanciate", () => {
+  server.use(
+    rest.post("*/custom/token", async (_req, res, ctx) =>
+      res(ctx.json(TokenResponse)),
+    ),
+  );
+
+  const result = await drupalkit.simpleOauth.requestToken(
+    "client_credentials",
+    {
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+    },
+  );
+
+  t.assert(result.ok);
+});
+
+test.serial("Handle request errors", async (t) => {
+  const drupalkit = createDrupalkit();
+
+  server.use(
+    rest.post("*/oauth/token", async (_req, res, ctx) =>
+      res(ctx.status(400), ctx.json(ErrorResponse)),
+    ),
+  );
+
+  const result = await drupalkit.simpleOauth.requestToken(
+    "client_credentials",
+    {
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+    },
+  );
+
+  const res = result.expectErr("Expected error");
+
+  t.assert(res instanceof DrupalkitSimpleOauthError);
+  t.is(res.statusCode, 400);
+});
+
+test.serial("Handle network errors", async (t) => {
+  const drupalkit = createDrupalkit();
+
+  server.use(
+    rest.post("*/oauth/token", async (_req, res) =>
+      res.networkError("Network Error"),
+    ),
+  );
+
+  const result = await drupalkit.simpleOauth.requestToken(
+    "client_credentials",
+    {
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+    },
+  );
+
+  const error = result.expectErr("Expected error");
+  t.assert(error.message.includes("Network Error"));
+});
+
+test.serial(
+  "Do not produce DrupalkitSimpleOauthErrors when not requesting a token",
+  async (t) => {
     const drupalkit = createDrupalkit();
 
-    expect(drupalkit).toHaveProperty("simpleOauth");
-  });
-
-  it("should request token with client credentials grant", async () => {
-    const drupalkit = createDrupalkit();
-
-    mockResponse(fetchMock, drupalkit, {
-      url: "/oauth/token",
-      payloadFixture: TokenResponse,
-    });
-
-    const result = await drupalkit.simpleOauth.requestToken(
-      "client_credentials",
-      {
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-      },
+    server.use(
+      rest.post("*/not/oauth/related", async (_req, res, ctx) =>
+        res(ctx.status(400)),
+      ),
     );
-
-    expect(result.ok).toBeTruthy();
-
-    if (result.ok) {
-      expect(result.val).toMatchSnapshot("token-response");
-    }
-
-    // @ts-ignore
-    expect(fetchMock.mock.calls[0][1]).toMatchObject({
-      method: "POST",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-      },
-    });
-
-    // @ts-ignore
-    expect(fetchMock.mock.calls[0][1].body).toBeInstanceOf(URLSearchParams);
-
-    // @ts-ignore
-    const body = fetchMock.mock.calls[0][1].body as URLSearchParams;
-    expect(body.toString()).toMatchSnapshot("request-payload");
-  });
-
-  it("should request token explicit endpoint", async () => {
-    const drupalkit = createDrupalkit({
-      baseUrl: BASE_URL,
-      oauthTokenEndpoint: "/custom/token",
-    });
-
-    mockResponse(fetchMock, drupalkit, {
-      url: "/custom/token",
-      payloadFixture: TokenResponse,
-    });
-
-    const result = await drupalkit.simpleOauth.requestToken(
-      "client_credentials",
-      {
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-      },
-    );
-
-    expect(result.ok).toBeTruthy();
-  });
-
-  it("should handle request errors", async () => {
-    const drupalkit = createDrupalkit();
-
-    mockResponse(fetchMock, drupalkit, {
-      url: "/oauth/token",
-      status: 400,
-      payloadFixture: ErrorResponse,
-    });
-
-    const result = await drupalkit.simpleOauth.requestToken(
-      "client_credentials",
-      {
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-      },
-    );
-
-    expect(result.err).toBeTruthy();
-
-    if (result.err) {
-      expect(result.val).toBeInstanceOf(DrupalkitSimpleOauthError);
-      expect(result.val.statusCode).toEqual(400);
-    }
-  });
-
-  it("should handle network errors when requesting token", async () => {
-    const drupalkit = createDrupalkit();
-
-    mockNetworkError(fetchMock);
-
-    const result = await drupalkit.simpleOauth.requestToken(
-      "client_credentials",
-      {
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-      },
-    );
-
-    expect(result.err).toBeTruthy();
-    expect(result.val).not.toBeInstanceOf(DrupalkitSimpleOauthError);
-  });
-
-  it("should not produce DrupalkitSimpleOauthErrors when not requesting token", async () => {
-    const drupalkit = createDrupalkit();
-
-    mockResponse(fetchMock, drupalkit, {
-      url: "/not/oauth/related",
-      status: 400,
-    });
 
     const result = await drupalkit.request("/not/oauth/related", {
       method: "POST",
     });
 
-    expect(result.err).toBeTruthy();
-    expect(result.val).not.toBeInstanceOf(DrupalkitSimpleOauthError);
+    const error = result.expectErr("Expected error");
+
+    t.assert(!(error instanceof DrupalkitSimpleOauthError));
+  },
+);
+
+test.serial("Request user info", async (t) => {
+  const drupalkit = createDrupalkit();
+
+  server.use(
+    rest.get("*/oauth/userinfo", async (_req, res, ctx) =>
+      res(ctx.json(UserInfoResponse)),
+    ),
+  );
+
+  const result = await drupalkit.simpleOauth.getUserInfo();
+
+  const res = result.unwrap();
+
+  t.snapshot(res);
+});
+
+test.serial("Request user info with explicit endpoint", async (t) => {
+  const endpoint = "/custom/userinfo";
+
+  const drupalkit = createDrupalkit({
+    baseUrl: BASE_URL,
+    oauthUserInfoEndpoint: endpoint,
   });
 
-  it("should request user info", async () => {
-    const drupalkit = createDrupalkit();
+  server.use(
+    rest.get("*/custom/userinfo", async (_req, res, ctx) =>
+      res(ctx.json(UserInfoResponse)),
+    ),
+  );
 
-    mockResponse(fetchMock, drupalkit, {
-      url: "/oauth/userinfo",
-      status: 200,
-      payloadFixture: UserInfoResponse,
-    });
+  const result = await drupalkit.simpleOauth.getUserInfo();
 
-    const result = await drupalkit.simpleOauth.getUserInfo();
+  t.assert(result.ok);
+});
 
-    expect(result.ok).toBeTruthy();
+test.serial("Handle request errors when requesting user info", async (t) => {
+  const drupalkit = createDrupalkit();
 
-    if (result.ok) {
-      expect(result.val).toMatchSnapshot("userinfo-response");
-    }
-  });
+  server.use(
+    rest.get("*/oauth/userinfo", async (_req, res, ctx) =>
+      res(ctx.status(400), ctx.json(ErrorResponse)),
+    ),
+  );
 
-  it("should handle errors when requesting user info", async () => {
-    const drupalkit = createDrupalkit();
+  const result = await drupalkit.simpleOauth.getUserInfo();
 
-    mockResponse(fetchMock, drupalkit, {
-      url: "/oauth/userinfo",
-      status: 400,
-      payloadFixture: ErrorResponse,
-    });
+  const error = result.expectErr("Expected error");
 
-    const result = await drupalkit.simpleOauth.getUserInfo();
-
-    expect(result.err).toBeTruthy();
-  });
-
-  it("should request user info with explicit endpoint", async () => {
-    const endpoint = "/custom/userinfo";
-
-    const drupalkit = createDrupalkit({
-      baseUrl: BASE_URL,
-      oauthUserInfoEndpoint: endpoint,
-    });
-
-    mockResponse(fetchMock, drupalkit, {
-      url: endpoint,
-      status: 200,
-      payloadFixture: UserInfoResponse,
-    });
-
-    const result = await drupalkit.simpleOauth.getUserInfo();
-
-    expect(result.ok).toBeTruthy();
-  });
+  t.assert(!(error instanceof DrupalkitSimpleOauthError));
+  t.assert(error instanceof DrupalkitError);
+  t.is(error.statusCode, 400);
 });
