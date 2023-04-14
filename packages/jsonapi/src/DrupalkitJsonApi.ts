@@ -7,7 +7,7 @@ import {
   Query,
 } from "@drupal-kit/core";
 
-import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError";
+import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError.js";
 import {
   CreateParameters,
   DeleteParameters,
@@ -18,7 +18,8 @@ import {
   ToParameters,
   UpdateParameters,
 } from "./resources.js";
-import { isJsonApiRequest } from "./utils";
+import { isJsonApiRequest } from "./utils.js";
+import { RequestHeaders } from "@drupal-kit/types";
 
 declare module "@drupal-kit/core" {
   interface DrupalkitOptions {
@@ -36,7 +37,7 @@ export const DrupalkitJsonApi = (
   drupalkit: Drupalkit,
   drupalkitOptions: DrupalkitOptions,
 ) => {
-  const defaultHeaders: HeadersInit = {
+  const defaultHeaders: RequestHeaders = {
     Accept: "application/vnd.api+json",
     "Content-Type": "application/vnd.api+json",
   };

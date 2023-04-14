@@ -1,23 +1,23 @@
-import { isJsonApiRequest } from "../src/utils";
+import test from "ava";
 
-describe("utils", () => {
-  it("should check if jsonapi request", () => {
-    expect(
-      isJsonApiRequest({
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-        },
-      }),
-    ).toBeFalsy();
+import { isJsonApiRequest } from "../src/utils.js";
 
-    expect(
-      isJsonApiRequest({
-        method: "GET",
-        headers: {
-          "Content-type": "application/vnd.api+json",
-        },
-      }),
-    ).toBeTruthy();
-  });
+test("Check if JSON:API request", (t) => {
+  t.falsy(
+    isJsonApiRequest({
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+    }),
+  );
+
+  t.truthy(
+    isJsonApiRequest({
+      method: "GET",
+      headers: {
+        "Content-type": "application/vnd.api+json",
+      },
+    }),
+  );
 });

@@ -1,3 +1,3 @@
-export * from "./resources";
-export * from "./DrupalkitJsonApi";
-export * from "./DrupalkitJsonApiError";
+export * from "./resources.js";
+export * from "./DrupalkitJsonApi.js";
+export * from "./DrupalkitJsonApiError.js";
