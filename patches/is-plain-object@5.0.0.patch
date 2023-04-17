@@ -1,0 +1,30 @@
+diff --git a/is-plain-object.d.cts b/is-plain-object.d.cts
+new file mode 100644
+index 0000000000000000000000000000000000000000..34eeeb248a409054c0792a7099321f4dad2a4994
+--- /dev/null
++++ b/is-plain-object.d.cts
+@@ -0,0 +1,5 @@
++type IsPlainObject = {
++  isPlainObject(o: any): boolean;
++};
++
++export = IsPlainObject;
+diff --git a/is-plain-object.d.ts b/is-plain-object.d.mts
+similarity index 100%
+rename from is-plain-object.d.ts
+rename to is-plain-object.d.mts
+diff --git a/package.json b/package.json
+index 3ea169a7d0a524f7ec5aad890688c800b6a46049..e9760b37c305fe8ea0be3dbcf9376f2046767188 100644
+--- a/package.json
++++ b/package.json
+@@ -25,6 +25,10 @@
+   ],
+   "exports": {
+     ".": {
++      "types": {
++        "import": "./is-plain-object.d.mts",
++        "require": "./is-plain-object.d.cts"
++      },
+       "import": "./dist/is-plain-object.mjs",
+       "require": "./dist/is-plain-object.js"
+     },
