@@ -1,100 +1,119 @@
-import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
+import test from "ava";
+import { rest } from "msw";
+import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
-import { mockResponse } from "@drupal-kit/core/test-utils";
 
-import { DrupalkitVerification } from "../src/index";
-import { hashVerification, magicCodeVerification } from "../src/verification";
+import { DrupalkitVerification } from "../src/index.js";
+import {
+  hashVerification,
+  magicCodeVerification,
+} from "../src/verification.js";
 
-enableFetchMocks();
+const BASE_URL = "https://my-drupal.com";
 
-describe("DrupalkitVerification", () => {
-  const BASE_URL = "https://my-drupal.com";
+const createDrupalkit = (
+  options: DrupalkitOptions = {
+    baseUrl: BASE_URL,
+  },
+) => {
+  const EnhancedDrupalkit = Drupalkit.plugin(DrupalkitVerification);
 
-  const createDrupalkit = (
-    options: DrupalkitOptions = {
-      baseUrl: BASE_URL,
-    },
-  ) => {
-    const EnhancedDrupalkit = Drupalkit.plugin(DrupalkitVerification);
+  return new EnhancedDrupalkit({
+    locale: "de",
+    defaultLocale: "de",
+    ...options,
+  });
+};
 
-    return new EnhancedDrupalkit({
-      locale: "de",
-      defaultLocale: "de",
-      ...options,
-    });
-  };
+const server = setupServer();
 
-  beforeEach(() => {
-    fetchMock.resetMocks();
+test.before(() => {
+  server.listen();
+});
+
+test.afterEach(() => {
+  server.resetHandlers();
+});
+
+test.after(() => {
+  server.close();
+});
+
+test("Instanciate with plugin", (t) => {
+  const drupalkit = createDrupalkit();
+
+  t.assert(drupalkit.hasOwnProperty("verification"));
+});
+
+test.serial("Add Hash verification to a request once", async (t) => {
+  t.plan(4);
+  let first = true;
+
+  const drupalkit = createDrupalkit();
+  const hash = "0123456789abcdef";
+
+  server.use(
+    rest.get("*/", async (req, res, ctx) => {
+      if (first) {
+        t.is(req.headers.get("x-verification-hash"), hash);
+        first = false;
+      } else {
+        t.not(req.headers.get("x-verification-hash"), hash);
+      }
+
+      return res(ctx.status(200));
+    }),
+  );
+
+  // First request.
+  drupalkit.addVerification(hashVerification(hash));
+  let result = await drupalkit.request("/", {
+    method: "GET",
   });
 
-  it("should instanciate", async () => {
-    const drupalkit = createDrupalkit();
+  t.assert(result.ok);
 
-    expect(drupalkit).toHaveProperty("verification");
+  // Second request.
+  result = await drupalkit.request("/", {
+    method: "GET",
   });
 
-  it("should add hash verification to a request once", async () => {
-    const drupalkit = createDrupalkit();
+  t.assert(result.ok);
+});
 
-    const hash = "0123456789abcdef";
+test.serial("Add Magic code verification to a request once", async (t) => {
+  t.plan(4);
+  let first = true;
 
-    mockResponse(fetchMock, drupalkit, {
-      url: "/",
-    });
+  const drupalkit = createDrupalkit();
+  const code = "5ZL-KD2";
 
-    drupalkit.addVerification(hashVerification(hash));
-    const result = await drupalkit.request("/", {
-      method: "GET",
-    });
+  server.use(
+    rest.get("*/", async (req, res, ctx) => {
+      if (first) {
+        t.is(req.headers.get("x-verification-magic-code"), code);
+        first = false;
+      } else {
+        t.not(req.headers.get("x-verification-magic-code"), code);
+      }
 
-    expect(result.ok).toBe(true);
+      return res(ctx.status(200));
+    }),
+  );
 
-    // @ts-ignore
-    expect(fetchMock.mock.calls[0][1]).toMatchObject({
-      headers: {
-        "x-verification-hash": hash,
-      },
-    });
+  drupalkit.addVerification(magicCodeVerification(code));
+
+  // First request.
+  let result = await drupalkit.request("/", {
+    method: "GET",
   });
 
-  it("should add magic code verification to a request once", async () => {
-    const drupalkit = createDrupalkit();
+  t.assert(result.ok);
 
-    const code = "5ZL-KD2";
-
-    mockResponse(fetchMock, drupalkit, {
-      url: "/",
-    });
-
-    drupalkit.addVerification(magicCodeVerification(code));
-
-    // First request.
-    let result = await drupalkit.request("/", {
-      method: "GET",
-    });
-
-    expect(result.ok).toBe(true);
-
-    // @ts-ignore
-    expect(fetchMock.mock.calls[0][1]).toMatchObject({
-      headers: {
-        "x-verification-magic-code": code,
-      },
-    });
-
-    // Second request.
-    result = await drupalkit.request("/", {
-      method: "GET",
-    });
-
-    expect(result.ok).toBe(true);
-
-    // @ts-ignore
-    expect(fetchMock.mock.calls[1][1]).not.toMatchObject({
-      headers: {
-        "x-verification-magic-code": code,
-      },
-    });
+  // Second request.
+  result = await drupalkit.request("/", {
+    method: "GET",
   });
+
+  t.assert(result.ok);
 });

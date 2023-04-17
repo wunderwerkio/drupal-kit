@@ -1,6 +1,6 @@
 import { Drupalkit } from "@drupal-kit/core";
 
-import { VerificationProvider } from "./verification";
+import { VerificationProvider } from "./verification.js";
 
 /*
 declare module "@drupal-kit/core" {

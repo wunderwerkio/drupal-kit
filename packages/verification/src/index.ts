@@ -1,2 +1,2 @@
-export * from "./DrupalkitVerification";
-export * from "./verification";
+export * from "./DrupalkitVerification.js";
+export * from "./verification.js";
