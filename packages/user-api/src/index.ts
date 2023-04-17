@@ -1,1 +1,1 @@
-export * from "./DrupalkitUserApi";
+export * from "./DrupalkitUserApi.js";
