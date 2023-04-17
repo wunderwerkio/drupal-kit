@@ -1,9 +1,9 @@
 name: Lint & Test
 
 on:
-  - push
-  - pull_request
-  - pull_request_target
+  push: 
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
