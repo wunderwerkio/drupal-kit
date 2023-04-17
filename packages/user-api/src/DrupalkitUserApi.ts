@@ -1,7 +1,7 @@
 import { Result } from "@wunderwerk/ts-results";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
-import { RegisterPayload, RegisterResponse } from "./types";
+import { RegisterPayload, RegisterResponse } from "./types.js";
 
 declare module "@drupal-kit/core" {
   interface DrupalkitOptions {
