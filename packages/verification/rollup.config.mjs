@@ -1,8 +1,7 @@
 import dts from "rollup-plugin-dts";
 import esbuild from "rollup-plugin-esbuild";
 
-import packageManifest from "./package.json" assert { type: "json" };
-const name = packageManifest.main.replace(/\.js$/, "");
+const name = "dist/index";
 
 const bundle = (config) => ({
   ...config,
@@ -14,11 +13,6 @@ export default [
   bundle({
     plugins: [esbuild()],
     output: [
-      {
-        file: `${name}.js`,
-        format: "cjs",
-        sourcemap: true,
-      },
       {
         file: `${name}.mjs`,
         format: "es",
