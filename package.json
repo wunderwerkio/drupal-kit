@@ -10,13 +10,13 @@
   "license": "ISC",
   "private": true,
   "devDependencies": {
-    "@changesets/cli": "^2.26.0",
-    "@commitlint/cli": "^17.4.4",
-    "@commitlint/config-conventional": "^17.4.4",
+    "@changesets/cli": "^2.26.1",
+    "@commitlint/cli": "^17.6.1",
+    "@commitlint/config-conventional": "^17.6.1",
     "@drupal-kit/config-prettier": "workspace:*",
     "husky": "^8.0.3",
     "syncpack": "^9.8.4",
-    "turbo": "^1.8.3"
+    "turbo": "^1.9.1"
   },
   "scripts": {
     "build": "turbo run build",
