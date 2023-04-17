@@ -23,7 +23,7 @@ module.exports = {
   importOrderSeparation: false,
   importOrderSortSpecifiers: true,
   importOrderBuiltinModulesToTop: true,
-  importOrderParserPlugins: ["typescript", "decorators-legacy"],
+  importOrderParserPlugins: ["decorators-legacy", "importAssertions", "typescript"],
   importOrderMergeDuplicateImports: true,
   importOrderCombineTypeAndValueImports: true,
 };
