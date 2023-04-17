@@ -2,12 +2,6 @@
   "name": "@drupal-kit/consumers",
   "version": "0.3.1",
   "type": "module",
-  "exports": {
-    ".": {
-      "types": "dist/index.d.ts",
-      "import": "dist/index.mjs"
-    }
-  },
   "dependencies": {
     "@drupal-kit/core": "workspace:0.3.1",
     "@wunderwerk/ts-results": "^0.1.1"
@@ -44,5 +38,11 @@
       "--loader",
       "ts-node/esm"
     ]
+  },
+  "exports": {
+    ".": {
+      "types": "dist/index.d.ts",
+      "import": "dist/index.mjs"
+    }
   }
 }

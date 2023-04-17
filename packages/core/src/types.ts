@@ -2,8 +2,8 @@ import { ParsedQs } from "qs";
 import * as DrupalkitTypes from "@drupal-kit/types";
 import { Fetch } from "@drupal-kit/types";
 
-import { Drupalkit } from "./index.js";
 import { DrupalkitError } from "./DrupalkitError.js";
+import { Drupalkit } from "./index.js";
 
 export interface DrupalkitOptions {
   baseUrl: string;

@@ -10,7 +10,7 @@ test("Instanciate drupalkit", (t) => {
   t.pass();
 });
 
-test("Deep merge plugins",  t => {
+test("Deep merge plugins", (t) => {
   const pluginOne = () => {
     return {
       oneUniq: true,
@@ -33,8 +33,8 @@ test("Deep merge plugins",  t => {
 
   const instance = new EnhancedDrupalkit({ baseUrl: "some-url" });
 
-  t.assert(Object.keys(instance).includes('oneUniq'));
-  t.assert(Object.keys(instance).includes('twoUniq'));
-  t.assert(Object.keys(instance.shared).includes('propFromOne'));
-  t.assert(Object.keys(instance.shared).includes('propFromTwo'));
-})
+  t.assert(Object.keys(instance).includes("oneUniq"));
+  t.assert(Object.keys(instance).includes("twoUniq"));
+  t.assert(Object.keys(instance.shared).includes("propFromOne"));
+  t.assert(Object.keys(instance.shared).includes("propFromTwo"));
+});

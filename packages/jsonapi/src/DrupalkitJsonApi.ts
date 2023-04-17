@@ -6,6 +6,7 @@ import {
   DrupalkitOptions,
   Query,
 } from "@drupal-kit/core";
+import { RequestHeaders } from "@drupal-kit/types";
 
 import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError.js";
 import {
@@ -19,7 +20,6 @@ import {
   UpdateParameters,
 } from "./resources.js";
 import { isJsonApiRequest } from "./utils.js";
-import { RequestHeaders } from "@drupal-kit/types";
 
 declare module "@drupal-kit/core" {
   interface DrupalkitOptions {
