@@ -5,11 +5,10 @@ import { setupServer } from "msw/node";
 import { Drupalkit } from "@drupal-kit/core";
 
 import { DrupalkitJsonApi, DrupalkitJsonApiError } from "../src/index.js";
-
-import JsonApiIndex from "./fixtures/jsonapi_index.json" assert { type: "json" };
-import JsonApiIndexError from "./fixtures/jsonapi_index_error.json" assert { type: "json" };
 import JsonApiArticleDetail from "./fixtures/jsonapi_article_detail.json" assert { type: "json" };
 import JsonApiIncludeError from "./fixtures/jsonapi_include_error.json" assert { type: "json" };
+import JsonApiIndex from "./fixtures/jsonapi_index.json" assert { type: "json" };
+import JsonApiIndexError from "./fixtures/jsonapi_index_error.json" assert { type: "json" };
 import "./types.js";
 
 const BASE_URL = "https://my-drupal.com";
@@ -76,15 +75,17 @@ test("Build JSON:API url", (t) => {
   t.snapshot(url);
 });
 
-test.serial("Get JSON:API index", async t => {
+test.serial("Get JSON:API index", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.get("*/jsonapi", (_req, res, ctx) => res(
-      ctx.set('Content-Type', 'application/vnd.api+json'),
-      ctx.json(JsonApiIndex),
-    ))
-  )
+    rest.get("*/jsonapi", (_req, res, ctx) =>
+      res(
+        ctx.set("Content-Type", "application/vnd.api+json"),
+        ctx.json(JsonApiIndex),
+      ),
+    ),
+  );
 
   let index = await drupalkit.jsonApi.getIndex();
 
@@ -96,32 +97,34 @@ test.serial("Get JSON:API index", async t => {
   t.assert(res.hasOwnProperty("links"));
 
   // With error
-  server.resetHandlers()
+  server.resetHandlers();
   server.use(
-    rest.get("*/jsonapi", (_req, res, ctx) => res(
-      ctx.set('Content-Type', 'application/vnd.api+json'),
-      ctx.status(500),
-      ctx.json(JsonApiIndexError),
-    ))
-  )
+    rest.get("*/jsonapi", (_req, res, ctx) =>
+      res(
+        ctx.set("Content-Type", "application/vnd.api+json"),
+        ctx.status(500),
+        ctx.json(JsonApiIndexError),
+      ),
+    ),
+  );
 
   index = await drupalkit.jsonApi.getIndex();
 
-  const err = index.expectErr('Expect error');
+  const err = index.expectErr("Expect error");
   t.assert(err instanceof DrupalkitJsonApiError);
-})
+});
 
-test.serial("Get JSON:API resource", async t => {
+test.serial("Get JSON:API resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   server.use(
     rest.get("*/jsonapi/node/article/" + uuid, (_req, res, ctx) =>
       res(
-        ctx.set('Content-Type', 'application/vnd.api+json'),
+        ctx.set("Content-Type", "application/vnd.api+json"),
         ctx.json(JsonApiArticleDetail),
-      )
-    )
+      ),
+    ),
   );
 
   const result = await drupalkit.jsonApi.resource(
@@ -134,20 +137,20 @@ test.serial("Get JSON:API resource", async t => {
 
   const res = result.unwrap();
   t.snapshot(res);
-})
+});
 
-test.serial("Get localized JSON:API resource", async t => {
+test.serial("Get localized JSON:API resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
-  t.plan(2)
+  t.plan(2);
 
   server.use(
     rest.get("*/jsonapi/node/article/" + uuid, (req, res, ctx) => {
       t.assert(req.url.toString().includes("/en/jsonapi"));
 
       return res(
-        ctx.set('Content-Type', 'application/vnd.api+json'),
+        ctx.set("Content-Type", "application/vnd.api+json"),
         ctx.json(JsonApiArticleDetail),
       );
     }),
@@ -166,9 +169,9 @@ test.serial("Get localized JSON:API resource", async t => {
 
   const res = result.unwrap();
   t.snapshot(res);
-})
+});
 
-test.serial("Get JSON:API resource with query parameters", async t => {
+test.serial("Get JSON:API resource with query parameters", async (t) => {
   t.plan(2);
 
   const drupalkit = createDrupalkit();
@@ -183,7 +186,7 @@ test.serial("Get JSON:API resource with query parameters", async t => {
       t.snapshot(req.url.toString());
 
       return res(
-        ctx.set('Content-Type', 'application/vnd.api+json'),
+        ctx.set("Content-Type", "application/vnd.api+json"),
         ctx.json(JsonApiArticleDetail),
       );
     }),
@@ -199,9 +202,9 @@ test.serial("Get JSON:API resource with query parameters", async t => {
   );
 
   t.assert(result.ok);
-})
+});
 
-test.serial("Handle error when getting single resource", async t => {
+test.serial("Handle error when getting single resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
@@ -210,14 +213,13 @@ test.serial("Handle error when getting single resource", async t => {
 
   server.use(
     rest.get("*/jsonapi/node/article/" + uuid, (_req, res, ctx) => {
-
       return res(
-        ctx.set('Content-Type', 'application/vnd.api+json'),
+        ctx.set("Content-Type", "application/vnd.api+json"),
         ctx.status(400),
         ctx.json(JsonApiIncludeError),
       );
-    })
-  )
+    }),
+  );
 
   const result = await drupalkit.jsonApi.resource(
     "node--article",
@@ -228,68 +230,67 @@ test.serial("Handle error when getting single resource", async t => {
     },
   );
 
-  const err = result.expectErr('Expect error');
+  const err = result.expectErr("Expect error");
 
   t.assert(err instanceof DrupalkitJsonApiError);
   t.is(err.statusCode, 400);
-})
+});
 
-test.serial("Handle error when getting many resource", async t => {
+test.serial("Handle error when getting many resource", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
     rest.get("*/jsonapi/node/article", (_req, res, ctx) => {
       return res(
-        ctx.set('Content-Type', 'application/vnd.api+json'),
+        ctx.set("Content-Type", "application/vnd.api+json"),
         ctx.status(400),
         ctx.json(JsonApiIncludeError),
       );
-    })
-  )
+    }),
+  );
   const result = await drupalkit.jsonApi.resource(
     "node--article",
     "readMany",
     {},
   );
 
-  const err = result.expectErr('Expect error');
+  const err = result.expectErr("Expect error");
 
   t.assert(err instanceof DrupalkitJsonApiError);
   t.is(err.statusCode, 400);
-})
+});
 
-test.serial("Handle network error", async t => {
+test.serial("Handle network error", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
     rest.get("*/jsonapi/node/article", (_req, res) => {
-      return res.networkError('Network Error');
-    })
-  )
+      return res.networkError("Network Error");
+    }),
+  );
   const result = await drupalkit.jsonApi.resource(
     "node--article",
     "readMany",
     {},
   );
 
-  const err = result.expectErr('Expect error');
+  const err = result.expectErr("Expect error");
 
-  t.assert(err.message.includes('Network Error'));
+  t.assert(err.message.includes("Network Error"));
   t.is(err.response, undefined);
-})
+});
 
-
-test.serial("Create new resource", async t => {
+test.serial("Create new resource", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
     rest.post("*/jsonapi/node/article", (_req, res, ctx) =>
       res(
-        ctx.set('Content-Type', 'application/vnd.api+json'),
+        ctx.set("Content-Type", "application/vnd.api+json"),
         ctx.json(JsonApiArticleDetail),
-      )
-    )
-  )
+      ),
+    ),
+  );
 
   const result = await drupalkit.jsonApi.resource("node--article", "create", {
     payload: {
@@ -312,20 +313,20 @@ test.serial("Create new resource", async t => {
 
   const res = result.unwrap();
   t.snapshot(res);
-})
+});
 
-test.serial("Handle error when creating new resource", async t => {
+test.serial("Handle error when creating new resource", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
     rest.post("*/jsonapi/node/article", (_req, res, ctx) =>
       res(
-        ctx.set('Content-Type', 'application/vnd.api+json'),
+        ctx.set("Content-Type", "application/vnd.api+json"),
         ctx.status(400),
         ctx.json(JsonApiIncludeError),
-      )
-    )
-  )
+      ),
+    ),
+  );
 
   const result = await drupalkit.jsonApi.resource("node--article", "create", {
     payload: {
@@ -346,24 +347,24 @@ test.serial("Handle error when creating new resource", async t => {
     },
   });
 
-  const error = result.expectErr('Expect error');
+  const error = result.expectErr("Expect error");
 
   t.assert(error instanceof DrupalkitJsonApiError);
   t.is(error.statusCode, 400);
-})
+});
 
-test.serial("Update resource", async t => {
+test.serial("Update resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   server.use(
     rest.patch("*/jsonapi/node/article/" + uuid, (_req, res, ctx) =>
       res(
-        ctx.set('Content-Type', 'application/vnd.api+json'),
+        ctx.set("Content-Type", "application/vnd.api+json"),
         ctx.json(JsonApiArticleDetail),
-      )
-    )
-  )
+      ),
+    ),
+  );
 
   const result = await drupalkit.jsonApi.resource("node--article", "update", {
     uuid,
@@ -380,21 +381,21 @@ test.serial("Update resource", async t => {
 
   const res = result.unwrap();
   t.snapshot(res);
-})
+});
 
-test.serial("Handle error when updating resource", async t => {
+test.serial("Handle error when updating resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   server.use(
     rest.patch("*/jsonapi/node/article/" + uuid, (_req, res, ctx) =>
       res(
-        ctx.set('Content-Type', 'application/vnd.api+json'),
+        ctx.set("Content-Type", "application/vnd.api+json"),
         ctx.status(400),
         ctx.json(JsonApiIncludeError),
-      )
-    )
-  )
+      ),
+    ),
+  );
 
   const result = await drupalkit.jsonApi.resource("node--article", "update", {
     uuid,
@@ -409,53 +410,50 @@ test.serial("Handle error when updating resource", async t => {
     },
   });
 
-  const error = result.expectErr('Expect error');
+  const error = result.expectErr("Expect error");
 
   t.assert(error instanceof DrupalkitJsonApiError);
   t.is(error.statusCode, 400);
-})
+});
 
-test.serial("Delete resource", async t => {
+test.serial("Delete resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   server.use(
     rest.delete("*/jsonapi/node/article/" + uuid, (_req, res, ctx) =>
-      res(
-        ctx.set('Content-Type', 'application/vnd.api+json'),
-        ctx.status(204),
-      )
-    )
-  )
+      res(ctx.set("Content-Type", "application/vnd.api+json"), ctx.status(204)),
+    ),
+  );
 
   const result = await drupalkit.jsonApi.resource("node--article", "delete", {
     uuid,
   });
 
   const res = result.unwrap();
-  t.assert(res)
-})
+  t.assert(res);
+});
 
-test.serial("Handle error when deleting resource", async t => {
+test.serial("Handle error when deleting resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   server.use(
     rest.delete("*/jsonapi/node/article/" + uuid, (_req, res, ctx) =>
       res(
-        ctx.set('Content-Type', 'application/vnd.api+json'),
+        ctx.set("Content-Type", "application/vnd.api+json"),
         ctx.status(400),
         ctx.json(JsonApiIncludeError),
-      )
-    )
-  )
+      ),
+    ),
+  );
 
   const result = await drupalkit.jsonApi.resource("node--article", "delete", {
     uuid,
   });
 
-  const error = result.expectErr('Expect error');
+  const error = result.expectErr("Expect error");
 
   t.assert(error instanceof DrupalkitJsonApiError);
   t.is(error.statusCode, 400);
-})
+});
