@@ -4,7 +4,7 @@
   "type": "module",
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "@wunderwerk/ts-results": "^0.1.1",
+    "@wunderwerk/ts-functional": "1.0.0-beta.2",
     "before-after-hook": "^3.0.2",
     "is-plain-object": "^5.0.0",
     "node-fetch": "^3.3.1",

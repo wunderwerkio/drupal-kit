@@ -4,8 +4,7 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@drupal-kit/core": "workspace:0.3.1",
-    "@wunderwerk/ts-results": "^0.1.1"
+    "@drupal-kit/core": "workspace:0.3.1"
   },
   "devDependencies": {
     "@drupal-kit/config-typescript": "workspace:0.3.1",
