@@ -26,6 +26,13 @@ export interface RegisterResponse {
   content_translation_created?: [EntityFieldWithFormat];
 }
 
+/**
+ * Generic success response.
+ */
+export interface SuccessResponse {
+  status: "success";
+}
+
 export type EntityField<V = string> = {
   value: V;
 };
