@@ -4,18 +4,16 @@
   "compilerOptions": {
     "target": "es2018",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
+    "allowJs": false,
+    "skipLibCheck": false,
     "strict": true,
     "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node16",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noUncheckedIndexedAccess": true
+    "isolatedModules": true
   },
   "exclude": ["node_modules"],
   "ts-node": {
