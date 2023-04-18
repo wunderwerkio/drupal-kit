@@ -1,4 +1,7 @@
 {
   "extends": "@drupal-kit/config-typescript/base.json",
+  "compilerOptions": {
+    "skipLibCheck": true
+  },
   "include": ["src/**/*.ts"]
 }
