@@ -1,7 +1,7 @@
 import { Result } from "@wunderwerk/ts-results";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
-import { RegisterPayload, RegisterResponse } from "./types.js";
+import { RegisterPayload, RegisterResponse, SuccessResponse } from "./types.js";
 
 declare module "@drupal-kit/core" {
   interface DrupalkitOptions {
@@ -88,7 +88,7 @@ export const DrupalkitUserApi = (
   const initAccountCancel = async () => {
     const url = drupalkit.buildUrl(initAccountCancelEndpoint);
 
-    const result = await drupalkit.request<{ status: "success" }>(url, {
+    const result = await drupalkit.request<SuccessResponse>(url, {
       method: "POST",
       headers,
     });
@@ -112,7 +112,7 @@ export const DrupalkitUserApi = (
   const cancelAccount = async () => {
     const url = drupalkit.buildUrl(cancelAccountEndpoint);
 
-    const result = await drupalkit.request<{ status: "success" }>(url, {
+    const result = await drupalkit.request<SuccessResponse>(url, {
       method: "POST",
       headers,
     });
@@ -137,7 +137,7 @@ export const DrupalkitUserApi = (
   const resetPassword = async (email: string) => {
     const url = drupalkit.buildUrl(resetPasswordEndpoint);
 
-    const result = await drupalkit.request<{ status: "success" }>(url, {
+    const result = await drupalkit.request<SuccessResponse>(url, {
       method: "POST",
       body: { email },
       headers,
@@ -172,7 +172,7 @@ export const DrupalkitUserApi = (
       payload.currentPassword = currentPassword;
     }
 
-    const result = await drupalkit.request<{ status: "success" }>(url, {
+    const result = await drupalkit.request<SuccessResponse>(url, {
       method: "POST",
       body: payload,
       headers,
@@ -198,7 +198,7 @@ export const DrupalkitUserApi = (
   const passwordlessLogin = async (email: string) => {
     const url = drupalkit.buildUrl(passwordlessLoginEndpoint);
 
-    const result = await drupalkit.request<{ status: "success" }>(url, {
+    const result = await drupalkit.request<SuccessResponse>(url, {
       method: "POST",
       body: { email },
       unauthenticated: true,
@@ -225,7 +225,7 @@ export const DrupalkitUserApi = (
   const verifyEmail = async (email: string) => {
     const url = drupalkit.buildUrl(verifyEmailEndpoint);
 
-    const result = await drupalkit.request<{ status: "success" }>(url, {
+    const result = await drupalkit.request<SuccessResponse>(url, {
       method: "POST",
       body: { email },
       headers,
@@ -249,7 +249,7 @@ export const DrupalkitUserApi = (
   const updateEmail = async (email: string) => {
     const url = drupalkit.buildUrl(updateEmailEndpoint);
 
-    const result = await drupalkit.request<{ status: "success" }>(url, {
+    const result = await drupalkit.request<SuccessResponse>(url, {
       method: "POST",
       body: { email },
       headers,
