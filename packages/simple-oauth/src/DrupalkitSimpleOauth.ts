@@ -1,5 +1,5 @@
-import { Result } from "@wunderwerk/ts-results";
-import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
+import { Result } from "@wunderwerk/ts-functional/results";
+import { Drupalkit, DrupalkitError, DrupalkitOptions } from "@drupal-kit/core";
 
 import { DrupalkitSimpleOauthError } from "./DrupalkitSimpleOauthError.js";
 import {
@@ -45,7 +45,7 @@ export const DrupalkitSimpleOauth = (
   >(
     grantType: GrantType,
     grant: Grant,
-  ) => {
+  ): Promise<Result<SimpleOauthTokenResponse, DrupalkitError>> => {
     const url = drupalkit.buildUrl(oauthTokenEndpoint);
 
     const body = new URLSearchParams();
@@ -79,7 +79,9 @@ export const DrupalkitSimpleOauth = (
    * Do not forget to augment the SimpleOauthUserInfo interface
    * to match the OpenID Connect claims of your drupal installation!
    */
-  const getUserInfo = async () => {
+  const getUserInfo = async (): Promise<
+    Result<SimpleOauthUserInfo, DrupalkitError>
+  > => {
     const url = drupalkit.buildUrl(oauthUserInfoEndpoint);
 
     const result = await drupalkit.request<SimpleOauthUserInfo>(url, {

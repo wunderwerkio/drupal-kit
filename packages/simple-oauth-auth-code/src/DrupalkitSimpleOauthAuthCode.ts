@@ -1,5 +1,5 @@
-import { Result } from "@wunderwerk/ts-results";
-import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
+import { Result } from "@wunderwerk/ts-functional/results";
+import { Drupalkit, DrupalkitError, DrupalkitOptions } from "@drupal-kit/core";
 
 import { AuthCodeResponse } from "./types.js";
 
@@ -34,7 +34,10 @@ export const DrupalkitSimpleOauthAuthCode = <Operation extends string>(
    * @param operation - The operation this auth code is for.
    * @param email - The email address of the user.
    */
-  const requestAuthCode = async (operation: Operation, email: string) => {
+  const requestAuthCode = async (
+    operation: Operation,
+    email: string,
+  ): Promise<Result<AuthCodeResponse, DrupalkitError>> => {
     const url = drupalkit.buildUrl(authCodeEndpoint);
 
     const result = await drupalkit.request<AuthCodeResponse>(url, {

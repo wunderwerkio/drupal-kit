@@ -1,4 +1,4 @@
-import { Err, Ok, Result } from "@wunderwerk/ts-results";
+import { Result } from "@wunderwerk/ts-functional/results";
 import { ResourceObject, Response } from "ts-json-api";
 import {
   Drupalkit,
@@ -47,7 +47,7 @@ export const DrupalkitJsonApi = (
    *
    * @returns A result object containing the JSON:API index or an error.
    */
-  const getIndex = async () => {
+  const getIndex = async (): Promise<Result<JsonApiIndex, DrupalkitError>> => {
     const url = buildJsonApiUrl("");
 
     const response = await drupalkit.request<JsonApiIndex>(url, {
@@ -79,7 +79,7 @@ export const DrupalkitJsonApi = (
     options?: {
       localeOverride?: string;
     },
-  ) => {
+  ): Promise<Result<Response<R>, DrupalkitError>> => {
     const path = type.replace("--", "/") + "/" + parameters.uuid;
 
     const url = buildJsonApiUrl(path, {
@@ -114,7 +114,7 @@ export const DrupalkitJsonApi = (
     options?: {
       localeOverride?: string;
     },
-  ) => {
+  ): Promise<Result<Response<R[]>, DrupalkitError>> => {
     const path = type.replace("--", "/");
 
     const url = buildJsonApiUrl(path, {
@@ -149,7 +149,7 @@ export const DrupalkitJsonApi = (
     options?: {
       localeOverride?: string;
     },
-  ) => {
+  ): Promise<Result<Response<R>, DrupalkitError>> => {
     const path = type.replace("--", "/");
 
     const url = buildJsonApiUrl(path, options);
@@ -182,7 +182,7 @@ export const DrupalkitJsonApi = (
     options?: {
       localeOverride?: string;
     },
-  ) => {
+  ): Promise<Result<Response<R>, DrupalkitError>> => {
     const path = type.replace("--", "/") + "/" + parameters.uuid;
 
     const url = buildJsonApiUrl(path, options);
@@ -210,7 +210,7 @@ export const DrupalkitJsonApi = (
   const deleteResource = async <R extends ResourceObject>(
     type: R["type"],
     parameters: DeleteParameters,
-  ) => {
+  ): Promise<Result<true, DrupalkitError>> => {
     const path = type.replace("--", "/") + "/" + parameters.uuid;
 
     const url = buildJsonApiUrl(path);
@@ -224,7 +224,7 @@ export const DrupalkitJsonApi = (
       return result;
     }
 
-    return Result.Ok(true);
+    return Result.Ok(true as const);
   };
 
   /**
@@ -278,16 +278,16 @@ export const DrupalkitJsonApi = (
         Return extends Record<
           Operation,
           "readSingle" extends Operation
-            ? Err<DrupalkitError> | Ok<Response<Resource>>
+            ? Result<Response<Resource>, DrupalkitError>
             : "readMany" extends Operation
-            ? Err<DrupalkitError> | Ok<Response<Resource[]>>
+            ? Result<Response<Resource[]>, DrupalkitError>
             : "create" extends Operation
             ? Awaited<ReturnType<typeof createResource>>
             : "update" extends Operation
             ? Awaited<ReturnType<typeof updateResource>>
             : "delete" extends Operation
             ? Awaited<ReturnType<typeof deleteResource>>
-            : Err<Error>
+            : Result<never, Error>
         >,
       >(
         type: Type,

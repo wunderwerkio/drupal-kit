@@ -67,7 +67,6 @@ importers:
       '@drupal-kit/types': workspace:0.3.1
       '@rollup/plugin-typescript': ^11.1.0
       '@swc/core': ^1.3.51
-      '@wunderwerk/ts-results': ^0.1.1
       ava: ^5.2.0
       esbuild: ^0.17.17
       msw: ^1.2.1
@@ -78,7 +77,6 @@ importers:
       typescript: 5.0.4
     dependencies:
       '@drupal-kit/core': link:../core
-      '@wunderwerk/ts-results': 0.1.1
     devDependencies:
       '@drupal-kit/config-typescript': link:../config/typescript
       '@drupal-kit/eslint-config': link:../config/eslint
@@ -103,7 +101,7 @@ importers:
       '@swc/core': ^1.3.51
       '@types/node-fetch': ^2.6.3
       '@types/qs': ^6.9.7
-      '@wunderwerk/ts-results': ^0.1.1
+      '@wunderwerk/ts-functional': 1.0.0-beta.2
       ava: ^5.2.0
       before-after-hook: ^3.0.2
       esbuild: ^0.17.17
@@ -117,7 +115,7 @@ importers:
       ts-node: ^10.9.1
       typescript: 5.0.4
     dependencies:
-      '@wunderwerk/ts-results': 0.1.1
+      '@wunderwerk/ts-functional': 1.0.0-beta.2
       before-after-hook: 3.0.2
       is-plain-object: 5.0.0_lray4voikhoiy5hx7wwtwhzd7e
       node-fetch: 3.3.1
@@ -147,7 +145,7 @@ importers:
       '@drupal-kit/types': workspace:0.3.1
       '@rollup/plugin-typescript': ^11.1.0
       '@swc/core': ^1.3.51
-      '@wunderwerk/ts-results': ^0.1.1
+      '@wunderwerk/ts-functional': 1.0.0-beta.2
       ava: ^5.2.0
       drupal-jsonapi-params: ^2.2.0
       esbuild: ^0.17.17
@@ -160,7 +158,7 @@ importers:
       typescript: 5.0.4
     dependencies:
       '@drupal-kit/core': link:../core
-      '@wunderwerk/ts-results': 0.1.1
+      '@wunderwerk/ts-functional': 1.0.0-beta.2
       drupal-jsonapi-params: 2.2.0
       ts-json-api: 1.2.0
     devDependencies:
@@ -186,7 +184,7 @@ importers:
       '@drupal-kit/types': workspace:0.3.1
       '@rollup/plugin-typescript': ^11.1.0
       '@swc/core': ^1.3.51
-      '@wunderwerk/ts-results': ^0.1.1
+      '@wunderwerk/ts-functional': 1.0.0-beta.2
       ava: ^5.2.0
       esbuild: ^0.17.17
       msw: ^1.2.1
@@ -197,7 +195,7 @@ importers:
       typescript: 5.0.4
     dependencies:
       '@drupal-kit/core': link:../core
-      '@wunderwerk/ts-results': 0.1.1
+      '@wunderwerk/ts-functional': 1.0.0-beta.2
     devDependencies:
       '@drupal-kit/config-typescript': link:../config/typescript
       '@drupal-kit/eslint-config': link:../config/eslint
@@ -221,7 +219,7 @@ importers:
       '@drupal-kit/types': workspace:0.3.1
       '@rollup/plugin-typescript': ^11.1.0
       '@swc/core': ^1.3.51
-      '@wunderwerk/ts-results': ^0.1.1
+      '@wunderwerk/ts-functional': 1.0.0-beta.2
       ava: ^5.2.0
       esbuild: ^0.17.17
       msw: ^1.2.1
@@ -232,7 +230,7 @@ importers:
       typescript: 5.0.4
     dependencies:
       '@drupal-kit/core': link:../core
-      '@wunderwerk/ts-results': 0.1.1
+      '@wunderwerk/ts-functional': 1.0.0-beta.2
     devDependencies:
       '@drupal-kit/config-typescript': link:../config/typescript
       '@drupal-kit/eslint-config': link:../config/eslint
@@ -266,7 +264,7 @@ importers:
       '@drupal-kit/types': workspace:0.3.1
       '@rollup/plugin-typescript': ^11.1.0
       '@swc/core': ^1.3.51
-      '@wunderwerk/ts-results': ^0.1.1
+      '@wunderwerk/ts-functional': 1.0.0-beta.2
       ava: ^5.2.0
       esbuild: ^0.17.17
       msw: ^1.2.1
@@ -277,7 +275,7 @@ importers:
       typescript: 5.0.4
     dependencies:
       '@drupal-kit/core': link:../core
-      '@wunderwerk/ts-results': 0.1.1
+      '@wunderwerk/ts-functional': 1.0.0-beta.2
     devDependencies:
       '@drupal-kit/config-typescript': link:../config/typescript
       '@drupal-kit/eslint-config': link:../config/eslint
@@ -301,7 +299,6 @@ importers:
       '@drupal-kit/types': workspace:0.3.1
       '@rollup/plugin-typescript': ^11.1.0
       '@swc/core': ^1.3.51
-      '@wunderwerk/ts-results': ^0.1.1
       ava: ^5.2.0
       esbuild: ^0.17.17
       msw: ^1.2.1
@@ -312,7 +309,6 @@ importers:
       typescript: 5.0.4
     dependencies:
       '@drupal-kit/core': link:../core
-      '@wunderwerk/ts-results': 0.1.1
     devDependencies:
       '@drupal-kit/config-typescript': link:../config/typescript
       '@drupal-kit/eslint-config': link:../config/eslint
@@ -1692,10 +1688,8 @@ packages:
       eslint-plugin-jsdoc: 41.1.2_eslint@8.38.0
     dev: true
 
-  /@wunderwerk/ts-results/0.1.1:
-    resolution: {integrity: sha512-wTJa63qZBgUJY7Pen8hlTyuiKBKnCB0EVF5jPmsuLhStCQHbRP4lFA5Nl6l0Lc/sSdcY8gFLowO3FzqLopW/6w==}
-    optionalDependencies:
-      rxjs: 7.8.0
+  /@wunderwerk/ts-functional/1.0.0-beta.2:
+    resolution: {integrity: sha512-8hfcmX1GI8DmCd/p/l13sa81KNf5cIkJnutib7TUIENaelpx5FvXJdma9cpF90b357+NPZ1zW8nm5OgsWZWyXA==}
     dev: false
 
   /@xmldom/xmldom/0.8.7:
@@ -2486,7 +2480,7 @@ packages:
     engines: {node: '>=14.16'}
     dependencies:
       globby: 13.1.4
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       is-glob: 4.0.3
       is-path-cwd: 3.0.0
       is-path-inside: 4.0.0
@@ -2753,8 +2747,8 @@ packages:
     resolution: {integrity: sha512-gozW2blMLJCeFpBwugLTGyvVjNoeo1knonXAcatC6bjPBZitotxdWf7Gimr25N4c0AAOo4eOUfaG82IJPDpqCA==}
     dependencies:
       debug: 3.2.7
-      is-core-module: 2.11.0
-      resolve: 1.22.1
+      is-core-module: 2.12.0
+      resolve: 1.22.3
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -3486,7 +3480,7 @@ packages:
     engines: {node: '>=12.0.0'}
     dependencies:
       ansi-escapes: 4.3.2
-      chalk: 4.1.1
+      chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-width: 3.0.0
       external-editor: 3.1.0
@@ -3983,7 +3977,7 @@ packages:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
     engines: {node: '>=10'}
     dependencies:
-      chalk: 4.1.1
+      chalk: 4.1.2
       is-unicode-supported: 0.1.0
     dev: true
 
@@ -4352,7 +4346,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       bl: 4.1.0
-      chalk: 4.1.1
+      chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.8.0
       is-interactive: 1.0.0
@@ -4727,7 +4721,7 @@ packages:
     resolution: {integrity: sha512-nBpuuYuY5jFsli/JIs1oldw6fOQCBioohqWZg/2hiaOybXOft4lonv85uDOKXdf8rhyK159cxU5cDcK/NKk8zw==}
     hasBin: true
     dependencies:
-      is-core-module: 2.11.0
+      is-core-module: 2.12.0
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
     dev: true
@@ -4817,6 +4811,7 @@ packages:
     requiresBuild: true
     dependencies:
       tslib: 2.5.0
+    dev: true
 
   /safe-buffer/5.2.1:
     resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==}
@@ -5285,6 +5280,7 @@ packages:
 
   /tslib/2.5.0:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
+    dev: true
 
   /tsutils/3.21.0_typescript@5.0.4:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}

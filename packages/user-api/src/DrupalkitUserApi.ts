@@ -1,5 +1,5 @@
-import { Result } from "@wunderwerk/ts-results";
-import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
+import { Result } from "@wunderwerk/ts-functional/results";
+import { Drupalkit, DrupalkitError, DrupalkitOptions } from "@drupal-kit/core";
 
 import { RegisterPayload, RegisterResponse, SuccessResponse } from "./types.js";
 
@@ -61,7 +61,9 @@ export const DrupalkitUserApi = (
    *
    * @param payload - The registration payload.
    */
-  const register = async (payload: RegisterPayload) => {
+  const register = async (
+    payload: RegisterPayload,
+  ): Promise<Result<RegisterResponse, DrupalkitError>> => {
     const url = drupalkit.buildUrl(registrationEndpoint);
 
     const result = await drupalkit.request<RegisterResponse>(url, {
@@ -85,7 +87,9 @@ export const DrupalkitUserApi = (
    * This endpoint does not return useful data.
    * Only the status code is important.
    */
-  const initAccountCancel = async () => {
+  const initAccountCancel = async (): Promise<
+    Result<SuccessResponse, DrupalkitError>
+  > => {
     const url = drupalkit.buildUrl(initAccountCancelEndpoint);
 
     const result = await drupalkit.request<SuccessResponse>(url, {
@@ -109,7 +113,9 @@ export const DrupalkitUserApi = (
    * This endpoint does not return useful data.
    * Only the status code is important.
    */
-  const cancelAccount = async () => {
+  const cancelAccount = async (): Promise<
+    Result<SuccessResponse, DrupalkitError>
+  > => {
     const url = drupalkit.buildUrl(cancelAccountEndpoint);
 
     const result = await drupalkit.request<SuccessResponse>(url, {
@@ -134,7 +140,9 @@ export const DrupalkitUserApi = (
    *
    * @param email - E-Mail address of the user.
    */
-  const resetPassword = async (email: string) => {
+  const resetPassword = async (
+    email: string,
+  ): Promise<Result<SuccessResponse, DrupalkitError>> => {
     const url = drupalkit.buildUrl(resetPasswordEndpoint);
 
     const result = await drupalkit.request<SuccessResponse>(url, {
@@ -162,7 +170,7 @@ export const DrupalkitUserApi = (
   const updatePassword = async (
     newPassword: string,
     currentPassword?: string,
-  ) => {
+  ): Promise<Result<SuccessResponse, DrupalkitError>> => {
     const url = drupalkit.buildUrl(updatePasswordEndpoint);
 
     const payload: { newPassword: string; currentPassword?: string } = {
@@ -195,7 +203,9 @@ export const DrupalkitUserApi = (
    *
    * @param email - E-Mail address of the user.
    */
-  const passwordlessLogin = async (email: string) => {
+  const passwordlessLogin = async (
+    email: string,
+  ): Promise<Result<SuccessResponse, DrupalkitError>> => {
     const url = drupalkit.buildUrl(passwordlessLoginEndpoint);
 
     const result = await drupalkit.request<SuccessResponse>(url, {
@@ -222,7 +232,9 @@ export const DrupalkitUserApi = (
    *
    * @param email - New E-Mail address of the user.
    */
-  const verifyEmail = async (email: string) => {
+  const verifyEmail = async (
+    email: string,
+  ): Promise<Result<SuccessResponse, DrupalkitError>> => {
     const url = drupalkit.buildUrl(verifyEmailEndpoint);
 
     const result = await drupalkit.request<SuccessResponse>(url, {
@@ -246,7 +258,9 @@ export const DrupalkitUserApi = (
    *
    * @param email - New E-Mail address of the user.
    */
-  const updateEmail = async (email: string) => {
+  const updateEmail = async (
+    email: string,
+  ): Promise<Result<SuccessResponse, DrupalkitError>> => {
     const url = drupalkit.buildUrl(updateEmailEndpoint);
 
     const result = await drupalkit.request<SuccessResponse>(url, {

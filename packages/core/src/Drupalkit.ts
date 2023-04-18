@@ -1,4 +1,4 @@
-import { Result } from "@wunderwerk/ts-results";
+import { Result } from "@wunderwerk/ts-functional/results";
 import Hook, { HookCollection } from "before-after-hook";
 import qs from "qs";
 import {
@@ -134,7 +134,10 @@ export class Drupalkit {
    * @param url - Relative or absolute url.
    * @param options - Request options.
    */
-  public request<R>(url: Url, options: RequestOptions) {
+  public request<R>(
+    url: Url,
+    options: RequestOptions,
+  ): Promise<Result<DrupalkitResponse<R, number>, DrupalkitError>> {
     // eslint-disable-next-line jsdoc/require-jsdoc
     const request = (options: RequestRequestOptions) => {
       return fetchWrapper<R>(options);
@@ -162,7 +165,7 @@ export class Drupalkit {
       headers,
     };
 
-    return this.hook("request", request, requestOptions)
+    const p = this.hook("request", request, requestOptions)
       .then((response) => Result.Ok(response as DrupalkitResponse<R, number>))
       .catch((error) => {
         if (error instanceof DrupalkitError) return Result.Err(error);
@@ -173,6 +176,8 @@ export class Drupalkit {
           }),
         );
       });
+
+    return p;
   }
 
   /**
