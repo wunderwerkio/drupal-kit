@@ -1,0 +1,7 @@
+{
+  "extends": "./base.json",
+  "display": "Testing",
+  "compilerOptions": {
+    "skipLibCheck": true
+  }
+}
