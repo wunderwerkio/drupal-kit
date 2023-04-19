@@ -22,6 +22,7 @@ import {
   UnionToIntersection,
 } from "./types.js";
 import { trimSlashesFromSegment } from "./utils.js";
+import { VERSION } from "./version.js";
 
 /**
  * Drupalkit base calss.
@@ -37,7 +38,7 @@ export class Drupalkit {
   readonly baseUrl: string;
   readonly availableLocales: string[] = [];
   readonly defaultLocale?: string;
-  readonly agent = "drupalkit/0.0.0-development";
+  readonly agent: string;
   readonly log: Log;
   readonly hook: HookCollection<Hooks>;
   private locale?: string;
@@ -95,6 +96,7 @@ export class Drupalkit {
 
     this.hook = hook;
     this.baseUrl = trimSlashesFromSegment(options.baseUrl);
+    this.agent = `drupal-kit/${VERSION}`;
 
     if (options.locale) {
       this.locale = options.locale;

@@ -38,3 +38,11 @@ test("Deep merge plugins", (t) => {
   t.assert(Object.keys(instance.shared).includes("propFromOne"));
   t.assert(Object.keys(instance.shared).includes("propFromTwo"));
 });
+
+test("Set agent", (t) => {
+  const instance = new Drupalkit({
+    baseUrl: "https://drupal-headless-boilerplate.ddev.site",
+  });
+
+  t.is(instance.agent, `drupal-kit/0.0.0-development`);
+});
