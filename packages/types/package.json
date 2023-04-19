@@ -10,5 +10,11 @@
   "scripts": {
     "lint": "eslint --ext .ts,.tsx src --max-warnings 0",
     "typecheck": "tsc --project ./tsconfig.json --noEmit"
-  }
+  },
+  "files": [
+    "src",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ]
 }
