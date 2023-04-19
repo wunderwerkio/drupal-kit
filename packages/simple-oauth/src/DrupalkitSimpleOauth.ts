@@ -45,7 +45,7 @@ export const DrupalkitSimpleOauth = (
   >(
     grantType: GrantType,
     grant: Grant,
-  ): Promise<Result<SimpleOauthTokenResponse, DrupalkitError>> => {
+  ): Promise<Result<SimpleOauthTokenResponse, DrupalkitSimpleOauthError>> => {
     const url = drupalkit.buildUrl(oauthTokenEndpoint);
 
     const body = new URLSearchParams();
@@ -64,7 +64,9 @@ export const DrupalkitSimpleOauth = (
     });
 
     if (result.err) {
-      return result;
+      return Result.Err(
+        DrupalkitSimpleOauthError.fromDrupalkitError(result.val),
+      );
     }
 
     return Result.Ok(result.val.data);
