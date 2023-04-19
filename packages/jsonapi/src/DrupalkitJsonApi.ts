@@ -47,21 +47,23 @@ export const DrupalkitJsonApi = (
    *
    * @returns A result object containing the JSON:API index or an error.
    */
-  const getIndex = async (): Promise<Result<JsonApiIndex, DrupalkitError>> => {
+  const getIndex = async (): Promise<
+    Result<JsonApiIndex, DrupalkitJsonApiError>
+  > => {
     const url = buildJsonApiUrl("");
 
-    const response = await drupalkit.request<JsonApiIndex>(url, {
+    const result = await drupalkit.request<JsonApiIndex>(url, {
       method: "GET",
       headers: {
         ...defaultHeaders,
       },
     });
 
-    if (response.err) {
-      return response;
+    if (result.err) {
+      return Result.Err(DrupalkitJsonApiError.fromDrupalkitError(result.val));
     }
 
-    return Result.Ok(response.val.data);
+    return Result.Ok(result.val.data);
   };
 
   /**
@@ -79,7 +81,7 @@ export const DrupalkitJsonApi = (
     options?: {
       localeOverride?: string;
     },
-  ): Promise<Result<Response<R>, DrupalkitError>> => {
+  ): Promise<Result<Response<R>, DrupalkitJsonApiError>> => {
     const path = type.replace("--", "/") + "/" + parameters.uuid;
 
     const url = buildJsonApiUrl(path, {
@@ -93,7 +95,7 @@ export const DrupalkitJsonApi = (
     });
 
     if (result.err) {
-      return result;
+      return Result.Err(DrupalkitJsonApiError.fromDrupalkitError(result.val));
     }
 
     return Result.Ok(result.val.data);
@@ -114,7 +116,7 @@ export const DrupalkitJsonApi = (
     options?: {
       localeOverride?: string;
     },
-  ): Promise<Result<Response<R[]>, DrupalkitError>> => {
+  ): Promise<Result<Response<R[]>, DrupalkitJsonApiError>> => {
     const path = type.replace("--", "/");
 
     const url = buildJsonApiUrl(path, {
@@ -128,7 +130,7 @@ export const DrupalkitJsonApi = (
     });
 
     if (result.err) {
-      return result;
+      return Result.Err(DrupalkitJsonApiError.fromDrupalkitError(result.val));
     }
 
     return Result.Ok(result.val.data);
@@ -149,7 +151,7 @@ export const DrupalkitJsonApi = (
     options?: {
       localeOverride?: string;
     },
-  ): Promise<Result<Response<R>, DrupalkitError>> => {
+  ): Promise<Result<Response<R>, DrupalkitJsonApiError>> => {
     const path = type.replace("--", "/");
 
     const url = buildJsonApiUrl(path, options);
@@ -161,7 +163,7 @@ export const DrupalkitJsonApi = (
     });
 
     if (result.err) {
-      return result;
+      return Result.Err(DrupalkitJsonApiError.fromDrupalkitError(result.val));
     }
 
     return Result.Ok(result.val.data);
@@ -182,7 +184,7 @@ export const DrupalkitJsonApi = (
     options?: {
       localeOverride?: string;
     },
-  ): Promise<Result<Response<R>, DrupalkitError>> => {
+  ): Promise<Result<Response<R>, DrupalkitJsonApiError>> => {
     const path = type.replace("--", "/") + "/" + parameters.uuid;
 
     const url = buildJsonApiUrl(path, options);
@@ -194,7 +196,7 @@ export const DrupalkitJsonApi = (
     });
 
     if (result.err) {
-      return result;
+      return Result.Err(DrupalkitJsonApiError.fromDrupalkitError(result.val));
     }
 
     return Result.Ok(result.val.data);
@@ -210,7 +212,7 @@ export const DrupalkitJsonApi = (
   const deleteResource = async <R extends ResourceObject>(
     type: R["type"],
     parameters: DeleteParameters,
-  ): Promise<Result<true, DrupalkitError>> => {
+  ): Promise<Result<true, DrupalkitJsonApiError>> => {
     const path = type.replace("--", "/") + "/" + parameters.uuid;
 
     const url = buildJsonApiUrl(path);
@@ -221,7 +223,7 @@ export const DrupalkitJsonApi = (
     });
 
     if (result.err) {
-      return result;
+      return Result.Err(DrupalkitJsonApiError.fromDrupalkitError(result.val));
     }
 
     return Result.Ok(true as const);
