@@ -26,7 +26,9 @@
     "build": "rollup -c",
     "lint": "eslint --ext .ts,.tsx src --max-warnings 0",
     "test": "NODE_NO_WARNINGS=1 ava",
-    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+    "typecheck": "pnpm run '/(typecheck:.*)/'",
+    "typecheck:src": "tsc --project ./tsconfig.json",
+    "typecheck:tests": "tsc --project ./tsconfig.tests.json"
   },
   "ava": {
     "files": [
