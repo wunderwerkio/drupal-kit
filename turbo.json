@@ -18,6 +18,10 @@
       "outputs": [],
       "inputs": ["src/**/*.ts", "tests/**/*.ts"]
     },
+    "export-version": {
+      "outputs": ["src/version.ts"],
+      "inputs": ["package.json"]
+    },
     "test:watch": {
       "cache": false
     }
