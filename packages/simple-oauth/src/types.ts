@@ -68,7 +68,8 @@ export type SimpleOauthError =
   | "invalid_scope"
   | "server_error"
   | "access_denied"
-  | "invalid_grant";
+  | "invalid_grant"
+  | null;
 
 export type SimpleOauthInvalidRequest =
   | "auth_code_expired"

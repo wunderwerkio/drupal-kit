@@ -49,7 +49,7 @@ test("Instanciate from DrupalkitError", (t) => {
   t.assert(soError instanceof DrupalkitError);
 });
 
-test("Return DrupalkitError if error does not contain simple oauth error data", (t) => {
+test("OauthError should be null if error does not contain simple oauth error data", (t) => {
   // Without response.
   let error = new DrupalkitError("test-error", 400, {
     request,
@@ -57,8 +57,8 @@ test("Return DrupalkitError if error does not contain simple oauth error data", 
 
   let soError = DrupalkitSimpleOauthError.fromDrupalkitError(error);
 
-  t.assert(!(soError instanceof DrupalkitSimpleOauthError));
-  t.assert(soError instanceof DrupalkitError);
+  t.assert(soError instanceof DrupalkitSimpleOauthError);
+  t.is(soError.error, null);
 
   // Without payload.
   error = new DrupalkitError("test-error", 400, {
@@ -71,8 +71,8 @@ test("Return DrupalkitError if error does not contain simple oauth error data", 
 
   soError = DrupalkitSimpleOauthError.fromDrupalkitError(error);
 
-  t.assert(!(soError instanceof DrupalkitSimpleOauthError));
-  t.assert(soError instanceof DrupalkitError);
+  t.assert(soError instanceof DrupalkitSimpleOauthError);
+  t.is(soError.error, null);
 
   // With invalid payload.
   error = new DrupalkitError("test-error", 400, {
@@ -87,8 +87,8 @@ test("Return DrupalkitError if error does not contain simple oauth error data", 
 
   soError = DrupalkitSimpleOauthError.fromDrupalkitError(error);
 
-  t.assert(!(soError instanceof DrupalkitSimpleOauthError));
-  t.assert(soError instanceof DrupalkitError);
+  t.assert(soError instanceof DrupalkitSimpleOauthError);
+  t.is(soError.error, null);
 });
 
 test("Set error type, hint and message from response", (t) => {
