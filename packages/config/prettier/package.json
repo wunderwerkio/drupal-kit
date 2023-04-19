@@ -1,6 +1,6 @@
 {
   "name": "@drupal-kit/config-prettier",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "main": "index.js",
   "private": true,
   "devDependencies": {
