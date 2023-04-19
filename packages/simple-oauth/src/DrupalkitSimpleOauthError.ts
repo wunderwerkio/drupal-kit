@@ -88,19 +88,18 @@ export class DrupalkitSimpleOauthError extends DrupalkitError {
       ? this.extractErrorFromResponse(error.response.data)
       : null;
 
-    if (!errorData) {
-      return error;
-    }
+    const message = errorData?.message ?? error.message;
+    const oauthError = errorData?.error ?? null;
 
     return new this(
-      errorData.message ?? error.message,
+      message,
       error.statusCode,
-      errorData.error,
+      oauthError,
       {
         request: error.request,
         response: error.response,
       },
-      errorData.hint,
+      errorData?.hint,
     );
   }
 
