@@ -30,10 +30,10 @@
   },
   "scripts": {
     "build": "rollup -c",
+    "export-version": "node-pkg-version-export src/version.ts",
     "lint": "eslint --ext .ts,.tsx src --max-warnings 0",
     "test": "NODE_NO_WARNINGS=1 ava",
-    "typecheck": "tsc --project ./tsconfig.json --noEmit",
-    "export-version": "node-pkg-version-export src/version.ts"
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
   },
   "ava": {
     "files": [
@@ -52,5 +52,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs"
     }
-  }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ]
 }

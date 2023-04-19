@@ -47,5 +47,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs"
     }
-  }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ]
 }
