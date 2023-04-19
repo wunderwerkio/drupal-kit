@@ -18,7 +18,7 @@ interface NodeArticleResource extends ResourceObject {
   };
 }
 
-declare module "../src/index" {
+declare module "../src/resources.js" {
   interface JsonApiResources {
     "node--article": {
       resource: NodeArticleResource;
