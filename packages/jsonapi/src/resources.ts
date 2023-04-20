@@ -5,6 +5,22 @@ import { LinkObject, ResourceObject, Response } from "ts-json-api";
 /* eslint-disable @typescript-eslint/no-empty-interface */
 
 /**
+ * This interface describes the type that the JSON:API resource definition
+ * must implement.
+ *
+ * This type is only used to typecheck the user's module augmentation
+ * (see below.)
+ *
+ * The index signature is removed later on.
+ */
+interface JsonApiResourcesBase {
+  [key: string]: {
+    resource: ResourceObject;
+    operations: ValidOperation;
+  };
+}
+
+/**
  * Interface describing all valid JSON:API resources for the .resource()
  * method.
  *
@@ -18,6 +34,8 @@ import { LinkObject, ResourceObject, Response } from "ts-json-api";
  * The value is a object with the following properties:
  *   - `resource`: Type of the JSON:API resource object.
  *   - `operations`: Union of string literals of allowed operations.
+ *
+ * The value can be defined with the `JsonApiResourceDefinition` utility type.
  *
  * The resource type MUST extend the `ResourceObject` interface from the
  * `ts-json-api` package.
@@ -33,15 +51,58 @@ import { LinkObject, ResourceObject, Response } from "ts-json-api";
  * ```ts
  * declare module "@drupal-kit/jsonapi" {
  *   interface JsonApiResources {
- *     "file--file": {
- *       resource: FileResource;
- *       operations: "readSingle" | "readMany" | "create" | "update" | "delete";
- *     }
+ *     "file--file": JsonApiResourceDefinition<
+ *        FileResource,
+ *        {
+ *          operations: "readSingle" | "readMany" | "create" | "update" | "delete"
+ *        }
+ *      >,
+ *      "node--readonly": JsonApiResourceDefinition<
+ *        NodeResource,
+ *        {
+ *          operations: "readSingle" | "readMany"
+ *        }
+ *      >,
  *   }
  * }
  * ```
  */
-export interface JsonApiResources {}
+export interface JsonApiResources extends JsonApiResourcesBase { }
+
+/**
+ * Utility type to create the correct type definition
+ * for a JsonApiResource for use as a property in the
+ * JsonApiResources interface.
+ */
+export type JsonApiResourceDefinition<
+  TResource extends ResourceObject,
+  TConfiguration extends {
+    operations: ValidOperation;
+    createAttributes?: keyof TResource["attributes"];
+  },
+> = TConfiguration & {
+  resource: TResource;
+};
+
+/**
+ * This type is used in the plugin to access the JsonApiResources
+ * interface without the index signature from the base interface.
+ */
+export type NarrowedJsonApiResources = RemoveIndex<JsonApiResources>;
+
+/**
+ * Defines all valid operations that can be made via the API.
+ */
+export type ValidOperation =
+  | "readSingle"
+  | "readMany"
+  | "create"
+  | "update"
+  | "delete";
+
+export type ResourceType = keyof NarrowedJsonApiResources extends never
+  ? string
+  : keyof NarrowedJsonApiResources;
 
 export interface JsonApiIndex extends Response<[]> {
   links: {
@@ -58,17 +119,31 @@ export interface JsonApiIndex extends Response<[]> {
  */
 type ResourceCreatePayload<R extends ResourceObject> = {
   data: Pick<R, "type" | "attributes" | "relationships"> &
-    Partial<Pick<R, "id">>;
+  Partial<Pick<R, "id">>;
 };
 
 /**
  * Extract the update payload type from a resource object.
  */
 type ResourceUpdatePayload<R extends ResourceObject> = {
-  data: Pick<R, "id" | "type"> & {
+  data: {
+    type?: R["type"];
     attributes?: Partial<R["attributes"]>;
     relationships?: Partial<R["relationships"]>;
   };
+};
+
+/**
+ * Remove index signature from T.
+ *
+ * @see https://stackoverflow.com/questions/51465182/how-to-remove-index-signature-using-mapped-types
+ */
+export type RemoveIndex<T> = {
+  [key in keyof T as string extends key
+  ? never
+  : number extends key
+  ? never
+  : key]: T[key];
 };
 
 /**

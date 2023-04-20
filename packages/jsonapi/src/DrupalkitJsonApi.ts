@@ -13,11 +13,13 @@ import {
   CreateParameters,
   DeleteParameters,
   JsonApiIndex,
-  JsonApiResources,
+  NarrowedJsonApiResources,
   ReadManyParameters,
   ReadSingleParameters,
+  ResourceType,
   ToParameters,
   UpdateParameters,
+  ValidOperation,
 } from "./resources.js";
 import { isJsonApiRequest } from "./utils.js";
 
@@ -76,7 +78,7 @@ export const DrupalkitJsonApi = (
    * @returns A result object containing the resource object or an error.
    */
   const getResource = async <R extends ResourceObject>(
-    type: R["type"],
+    type: ResourceType,
     parameters: ReadSingleParameters,
     options?: {
       localeOverride?: string;
@@ -111,7 +113,7 @@ export const DrupalkitJsonApi = (
    * @returns A result object containing the resource object or an error.
    */
   const getResourceCollection = async <R extends ResourceObject>(
-    type: R["type"],
+    type: ResourceType,
     parameters: ReadManyParameters,
     options?: {
       localeOverride?: string;
@@ -146,7 +148,7 @@ export const DrupalkitJsonApi = (
    * @returns A result object containing the resource object or an error.
    */
   const createResource = async <R extends ResourceObject>(
-    type: R["type"],
+    type: ResourceType,
     parameters: CreateParameters<R>,
     options?: {
       localeOverride?: string;
@@ -179,7 +181,7 @@ export const DrupalkitJsonApi = (
    * @returns A result object containing the resource object or an error.
    */
   const updateResource = async <R extends ResourceObject>(
-    type: R["type"],
+    type: ResourceType,
     parameters: UpdateParameters<R>,
     options?: {
       localeOverride?: string;
@@ -209,8 +211,8 @@ export const DrupalkitJsonApi = (
    * @param parameters - The parameters to use for the request.
    * @returns A result object containing the resource object or an error.
    */
-  const deleteResource = async <R extends ResourceObject>(
-    type: R["type"],
+  const deleteResource = async (
+    type: ResourceType,
     parameters: DeleteParameters,
   ): Promise<Result<true, DrupalkitJsonApiError>> => {
     const path = type.replace("--", "/") + "/" + parameters.uuid;
@@ -273,23 +275,23 @@ export const DrupalkitJsonApi = (
       buildJsonApiUrl,
       getIndex,
       async resource<
-        Type extends keyof JsonApiResources,
-        Resource extends JsonApiResources[Type]["resource"],
-        Operation extends JsonApiResources[Type]["operations"],
+        Type extends keyof NarrowedJsonApiResources,
+        Resource extends NarrowedJsonApiResources[Type]["resource"],
+        Operation extends NarrowedJsonApiResources[Type]["operations"],
         Params extends ToParameters<Operation, Resource>,
         Return extends Record<
           Operation,
           "readSingle" extends Operation
-            ? Result<Response<Resource>, DrupalkitError>
-            : "readMany" extends Operation
-            ? Result<Response<Resource[]>, DrupalkitError>
-            : "create" extends Operation
-            ? Awaited<ReturnType<typeof createResource>>
-            : "update" extends Operation
-            ? Awaited<ReturnType<typeof updateResource>>
-            : "delete" extends Operation
-            ? Awaited<ReturnType<typeof deleteResource>>
-            : Result<never, Error>
+          ? Result<Response<Resource>, DrupalkitError>
+          : "readMany" extends Operation
+          ? Result<Response<Resource[]>, DrupalkitError>
+          : "create" extends Operation
+          ? Awaited<ReturnType<typeof createResource<Resource>>>
+          : "update" extends Operation
+          ? Awaited<ReturnType<typeof updateResource<Resource>>>
+          : "delete" extends Operation
+          ? Awaited<ReturnType<typeof deleteResource>>
+          : Result<never, Error>
         >,
       >(
         type: Type,
@@ -299,7 +301,7 @@ export const DrupalkitJsonApi = (
           localeOverride?: string;
         },
       ): Promise<Return[Operation]> {
-        switch (operation) {
+        switch (operation as ValidOperation) {
           case "readSingle":
             return (await getResource(
               type,
@@ -333,11 +335,12 @@ export const DrupalkitJsonApi = (
               type,
               parameters as DeleteParameters,
             )) as Return[Operation];
-        }
 
-        return Result.Err(
-          new Error(`Unknown operation "${operation}"`),
-        ) as Return[Operation];
+          default:
+            return Result.Err(
+              new Error(`Unknown operation "${operation}"`),
+            ) as Return[Operation];
+        }
       },
     },
   };
