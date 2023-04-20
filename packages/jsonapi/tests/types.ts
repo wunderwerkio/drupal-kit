@@ -20,9 +20,17 @@ interface NodeArticleResource extends ResourceObject {
 
 declare module "../src/resources.js" {
   interface JsonApiResources {
-    "node--article": {
-      resource: NodeArticleResource;
-      operations: "readSingle" | "readMany" | "create" | "update" | "delete";
-    };
+    "node--article": JsonApiResourceDefinition<
+      NodeArticleResource,
+      {
+        operations: "readSingle" | "readMany" | "create" | "update" | "delete";
+      }
+    >;
+    "node--readonly": JsonApiResourceDefinition<
+      NodeArticleResource,
+      {
+        operations: "readSingle" | "readMany";
+      }
+    >;
   }
 }
