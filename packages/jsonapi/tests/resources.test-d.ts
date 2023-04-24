@@ -70,7 +70,7 @@ async function testReturnTypeValues() {
   const createData = (
     await drupalkit.jsonApi.resource("node--article", "create", {
       // @ts-ignore
-      payload: {}
+      payload: {},
     })
   ).unwrap();
 
@@ -82,7 +82,7 @@ async function testReturnTypeValues() {
     await drupalkit.jsonApi.resource("node--article", "update", {
       uuid,
       // @ts-ignore
-      payload: {}
+      payload: {},
     })
   ).unwrap();
 
@@ -104,13 +104,23 @@ async function testPayloadTypes() {
   const uuid = "0c9b2d1b-1c6a-4e0a-9f7b-4b6b8d6b8f6d";
 
   // Create.
-  //
-  // drupalkit.jsonApi.resource("node--article", "create", {
-  //   uuid,
-  //   payload: {
-  //     data: {}
-  //   }
-  // });
+
+  // Do not allow empty payload.
+  drupalkit.jsonApi.resource("node--article", "create", {
+    uuid,
+    // @ts-expect-error
+    payload: undefined,
+  });
+
+  drupalkit.jsonApi.resource("node--article", "create", {
+    uuid,
+    payload: {
+      id: uuid,
+      attributes: {
+        title: "Updated title",
+      },
+    },
+  });
 
   // Update.
 
@@ -118,15 +128,12 @@ async function testPayloadTypes() {
   drupalkit.jsonApi.resource("node--article", "update", {
     uuid,
     // @ts-expect-error
-    payload: {}
+    payload: undefined,
   });
 
-  // Do not allow empty payload.
   drupalkit.jsonApi.resource("node--article", "update", {
     uuid,
-    payload: {
-      data: {}
-    }
+    payload: {},
   });
 }
 
@@ -136,16 +143,5 @@ async function testPayloadTypes() {
  * @param expression - Expression that should be identical to type `T`.
  */
 export const expectType = <T>(expression: T) => {
-  // Do nothing, the TypeScript compiler handles this for us
-};
-
-/**
- * Asserts that the type of `expression` is not identical to type `T`.
- *
- * @param expression - Expression that should not be identical to type `T`.
- */
-export const expectNotType = <T>(expression: any) => {
-  // eslint-disable-next-line no-warning-comments
-  // TODO Use a `not T` type when possible https://github.com/microsoft/TypeScript/pull/29317
   // Do nothing, the TypeScript compiler handles this for us
 };
