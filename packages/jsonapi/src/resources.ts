@@ -99,19 +99,18 @@ export interface JsonApiIndex extends Response<[]> {
  * Extract the create payload type from a resource object.
  */
 type ResourceCreatePayload<R extends ResourceObject> = {
-  data: Pick<R, "type" | "attributes" | "relationships"> &
-  Partial<Pick<R, "id">>;
-};
-
+  id?: R["id"];
+  type?: R["type"];
+  attributes?: Partial<R["attributes"]>;
+  relationships?: Partial<R["relationships"]>;
+}
 /**
  * Extract the update payload type from a resource object.
  */
-type ResourceUpdatePayload<R extends ResourceObject> = {
-  data: {
-    type?: R["type"];
-    attributes?: Partial<R["attributes"]>;
-    relationships?: Partial<R["relationships"]>;
-  };
+type ResourceUpdatePayload<R extends ResourceObject> = object & {
+  type?: R["type"];
+  attributes?: Partial<R["attributes"]>;
+  relationships?: Partial<R["relationships"]>;
 };
 
 /**

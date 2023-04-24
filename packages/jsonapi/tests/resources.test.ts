@@ -294,17 +294,15 @@ test.serial("Create new resource", async (t) => {
 
   const result = await drupalkit.jsonApi.resource("node--article", "create", {
     payload: {
-      data: {
-        type: "node--article",
-        attributes: {
-          title: "New Article",
-        },
-        relationships: {
-          uid: {
-            data: {
-              type: "user--user",
-              id: "1",
-            },
+      type: "node--article",
+      attributes: {
+        title: "New Article",
+      },
+      relationships: {
+        uid: {
+          data: {
+            type: "user--user",
+            id: "1",
           },
         },
       },
@@ -330,17 +328,15 @@ test.serial("Handle error when creating new resource", async (t) => {
 
   const result = await drupalkit.jsonApi.resource("node--article", "create", {
     payload: {
-      data: {
-        type: "node--article",
-        attributes: {
-          title: "New Article",
-        },
-        relationships: {
-          uid: {
-            data: {
-              type: "user--user",
-              id: "1",
-            },
+      type: "node--article",
+      attributes: {
+        title: "New Article",
+      },
+      relationships: {
+        uid: {
+          data: {
+            type: "user--user",
+            id: "1",
           },
         },
       },
@@ -369,12 +365,8 @@ test.serial("Update resource", async (t) => {
   const result = await drupalkit.jsonApi.resource("node--article", "update", {
     uuid,
     payload: {
-      data: {
-        id: uuid,
-        type: "node--article",
-        attributes: {
-          title: "New title",
-        },
+      attributes: {
+        title: "New title",
       },
     },
   });
@@ -400,12 +392,8 @@ test.serial("Handle error when updating resource", async (t) => {
   const result = await drupalkit.jsonApi.resource("node--article", "update", {
     uuid,
     payload: {
-      data: {
-        id: uuid,
-        type: "node--article",
-        attributes: {
-          title: "New title",
-        },
+      attributes: {
+        title: "New title",
       },
     },
   });
