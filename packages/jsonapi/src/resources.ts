@@ -63,7 +63,7 @@ interface JsonApiResourcesBase {
  * }
  * ```
  */
-export interface JsonApiResources extends JsonApiResourcesBase { }
+export interface JsonApiResources extends JsonApiResourcesBase {}
 
 /**
  * This type is used in the plugin to access the JsonApiResources
@@ -103,7 +103,7 @@ type ResourceCreatePayload<R extends ResourceObject> = {
   type?: R["type"];
   attributes?: Partial<R["attributes"]>;
   relationships?: Partial<R["relationships"]>;
-}
+};
 /**
  * Extract the update payload type from a resource object.
  */
@@ -120,10 +120,10 @@ type ResourceUpdatePayload<R extends ResourceObject> = object & {
  */
 export type RemoveIndex<T> = {
   [key in keyof T as string extends key
-  ? never
-  : number extends key
-  ? never
-  : key]: T[key];
+    ? never
+    : number extends key
+    ? never
+    : key]: T[key];
 };
 
 /**

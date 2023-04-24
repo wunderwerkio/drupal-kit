@@ -282,16 +282,16 @@ export const DrupalkitJsonApi = (
         Return extends Record<
           Operation,
           "readSingle" extends Operation
-          ? Result<Response<Resource>, DrupalkitError>
-          : "readMany" extends Operation
-          ? Result<Response<Resource[]>, DrupalkitError>
-          : "create" extends Operation
-          ? Awaited<ReturnType<typeof createResource<Resource>>>
-          : "update" extends Operation
-          ? Awaited<ReturnType<typeof updateResource<Resource>>>
-          : "delete" extends Operation
-          ? Awaited<ReturnType<typeof deleteResource>>
-          : Result<never, Error>
+            ? Result<Response<Resource>, DrupalkitError>
+            : "readMany" extends Operation
+            ? Result<Response<Resource[]>, DrupalkitError>
+            : "create" extends Operation
+            ? Awaited<ReturnType<typeof createResource<Resource>>>
+            : "update" extends Operation
+            ? Awaited<ReturnType<typeof updateResource<Resource>>>
+            : "delete" extends Operation
+            ? Awaited<ReturnType<typeof deleteResource>>
+            : Result<never, Error>
         >,
       >(
         type: Type,
