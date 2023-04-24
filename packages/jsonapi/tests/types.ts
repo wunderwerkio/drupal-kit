@@ -8,7 +8,7 @@ interface UserResource extends ResourceObject {
   };
 }
 
-interface NodeArticleResource extends ResourceObject {
+export interface NodeArticleResource extends ResourceObject {
   type: "node--article";
   attributes: {
     title: string;
@@ -20,17 +20,13 @@ interface NodeArticleResource extends ResourceObject {
 
 declare module "../src/resources.js" {
   interface JsonApiResources {
-    "node--article": JsonApiResourceDefinition<
-      NodeArticleResource,
-      {
-        operations: "readSingle" | "readMany" | "create" | "update" | "delete";
-      }
-    >;
-    "node--readonly": JsonApiResourceDefinition<
-      NodeArticleResource,
-      {
-        operations: "readSingle" | "readMany";
-      }
-    >;
+    "node--article": {
+      resource: NodeArticleResource;
+      operations: "readSingle" | "readMany" | "create" | "update" | "delete";
+    };
+    "node--readonly": {
+      resource: NodeArticleResource;
+      operations: "readSingle" | "readMany";
+    };
   }
 }

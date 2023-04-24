@@ -51,38 +51,19 @@ interface JsonApiResourcesBase {
  * ```ts
  * declare module "@drupal-kit/jsonapi" {
  *   interface JsonApiResources {
- *     "file--file": JsonApiResourceDefinition<
- *        FileResource,
- *        {
- *          operations: "readSingle" | "readMany" | "create" | "update" | "delete"
- *        }
- *      >,
- *      "node--readonly": JsonApiResourceDefinition<
- *        NodeResource,
- *        {
- *          operations: "readSingle" | "readMany"
- *        }
- *      >,
+ *     "file--file": {
+ *       resource: FileResource;
+ *       operations: "readSingle" | "readMany" | "create" | "update" | "delete";
+ *     };
+ *     "node--readonly": {
+ *       resource: NodeResource;
+ *       operations: "readSingle" | "readMany";
+ *     };
  *   }
  * }
  * ```
  */
 export interface JsonApiResources extends JsonApiResourcesBase { }
-
-/**
- * Utility type to create the correct type definition
- * for a JsonApiResource for use as a property in the
- * JsonApiResources interface.
- */
-export type JsonApiResourceDefinition<
-  TResource extends ResourceObject,
-  TConfiguration extends {
-    operations: ValidOperation;
-    createAttributes?: keyof TResource["attributes"];
-  },
-> = TConfiguration & {
-  resource: TResource;
-};
 
 /**
  * This type is used in the plugin to access the JsonApiResources
