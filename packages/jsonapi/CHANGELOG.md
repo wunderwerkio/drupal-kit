@@ -1,5 +1,20 @@
 # @drupal-kit/jsonapi
 
+## 0.4.0
+
+### Minor Changes
+
+- [#22](https://github.com/wunderwerkio/drupal-kit/pull/22) [`6d13fb2`](https://github.com/wunderwerkio/drupal-kit/commit/6d13fb233bf94456da893b1550da18934e48bd21) Thanks [@chfoidl](https://github.com/chfoidl)! - Improve types for the jsonapi plugin.
+
+  BREAKING CHANGES:
+
+  - The type of the payloads for the `drupalkit.jsonapi.resource()` method for `create` and `update` types changed.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.4.0
+
 ## 0.3.2
 
 ### Patch Changes
