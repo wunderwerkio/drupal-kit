@@ -2,7 +2,7 @@
   "name": "@drupal-kit/jsonapi",
   "version": "0.4.0",
   "type": "module",
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "@drupal-kit/core": "workspace:0.4.0",
     "@wunderwerk/ts-functional": "1.0.0-beta.2",

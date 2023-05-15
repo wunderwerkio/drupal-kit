@@ -2,6 +2,7 @@
   "name": "@drupal-kit/consumers",
   "version": "0.4.0",
   "type": "module",
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "@drupal-kit/core": "workspace:0.4.0"
   },
@@ -42,8 +43,8 @@
   },
   "exports": {
     ".": {
-      "types": "dist/index.d.ts",
-      "import": "dist/index.mjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
     }
   },
   "files": [
