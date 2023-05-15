@@ -1,5 +1,14 @@
 # @drupal-kit/jsonapi
 
+## 0.4.1
+
+### Patch Changes
+
+- [`9220a5c`](https://github.com/wunderwerkio/drupal-kit/commit/9220a5c270a3b23fcf1b12dffc3e4a0b84a60057) Thanks [@chfoidl](https://github.com/chfoidl)! - Fix file paths in package.json
+
+- Updated dependencies [[`9220a5c`](https://github.com/wunderwerkio/drupal-kit/commit/9220a5c270a3b23fcf1b12dffc3e4a0b84a60057)]:
+  - @drupal-kit/core@0.4.1
+
 ## 0.4.0
 
 ### Minor Changes
