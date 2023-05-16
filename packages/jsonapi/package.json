@@ -7,6 +7,7 @@
     "@drupal-kit/core": "workspace:0.4.1",
     "@wunderwerk/ts-functional": "1.0.0-beta.2",
     "drupal-jsonapi-params": "^2.2.0",
+    "jsona": "^1.11.0",
     "ts-json-api": "^1.2.0"
   },
   "devDependencies": {

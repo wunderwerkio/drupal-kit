@@ -153,6 +153,7 @@ importers:
       ava: ^5.2.0
       drupal-jsonapi-params: ^2.2.0
       esbuild: ^0.17.17
+      jsona: ^1.11.0
       msw: ^1.2.1
       rollup: ^3.20.4
       rollup-plugin-dts: ^5.3.0
@@ -164,6 +165,7 @@ importers:
       '@drupal-kit/core': link:../core
       '@wunderwerk/ts-functional': 1.0.0-beta.2
       drupal-jsonapi-params: 2.2.0
+      jsona: 1.11.0
       ts-json-api: 1.2.0
     devDependencies:
       '@drupal-kit/config-typescript': link:../config/typescript
@@ -3877,6 +3879,12 @@ packages:
     hasBin: true
     dev: true
 
+  /jsona/1.11.0:
+    resolution: {integrity: sha512-jH7f9TG+7aOFQ16BI2pCcoB2FNRz0Rny0icngddZLg8/It5gTDAlgfR6tvVNuor0yB1ZB60i3a/+TqKFgA+PdQ==}
+    dependencies:
+      tslib: 2.5.0
+    dev: false
+
   /jsonc-parser/3.2.0:
     resolution: {integrity: sha512-gfFQZrcTc8CnKXp6Y4/CBT3fTc0OVuDofpre4aEeEpSBPV5X5v4+Vmx+8snU7RLPrNHPKSgLxGo9YuQzz20o+w==}
     dev: true
@@ -5317,7 +5325,6 @@ packages:
 
   /tslib/2.5.0:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
-    dev: true
 
   /tsutils/3.21.0_typescript@5.0.4:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
