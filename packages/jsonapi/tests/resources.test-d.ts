@@ -1,5 +1,5 @@
 import "./types.js";
-import { Relationship, ResourceObject } from "ts-json-api";
+import { Response, Relationship, ResourceObject } from "ts-json-api";
 import { Drupalkit } from "@drupal-kit/core";
 
 import {
@@ -7,7 +7,7 @@ import {
   JsonApiResources,
   SimplifiedResourceObject,
 } from "../src/index.js";
-import { NodeArticleResource } from "./types.js";
+import { NodeArticleResource, SimplifiedNodeArticleResource } from "./types.js";
 
 const BASE_URL = "https://my-drupal.com";
 
@@ -257,6 +257,25 @@ async function testSimplifiedResourceObject() {
       item.field_embedded.embedded;
     }
   });
+
+  // Test method.
+  const drupalkit = createDrupalkit();
+  const uuid = "0c9b2d1b-1c6a-4e0a-9f7b-4b6b8d6b8f6d";
+
+  const res = (await drupalkit.jsonApi.resource("node--article", "readSingle", {
+    uuid,
+  })).unwrap() as Response<NodeArticleResource>;
+
+  const simplifiedRes = drupalkit.jsonApi.simplifyResourceResponse("node--article", res);
+
+  expectType<SimplifiedNodeArticleResource>(simplifiedRes);
+
+  // Test read many.
+  const resMany = (await drupalkit.jsonApi.resource("node--article", "readMany", {})).unwrap() as Response<NodeArticleResource[]>;
+
+  const simplifiedResMany = drupalkit.jsonApi.simplifyResourceResponse("node--article", resMany);
+
+  expectType<SimplifiedNodeArticleResource[]>(simplifiedResMany);
 }
 
 /**

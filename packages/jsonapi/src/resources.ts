@@ -16,6 +16,7 @@ import { LinkObject, ResourceObject, Response } from "ts-json-api";
 interface JsonApiResourcesBase {
   [key: string]: {
     resource: ResourceObject;
+    simplifiedResource?: SimplifiedResourceObject<ResourceObject, object>;
     operations: ValidOperation;
   };
 }
@@ -103,8 +104,8 @@ export type SimplifiedResourceObject<
   TResource extends ResourceObject,
   TIncluded extends {
     [key in keyof TResource["relationships"]]:
-      | SimplifiedResourceObject<ResourceObject, {}>
-      | SimplifiedResourceObject<ResourceObject, {}>[];
+      | SimplifiedResourceObject<ResourceObject, object>
+      | SimplifiedResourceObject<ResourceObject, object>[];
   },
 > = {
   id: TResource["id"];

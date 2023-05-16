@@ -10,10 +10,16 @@ fs.readFile(DECLARATION_FILE, (err, data) => {
   }
 
   const content = data.toString("utf-8");
-  const newContent = content.replace(
-    "Type extends never",
-    "Type extends keyof JsonApiResources",
-  );
+  const newContent = content
+    .replaceAll("<Type extends never", "<Type extends keyof JsonApiResources")
+    .replaceAll(
+      "<TResourceType extends never",
+      "<TResourceType extends keyof JsonApiResources",
+    )
+    .replaceAll(
+      "<TResourceType_1 extends never",
+      "<TResourceType_1 extends keyof JsonApiResources",
+    );
 
   fs.writeFile(DECLARATION_FILE, newContent, (err) => {
     if (err) {
