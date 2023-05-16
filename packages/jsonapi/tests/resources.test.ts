@@ -2,14 +2,17 @@ import test from "ava";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
+import { Response } from "ts-json-api";
 import { Drupalkit } from "@drupal-kit/core";
 
 import { DrupalkitJsonApi, DrupalkitJsonApiError } from "../src/index.js";
+import JsonApiArticleCollection from "./fixtures/jsonapi_article_collection.json" assert { type: "json" };
 import JsonApiArticleDetail from "./fixtures/jsonapi_article_detail.json" assert { type: "json" };
 import JsonApiIncludeError from "./fixtures/jsonapi_include_error.json" assert { type: "json" };
 import JsonApiIndex from "./fixtures/jsonapi_index.json" assert { type: "json" };
 import JsonApiIndexError from "./fixtures/jsonapi_index_error.json" assert { type: "json" };
 import "./types.js";
+import { NodeArticleResource } from "./types.js";
 
 const BASE_URL = "https://my-drupal.com";
 
@@ -139,6 +142,33 @@ test.serial("Get JSON:API resource", async (t) => {
   t.snapshot(res);
 });
 
+test.serial("Simplify single resource", async (t) => {
+  const drupalkit = createDrupalkit();
+  const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
+
+  server.use(
+    rest.get("*/jsonapi/node/article/" + uuid, (_req, res, ctx) =>
+      res(
+        ctx.set("Content-Type", "application/vnd.api+json"),
+        ctx.json(JsonApiArticleDetail),
+      ),
+    ),
+  );
+
+  const result = await drupalkit.jsonApi.resource(
+    "node--article",
+    "readSingle",
+    {
+      uuid,
+    },
+  );
+
+  const res = result.unwrap();
+  const data = drupalkit.jsonApi.simplifyResourceResponse("node--article", res);
+
+  t.snapshot(data);
+});
+
 test.serial("Get localized JSON:API resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
@@ -236,6 +266,55 @@ test.serial("Handle error when getting single resource", async (t) => {
   t.is(err.statusCode, 400);
 });
 
+test.serial("Get many resources", async (t) => {
+  const drupalkit = createDrupalkit();
+
+  server.use(
+    rest.get("*/jsonapi/node/article", (_req, res, ctx) => {
+      return res(
+        ctx.set("Content-Type", "application/vnd.api+json"),
+        ctx.status(200),
+        ctx.json(JsonApiArticleCollection),
+      );
+    }),
+  );
+
+  const result = await drupalkit.jsonApi.resource(
+    "node--article",
+    "readMany",
+    {},
+  );
+
+  const res = result.unwrap();
+  t.snapshot(res);
+});
+
+test.serial("Simplify many resources", async (t) => {
+  const drupalkit = createDrupalkit();
+
+  server.use(
+    rest.get("*/jsonapi/node/article", (_req, res, ctx) => {
+      return res(
+        ctx.set("Content-Type", "application/vnd.api+json"),
+        ctx.status(200),
+        ctx.json(JsonApiArticleCollection),
+      );
+    }),
+  );
+
+  const result = await drupalkit.jsonApi.resource(
+    "node--article",
+    "readMany",
+    {},
+  );
+
+  const res = result.unwrap() as Response<NodeArticleResource[]>;
+  const data = drupalkit.jsonApi.simplifyResourceResponse("node--article", res);
+
+  t.assert(data.length === 8);
+  t.snapshot(data);
+})
+
 test.serial("Handle error when getting many resource", async (t) => {
   const drupalkit = createDrupalkit();
 
@@ -276,7 +355,7 @@ test.serial("Handle network error", async (t) => {
 
   const err = result.expectErr("Expect error");
 
-  t.assert(err.message.includes("Network Error"));
+  t.assert(err.message.includes("Failed to fetch"), err.message);
   t.is(err.response, undefined);
 });
 

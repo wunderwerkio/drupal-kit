@@ -1,4 +1,5 @@
 import { Result } from "@wunderwerk/ts-functional/results";
+import { Jsona } from "jsona";
 import { ResourceObject, Response } from "ts-json-api";
 import {
   Drupalkit,
@@ -231,6 +232,43 @@ export const DrupalkitJsonApi = (
     return Result.Ok(true as const);
   };
 
+  function simplifyResourceResponse<
+    TResourceType extends keyof NarrowedJsonApiResources,
+    TResource extends NarrowedJsonApiResources[TResourceType]["resource"],
+    TSimplifiedResourceObject extends NarrowedJsonApiResources[TResourceType]["simplifiedResource"],
+  >(
+    type: TResourceType,
+    response: Response<TResource>,
+  ): TSimplifiedResourceObject;
+  function simplifyResourceResponse<
+    TResourceType extends keyof NarrowedJsonApiResources,
+    TResource extends NarrowedJsonApiResources[TResourceType]["resource"],
+    TSimplifiedResourceObject extends NarrowedJsonApiResources[TResourceType]["simplifiedResource"],
+  >(
+    type: TResourceType,
+    response: Response<TResource[]>,
+  ): TSimplifiedResourceObject[];
+  /**
+   * Simplify given resource response.
+   *
+   * Uses the jsona serializer to deserialize the resource object(s) into
+   * a simpler object.
+   *
+   * @param type - The type of resource object to simplify.
+   * @param response - The response object to simplify.
+   */
+  function simplifyResourceResponse<
+    TResourceType extends keyof NarrowedJsonApiResources,
+    TResource extends NarrowedJsonApiResources[TResourceType]["resource"],
+    TSimplifiedResourceObject extends NarrowedJsonApiResources[TResourceType]["simplifiedResource"],
+  >(
+    type: TResourceType,
+    response: Response<TResource | TResource[]>,
+  ): TSimplifiedResourceObject | TSimplifiedResourceObject[] {
+    const serializer = new Jsona();
+    return serializer.deserialize(JSON.stringify(response)) as TSimplifiedResourceObject | TSimplifiedResourceObject[];
+  }
+
   /**
    * Constructs a JSON API URL for use with Drupal.
    *
@@ -274,6 +312,7 @@ export const DrupalkitJsonApi = (
     jsonApi: {
       buildJsonApiUrl,
       getIndex,
+      simplifyResourceResponse,
       async resource<
         Type extends keyof NarrowedJsonApiResources,
         Resource extends NarrowedJsonApiResources[Type]["resource"],
@@ -282,16 +321,16 @@ export const DrupalkitJsonApi = (
         Return extends Record<
           Operation,
           "readSingle" extends Operation
-            ? Result<Response<Resource>, DrupalkitError>
-            : "readMany" extends Operation
-            ? Result<Response<Resource[]>, DrupalkitError>
-            : "create" extends Operation
-            ? Awaited<ReturnType<typeof createResource<Resource>>>
-            : "update" extends Operation
-            ? Awaited<ReturnType<typeof updateResource<Resource>>>
-            : "delete" extends Operation
-            ? Awaited<ReturnType<typeof deleteResource>>
-            : Result<never, Error>
+          ? Result<Response<Resource>, DrupalkitError>
+          : "readMany" extends Operation
+          ? Result<Response<Resource[]>, DrupalkitError>
+          : "create" extends Operation
+          ? Awaited<ReturnType<typeof createResource<Resource>>>
+          : "update" extends Operation
+          ? Awaited<ReturnType<typeof updateResource<Resource>>>
+          : "delete" extends Operation
+          ? Awaited<ReturnType<typeof deleteResource>>
+          : Result<never, Error>
         >,
       >(
         type: Type,
