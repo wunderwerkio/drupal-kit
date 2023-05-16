@@ -1,8 +1,12 @@
 import "./types.js";
-import type { Result } from "@wunderwerk/ts-functional/results";
+import { Relationship, ResourceObject } from "ts-json-api";
 import { Drupalkit } from "@drupal-kit/core";
 
-import { DrupalkitJsonApi, JsonApiResources } from "../src/index.js";
+import {
+  DrupalkitJsonApi,
+  JsonApiResources,
+  SimplifiedResourceObject,
+} from "../src/index.js";
 import { NodeArticleResource } from "./types.js";
 
 const BASE_URL = "https://my-drupal.com";
@@ -134,6 +138,124 @@ async function testPayloadTypes() {
   drupalkit.jsonApi.resource("node--article", "update", {
     uuid,
     payload: {},
+  });
+}
+
+async function testSimplifiedResourceObject() {
+  interface EmbeddedResourceOne extends ResourceObject {
+    type: "embedded--one";
+    attributes: {
+      embedded: boolean;
+    };
+  }
+  type SimplifiedEmbeddedResourceOne = SimplifiedResourceObject<
+    EmbeddedResourceOne,
+    {}
+  >;
+
+  interface EmbeddedResourceTwo extends ResourceObject {
+    type: "embedded--two";
+    attributes: {
+      first: string;
+      second: number;
+    };
+    relationships: {
+      field_embedded: Relationship<EmbeddedResourceOne>;
+    };
+  }
+  type SimplifiedEmbeddedResourceTwo = SimplifiedResourceObject<
+    EmbeddedResourceTwo,
+    {
+      field_embedded: SimplifiedEmbeddedResourceOne;
+    }
+  >;
+
+  interface DemoResource extends ResourceObject {
+    type: "demo--demo";
+    attributes: {
+      attrOne: string;
+      attrTwo: boolean;
+    };
+    relationships: {
+      field_content: Relationship<
+        (EmbeddedResourceOne | EmbeddedResourceTwo)[]
+      >;
+      field_direct: Relationship<EmbeddedResourceTwo>;
+    };
+    links: {
+      self: string;
+      other: string;
+    };
+    meta: {
+      metaOne: string;
+      metaTwo: boolean;
+    };
+  }
+  type SimplifiedDemoResource = SimplifiedResourceObject<
+    DemoResource,
+    {
+      field_content: (
+        | SimplifiedEmbeddedResourceOne
+        | SimplifiedEmbeddedResourceTwo
+      )[];
+      field_direct: SimplifiedEmbeddedResourceTwo;
+    }
+  >;
+
+  // Check that the object for included data is not empty,
+  // if relations are defined for the resource object.
+  type CheckIncludedTypeExistence = SimplifiedResourceObject<
+    EmbeddedResourceTwo,
+    // @ts-expect-error
+    {}
+  >;
+
+  // Check that the object for included data has the correct type
+  // if relations are defined for the resource object.
+  type CheckIncludedType = SimplifiedResourceObject<
+    EmbeddedResourceTwo,
+    // @ts-expect-error
+    {
+      field_embedded: string;
+    }
+  >;
+
+  // @ts-expect-error
+  const test: SimplifiedDemoResource = {};
+
+  // Attributes must be at top of hierarchy.
+  test.attrOne;
+  test.attrTwo;
+
+  // Links must must be in links property.
+  test.links.self;
+  test.links.other;
+
+  // Meta must be in resourceIdObjMeta property.
+  test.resourceIdObjMeta.metaOne;
+  test.resourceIdObjMeta.metaTwo;
+
+  // Check base fields.
+  test.id;
+  test.type;
+
+  // Test included data.
+  test.field_direct.type;
+
+  // field_direct > EmbeddedResourceTwo > field_embedded > EmbeddedResourceOne > id.
+  test.field_direct.field_embedded.id;
+
+  // Check multiple references.
+  test.field_content.forEach((item) => {
+    // Check for embedded--one resource.
+    if (item.type === "embedded--one") {
+      item.embedded;
+    }
+
+    if (item.type === "embedded--two") {
+      item.first;
+      item.field_embedded.embedded;
+    }
   });
 }
 
