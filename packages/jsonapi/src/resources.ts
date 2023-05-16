@@ -96,6 +96,26 @@ export interface JsonApiIndex extends Response<[]> {
  */
 
 /**
+ * Transforms a ResourceObject into the resulting structure
+ * when deserialized with jsona.
+ */
+export type SimplifiedResourceObject<
+  TResource extends ResourceObject,
+  TIncluded extends {
+    [key in keyof TResource["relationships"]]:
+      | SimplifiedResourceObject<ResourceObject, {}>
+      | SimplifiedResourceObject<ResourceObject, {}>[];
+  },
+> = {
+  id: TResource["id"];
+  type: TResource["type"];
+  resourceIdObjMeta: TResource["meta"];
+  links: TResource["links"];
+} & TResource["attributes"] & {
+    [key in keyof TResource["relationships"]]: TIncluded[key];
+  };
+
+/**
  * Extract the create payload type from a resource object.
  */
 type ResourceCreatePayload<R extends ResourceObject> = {
