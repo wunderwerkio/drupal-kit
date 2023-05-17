@@ -146,7 +146,7 @@ test.serial("Handle network errors", async (t) => {
   );
 
   const error = result.expectErr("Expected error");
-  t.assert(error.message.includes("Network Error"));
+  t.assert(error.message.includes("Failed to fetch"));
 });
 
 test.serial(
