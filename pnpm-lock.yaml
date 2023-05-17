@@ -252,21 +252,6 @@ importers:
       ts-node: 10.9.1_4nchvo4eogszfxemdbko76zc7a
       typescript: 5.0.4
 
-  packages/test:
-    specifiers:
-      '@drupal-kit/config-typescript': workspace:^0.4.1
-      '@drupal-kit/core': workspace:^0.4.1
-      '@drupal-kit/jsonapi': workspace:^0.4.1
-      ts-json-api: ^1.2.0
-      typescript: 5.0.4
-    dependencies:
-      '@drupal-kit/config-typescript': link:../config/typescript
-      '@drupal-kit/core': link:../core
-      '@drupal-kit/jsonapi': link:../jsonapi
-      typescript: 5.0.4
-    devDependencies:
-      ts-json-api: 1.2.0
-
   packages/types:
     specifiers:
       '@drupal-kit/config-typescript': workspace:0.4.1
@@ -4663,6 +4648,7 @@ packages:
 
   /ramda/0.26.1:
     resolution: {integrity: sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==}
+    dev: false
 
   /read-pkg-up/7.0.1:
     resolution: {integrity: sha512-zK0TB7Xd6JpCLmlLmufqykGE+/TlOePD6qKClNW7hHDKFh/J7/7gCWGR7joEQEW1bKq3a3yUZSObOoWLFQ4ohg==}
@@ -5260,6 +5246,7 @@ packages:
     resolution: {integrity: sha512-hrH/m9KvidS6gHIfZwH3v/9Jb92CVZvJvFYQrpBDyHhBgWcKa2ol9hPAifEn8u4dpjnvuHG6xZoJgxHfGM5ouw==}
     dependencies:
       ramda: 0.26.1
+    dev: false
 
   /ts-node/10.9.1_4nchvo4eogszfxemdbko76zc7a:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
@@ -5478,6 +5465,7 @@ packages:
     resolution: {integrity: sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==}
     engines: {node: '>=12.20'}
     hasBin: true
+    dev: true
 
   /unbox-primitive/1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}

@@ -1,6 +1,6 @@
 {
   "name": "@drupal-kit/jsonapi",
-  "version": "0.4.1",
+  "version": "0.0.0-230516131901",
   "type": "module",
   "types": "./dist/index.d.ts",
   "dependencies": {
