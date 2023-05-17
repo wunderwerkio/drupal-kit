@@ -1,5 +1,16 @@
 # @drupal-kit/jsonapi
 
+## 0.5.0
+
+### Minor Changes
+
+- [#27](https://github.com/wunderwerkio/drupal-kit/pull/27) [`df3739c`](https://github.com/wunderwerkio/drupal-kit/commit/df3739cfd5c080b6b81ca79622c355f329a269b9) Thanks [@chfoidl](https://github.com/chfoidl)! - Major improvements to jsonapi types. Implemented simplification of resource responses.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.5.0
+
 ## 0.4.1
 
 ### Patch Changes
