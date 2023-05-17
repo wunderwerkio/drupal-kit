@@ -1,11 +1,7 @@
 import { Result } from "@wunderwerk/ts-functional/results";
 import { Jsona } from "jsona";
 import { Response } from "ts-json-api";
-import {
-  Drupalkit,
-  DrupalkitOptions,
-  Query,
-} from "@drupal-kit/core";
+import { Drupalkit, DrupalkitOptions, Query } from "@drupal-kit/core";
 import { RequestHeaders } from "@drupal-kit/types";
 
 import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError.js";
@@ -318,16 +314,16 @@ export const DrupalkitJsonApi = (
         Return extends Record<
           Operation,
           "readSingle" extends Operation
-          ? Awaited<ReturnType<typeof getResource<Resource>>>
-          : "readMany" extends Operation
-          ? Awaited<ReturnType<typeof getResourceCollection<Resource>>>
-          : "create" extends Operation
-          ? Awaited<ReturnType<typeof createResource<Resource>>>
-          : "update" extends Operation
-          ? Awaited<ReturnType<typeof updateResource<Resource>>>
-          : "delete" extends Operation
-          ? Awaited<ReturnType<typeof deleteResource>>
-          : Result<never, Error>
+            ? Awaited<ReturnType<typeof getResource<Resource>>>
+            : "readMany" extends Operation
+            ? Awaited<ReturnType<typeof getResourceCollection<Resource>>>
+            : "create" extends Operation
+            ? Awaited<ReturnType<typeof createResource<Resource>>>
+            : "update" extends Operation
+            ? Awaited<ReturnType<typeof updateResource<Resource>>>
+            : "delete" extends Operation
+            ? Awaited<ReturnType<typeof deleteResource>>
+            : Result<never, Error>
         >,
       >(
         type: Type,

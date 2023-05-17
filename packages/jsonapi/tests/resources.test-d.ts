@@ -3,8 +3,8 @@ import { Response } from "ts-json-api";
 import { Drupalkit } from "@drupal-kit/core";
 
 import {
-  DeriveSimpleJsonApiResource,
   DeriveResourceObject,
+  DeriveSimpleJsonApiResource,
   DrupalkitJsonApi,
   JsonApiResources,
 } from "../src/index.js";
@@ -146,20 +146,26 @@ async function testSimplifiedResourceObject() {
   const drupalkit = createDrupalkit();
   const uuid = "0c9b2d1b-1c6a-4e0a-9f7b-4b6b8d6b8f6d";
 
-  const res = (await drupalkit.jsonApi.resource("node--article", "readSingle", {
-    uuid,
-  })).unwrap();
+  const res = (
+    await drupalkit.jsonApi.resource("node--article", "readSingle", {
+      uuid,
+    })
+  ).unwrap();
 
   const simplifiedRes = drupalkit.jsonApi.simplifyResourceResponse(res);
 
   expectType<DeriveSimpleJsonApiResource<NodeArticleResource>>(simplifiedRes);
 
   // Test read many.
-  const resMany = (await drupalkit.jsonApi.resource("node--article", "readMany", {})).unwrap();
+  const resMany = (
+    await drupalkit.jsonApi.resource("node--article", "readMany", {})
+  ).unwrap();
 
   const simplifiedResMany = drupalkit.jsonApi.simplifyResourceResponse(resMany);
 
-  expectType<DeriveSimpleJsonApiResource<NodeArticleResource>[]>(simplifiedResMany);
+  expectType<DeriveSimpleJsonApiResource<NodeArticleResource>[]>(
+    simplifiedResMany,
+  );
 }
 
 /**
