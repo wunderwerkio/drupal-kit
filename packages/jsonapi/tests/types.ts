@@ -1,42 +1,31 @@
-import { Relationship, ResourceObject } from "ts-json-api";
+import { JsonApiResource } from "../dist/index.js";
 
-import { SimplifiedResourceObject } from "../src/index.js";
-
-interface UserResource extends ResourceObject {
+interface UserResource extends JsonApiResource {
   type: "user--user";
   attributes: {
     created: string;
     changed: string;
   };
 }
-type SimplifiedUserResource = SimplifiedResourceObject<UserResource, {}>;
 
-export interface NodeArticleResource extends ResourceObject {
+export interface NodeArticleResource extends JsonApiResource {
   type: "node--article";
   attributes: {
     title: string;
   };
   relationships: {
-    uid: Relationship<UserResource>;
+    uid: UserResource;
   };
 }
-export type SimplifiedNodeArticleResource = SimplifiedResourceObject<
-  NodeArticleResource,
-  {
-    uid: SimplifiedUserResource;
-  }
->;
 
 declare module "../src/resources.js" {
   interface JsonApiResources {
     "node--article": {
       resource: NodeArticleResource;
-      simplifiedResource: SimplifiedNodeArticleResource;
       operations: "readSingle" | "readMany" | "create" | "update" | "delete";
     };
     "node--readonly": {
       resource: NodeArticleResource;
-      simplifiedResource: SimplifiedNodeArticleResource;
       operations: "readSingle" | "readMany";
     };
   }

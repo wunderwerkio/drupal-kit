@@ -1,24 +1,36 @@
+import { Result } from "@wunderwerk/ts-functional/results";
 import { DrupalJsonApiParamsInterface } from "drupal-jsonapi-params";
-import { LinkObject, ResourceObject, Response } from "ts-json-api";
+import {
+  Attributes,
+  Link,
+  LinkObject,
+  Links,
+  Meta,
+  Relationship,
+  ResourceObject,
+  Response,
+} from "ts-json-api";
+
+import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError.js";
 
 /* eslint-disable jsdoc/require-description-complete-sentence */
 /* eslint-disable @typescript-eslint/no-empty-interface */
 
 /**
- * This interface describes the type that the JSON:API resource definition
- * must implement.
+ * Defines the JSON:API resource type.
  *
- * This type is only used to typecheck the user's module augmentation
- * (see below.)
- *
- * The index signature is removed later on.
+ * Other types are derived from this type.
+ * Define your drupal entities using this interface in your codebase.
  */
-interface JsonApiResourcesBase {
-  [key: string]: {
-    resource: ResourceObject;
-    simplifiedResource?: SimplifiedResourceObject<ResourceObject, object>;
-    operations: ValidOperation;
+export interface JsonApiResource {
+  type: string;
+  id: string;
+  attributes?: Attributes;
+  relationships?: {
+    [key: string]: JsonApiResource | JsonApiResource[];
   };
+  links?: Links;
+  meta?: Meta;
 }
 
 /**
@@ -64,13 +76,7 @@ interface JsonApiResourcesBase {
  * }
  * ```
  */
-export interface JsonApiResources extends JsonApiResourcesBase {}
-
-/**
- * This type is used in the plugin to access the JsonApiResources
- * interface without the index signature from the base interface.
- */
-export type NarrowedJsonApiResources = RemoveIndex<JsonApiResources>;
+export interface JsonApiResources { }
 
 /**
  * Defines all valid operations that can be made via the API.
@@ -82,9 +88,9 @@ export type ValidOperation =
   | "update"
   | "delete";
 
-export type ResourceType = keyof NarrowedJsonApiResources extends never
+export type ResourceType = keyof JsonApiResources extends never
   ? string
-  : keyof NarrowedJsonApiResources;
+  : keyof JsonApiResources;
 
 export interface JsonApiIndex extends Response<[]> {
   links: {
@@ -97,42 +103,137 @@ export interface JsonApiIndex extends Response<[]> {
  */
 
 /**
- * Transforms a ResourceObject into the resulting structure
- * when deserialized with jsona.
+ * The following types are used to derive a simple json api resource
+ * object from a standard json api resource object.
+ *
+ * The resulting type matches the output produced by the
+ * simplifyResourceResponse() method.
  */
-export type SimplifiedResourceObject<
-  TResource extends ResourceObject,
-  TIncluded extends {
-    [key in keyof TResource["relationships"]]:
-      | SimplifiedResourceObject<ResourceObject, object>
-      | SimplifiedResourceObject<ResourceObject, object>[];
-  },
-> = {
+
+type ExtractArrayElementType<T> = T extends Array<infer U> ? U : never;
+
+type DeriveSimpleJsonApiResourceUnion<T> =
+  T extends infer U extends JsonApiResource
+  ? DeriveSimpleJsonApiResource<U>
+  : never;
+
+export type DeriveSimpleJsonApiResource<TResource extends JsonApiResource> = {
   id: TResource["id"];
   type: TResource["type"];
-  resourceIdObjMeta: TResource["meta"];
-  links: TResource["links"];
-} & TResource["attributes"] & {
-    [key in keyof TResource["relationships"]]: TIncluded[key];
+  resourceIdObjMeta: {
+    [key in keyof TResource["meta"]]: TResource["meta"][key] extends Meta[0]
+    ? TResource["meta"][key]
+    : never;
   };
+  links: {
+    [key in keyof TResource["links"]]: TResource["links"][key] extends Link
+    ? TResource["links"][key]
+    : never;
+  };
+} & {
+    [key in keyof TResource["attributes"]]: TResource["attributes"][key] extends Attributes[0]
+    ? TResource["attributes"][key]
+    : never;
+  } & {
+    [key in keyof TResource["relationships"]]: TResource["relationships"][key] extends JsonApiResource
+    ? DeriveSimpleJsonApiResource<TResource["relationships"][key]>
+    : TResource["relationships"][key] extends JsonApiResource[]
+    ? DeriveSimpleJsonApiResourceUnion<
+      ExtractArrayElementType<TResource["relationships"][key]>
+    >[]
+    : never;
+  };
+
+/**
+ * The following types are used to derive a ts-json-api resource
+ * object from a standard json api resource object.
+ */
+
+type DeriveResourceObjectUnion<T> = T extends infer U extends JsonApiResource
+  ? DeriveResourceObject<U>
+  : never;
+
+export type DeriveResourceObject<TResource extends JsonApiResource> = {
+  type: TResource["type"];
+  id: TResource["id"];
+  attributes: {
+    [key in keyof TResource["attributes"]]: TResource["attributes"][key] extends Attributes[0]
+    ? TResource["attributes"][key]
+    : never;
+  };
+  meta: {
+    [key in keyof TResource["meta"]]: TResource["meta"][key] extends Meta[0]
+    ? TResource["meta"][key]
+    : never;
+  };
+  links: {
+    [key in keyof TResource["links"]]: TResource["links"][key] extends Link
+    ? TResource["links"][key]
+    : never;
+  };
+  relationships: {
+    [key in keyof TResource["relationships"]]: TResource["relationships"][key] extends JsonApiResource
+    ? Relationship<DeriveResourceObject<TResource["relationships"][key]>>
+    : TResource["relationships"][key] extends JsonApiResource[]
+    ? Relationship<
+      DeriveResourceObjectUnion<
+        ExtractArrayElementType<TResource["relationships"][key]>
+      >[]
+    >
+    : never;
+  };
+};
+
+/**
+ * Creates a simple json api resource from a resource object.
+ *
+ * Supports both single and an array of resource objects.
+ */
+export type SimpleFromResourceObject<T> = T extends DeriveResourceObject<
+  infer TResource
+>
+  ? DeriveSimpleJsonApiResource<TResource>
+  : T extends DeriveResourceObject<infer TResource>[]
+  ? DeriveSimpleJsonApiResource<TResource>[]
+  : never;
 
 /**
  * Extract the create payload type from a resource object.
  */
-type ResourceCreatePayload<R extends ResourceObject> = {
-  id?: R["id"];
-  type?: R["type"];
-  attributes?: Partial<R["attributes"]>;
-  relationships?: Partial<R["relationships"]>;
+type ResourceCreatePayload<
+  R extends JsonApiResource,
+  TResourceObject extends DeriveResourceObject<R> = DeriveResourceObject<R>,
+> = {
+  id?: TResourceObject["id"];
+  type?: TResourceObject["type"];
+  attributes?: Partial<TResourceObject["attributes"]>;
+  relationships?: Partial<TResourceObject["relationships"]>;
 };
 /**
  * Extract the update payload type from a resource object.
  */
-type ResourceUpdatePayload<R extends ResourceObject> = object & {
+type ResourceUpdatePayload<R extends JsonApiResource> = object & {
   type?: R["type"];
   attributes?: Partial<R["attributes"]>;
   relationships?: Partial<R["relationships"]>;
 };
+
+export type ResourceResponse<
+  T extends ResourceObject | ResourceObject[],
+  TResource extends JsonApiResource,
+> = Response<T> & {
+  toSimpleResource: () => DeriveSimpleJsonApiResource<TResource>;
+};
+
+export type ResourceResult<
+  TResource extends JsonApiResource,
+  TReturnSimple extends boolean,
+> = Result<
+  TReturnSimple extends true
+  ? DeriveSimpleJsonApiResource<TResource>
+  : Response<DeriveResourceObject<TResource>>,
+  DrupalkitJsonApiError
+>;
 
 /**
  * Remove index signature from T.
@@ -141,10 +242,10 @@ type ResourceUpdatePayload<R extends ResourceObject> = object & {
  */
 export type RemoveIndex<T> = {
   [key in keyof T as string extends key
-    ? never
-    : number extends key
-    ? never
-    : key]: T[key];
+  ? never
+  : number extends key
+  ? never
+  : key]: T[key];
 };
 
 /**
@@ -161,11 +262,11 @@ export type ReadSingleParameters = ReadParameters & {
 
 export type ReadManyParameters = ReadParameters;
 
-export type CreateParameters<Resource extends ResourceObject> = {
+export type CreateParameters<Resource extends JsonApiResource> = {
   payload: ResourceCreatePayload<Resource>;
 };
 
-export type UpdateParameters<Resource extends ResourceObject> = {
+export type UpdateParameters<Resource extends JsonApiResource> = {
   uuid: string;
   payload: ResourceUpdatePayload<Resource>;
 };
@@ -179,22 +280,7 @@ export type DeleteParameters = {
  */
 export type ToParameters<
   Operation,
-  Resource extends ResourceObject,
-> = "readSingle" extends Operation
-  ? ReadSingleParameters
-  : "readMany" extends Operation
-  ? ReadManyParameters
-  : "create" extends Operation
-  ? CreateParameters<Resource>
-  : "update" extends Operation
-  ? UpdateParameters<Resource>
-  : "delete" extends Operation
-  ? DeleteParameters
-  : never;
-
-export type ToReturnType<
-  Operation,
-  Resource extends ResourceObject,
+  Resource extends JsonApiResource,
 > = "readSingle" extends Operation
   ? ReadSingleParameters
   : "readMany" extends Operation

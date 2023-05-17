@@ -1,9 +1,8 @@
 import { Result } from "@wunderwerk/ts-functional/results";
 import { Jsona } from "jsona";
-import { ResourceObject, Response } from "ts-json-api";
+import { Response } from "ts-json-api";
 import {
   Drupalkit,
-  DrupalkitError,
   DrupalkitOptions,
   Query,
 } from "@drupal-kit/core";
@@ -13,11 +12,14 @@ import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError.js";
 import {
   CreateParameters,
   DeleteParameters,
+  DeriveResourceObject,
   JsonApiIndex,
-  NarrowedJsonApiResources,
+  JsonApiResource,
+  JsonApiResources,
   ReadManyParameters,
   ReadSingleParameters,
   ResourceType,
+  SimpleFromResourceObject,
   ToParameters,
   UpdateParameters,
   ValidOperation,
@@ -44,6 +46,8 @@ export const DrupalkitJsonApi = (
     Accept: "application/vnd.api+json",
     "Content-Type": "application/vnd.api+json",
   };
+
+  const serializer = new Jsona();
 
   /**
    * Retrieves the JSON:API index.
@@ -78,13 +82,16 @@ export const DrupalkitJsonApi = (
    * @param options.localeOverride - An optional override for the locale.
    * @returns A result object containing the resource object or an error.
    */
-  const getResource = async <R extends ResourceObject>(
+  const getResource = async <
+    R extends JsonApiResource,
+    TResourceObject extends DeriveResourceObject<R> = DeriveResourceObject<R>,
+  >(
     type: ResourceType,
     parameters: ReadSingleParameters,
     options?: {
       localeOverride?: string;
     },
-  ): Promise<Result<Response<R>, DrupalkitJsonApiError>> => {
+  ): Promise<Result<Response<TResourceObject>, DrupalkitJsonApiError>> => {
     const path = type.replace("--", "/") + "/" + parameters.uuid;
 
     const url = buildJsonApiUrl(path, {
@@ -92,7 +99,7 @@ export const DrupalkitJsonApi = (
       query: parameters.queryParams?.getQueryObject(),
     });
 
-    const result = await drupalkit.request<Response<R>>(url, {
+    const result = await drupalkit.request<Response<TResourceObject>>(url, {
       method: "GET",
       headers: defaultHeaders,
     });
@@ -105,6 +112,24 @@ export const DrupalkitJsonApi = (
   };
 
   /**
+   * Simplified the given resource response (single or many).
+   *
+   * Related entities which are included in the response are embedded
+   * into the resulting resource object.
+   *
+   * @param data - The resource response to simplify.
+   */
+  const simplifyResourceResponse = <
+    R extends JsonApiResource,
+    TResourceObject extends DeriveResourceObject<R> | DeriveResourceObject<R>[],
+    TSimpleResource extends SimpleFromResourceObject<TResourceObject>,
+  >(
+    data: Response<TResourceObject>,
+  ): TSimpleResource => {
+    return serializer.deserialize(JSON.stringify(data)) as TSimpleResource;
+  };
+
+  /**
    * Retrieves multiple JSON:API resource objects.
    *
    * @param type - The type of resource object to retrieve.
@@ -113,13 +138,16 @@ export const DrupalkitJsonApi = (
    * @param options.localeOverride - An optional override for the locale.
    * @returns A result object containing the resource object or an error.
    */
-  const getResourceCollection = async <R extends ResourceObject>(
+  const getResourceCollection = async <
+    R extends JsonApiResource,
+    TResourceObject extends DeriveResourceObject<R> = DeriveResourceObject<R>,
+  >(
     type: ResourceType,
     parameters: ReadManyParameters,
     options?: {
       localeOverride?: string;
     },
-  ): Promise<Result<Response<R[]>, DrupalkitJsonApiError>> => {
+  ): Promise<Result<Response<TResourceObject[]>, DrupalkitJsonApiError>> => {
     const path = type.replace("--", "/");
 
     const url = buildJsonApiUrl(path, {
@@ -127,7 +155,7 @@ export const DrupalkitJsonApi = (
       query: parameters.queryParams?.getQueryObject(),
     });
 
-    const result = await drupalkit.request<Response<R[]>>(url, {
+    const result = await drupalkit.request<Response<TResourceObject[]>>(url, {
       method: "GET",
       headers: defaultHeaders,
     });
@@ -148,18 +176,21 @@ export const DrupalkitJsonApi = (
    * @param options.localeOverride - An optional override for the locale.
    * @returns A result object containing the resource object or an error.
    */
-  const createResource = async <R extends ResourceObject>(
+  const createResource = async <
+    R extends JsonApiResource,
+    TResourceObject extends DeriveResourceObject<R> = DeriveResourceObject<R>,
+  >(
     type: ResourceType,
     parameters: CreateParameters<R>,
     options?: {
       localeOverride?: string;
     },
-  ): Promise<Result<Response<R>, DrupalkitJsonApiError>> => {
+  ): Promise<Result<Response<TResourceObject>, DrupalkitJsonApiError>> => {
     const path = type.replace("--", "/");
 
     const url = buildJsonApiUrl(path, options);
 
-    const result = await drupalkit.request<Response<R>>(url, {
+    const result = await drupalkit.request<Response<TResourceObject>>(url, {
       method: "POST",
       headers: defaultHeaders,
       body: JSON.stringify(parameters.payload),
@@ -181,18 +212,21 @@ export const DrupalkitJsonApi = (
    * @param options.localeOverride - An optional override for the locale.
    * @returns A result object containing the resource object or an error.
    */
-  const updateResource = async <R extends ResourceObject>(
+  const updateResource = async <
+    R extends JsonApiResource,
+    TResourceObject extends DeriveResourceObject<R> = DeriveResourceObject<R>,
+  >(
     type: ResourceType,
     parameters: UpdateParameters<R>,
     options?: {
       localeOverride?: string;
     },
-  ): Promise<Result<Response<R>, DrupalkitJsonApiError>> => {
+  ): Promise<Result<Response<TResourceObject>, DrupalkitJsonApiError>> => {
     const path = type.replace("--", "/") + "/" + parameters.uuid;
 
     const url = buildJsonApiUrl(path, options);
 
-    const result = await drupalkit.request<Response<R>>(url, {
+    const result = await drupalkit.request<Response<TResourceObject>>(url, {
       method: "PATCH",
       headers: defaultHeaders,
       body: JSON.stringify(parameters.payload),
@@ -231,43 +265,6 @@ export const DrupalkitJsonApi = (
 
     return Result.Ok(true as const);
   };
-
-  function simplifyResourceResponse<
-    TResourceType extends keyof NarrowedJsonApiResources,
-    TResource extends NarrowedJsonApiResources[TResourceType]["resource"],
-    TSimplifiedResourceObject extends NarrowedJsonApiResources[TResourceType]["simplifiedResource"],
-  >(
-    type: TResourceType,
-    response: Response<TResource>,
-  ): TSimplifiedResourceObject;
-  function simplifyResourceResponse<
-    TResourceType extends keyof NarrowedJsonApiResources,
-    TResource extends NarrowedJsonApiResources[TResourceType]["resource"],
-    TSimplifiedResourceObject extends NarrowedJsonApiResources[TResourceType]["simplifiedResource"],
-  >(
-    type: TResourceType,
-    response: Response<TResource[]>,
-  ): TSimplifiedResourceObject[];
-  /**
-   * Simplify given resource response.
-   *
-   * Uses the jsona serializer to deserialize the resource object(s) into
-   * a simpler object.
-   *
-   * @param type - The type of resource object to simplify.
-   * @param response - The response object to simplify.
-   */
-  function simplifyResourceResponse<
-    TResourceType extends keyof NarrowedJsonApiResources,
-    TResource extends NarrowedJsonApiResources[TResourceType]["resource"],
-    TSimplifiedResourceObject extends NarrowedJsonApiResources[TResourceType]["simplifiedResource"],
-  >(
-    type: TResourceType,
-    response: Response<TResource | TResource[]>,
-  ): TSimplifiedResourceObject | TSimplifiedResourceObject[] {
-    const serializer = new Jsona();
-    return serializer.deserialize(JSON.stringify(response)) as TSimplifiedResourceObject | TSimplifiedResourceObject[];
-  }
 
   /**
    * Constructs a JSON API URL for use with Drupal.
@@ -314,16 +311,16 @@ export const DrupalkitJsonApi = (
       getIndex,
       simplifyResourceResponse,
       async resource<
-        Type extends keyof NarrowedJsonApiResources,
-        Resource extends NarrowedJsonApiResources[Type]["resource"],
-        Operation extends NarrowedJsonApiResources[Type]["operations"],
+        Type extends keyof JsonApiResources,
+        Resource extends JsonApiResources[Type]["resource"],
+        Operation extends JsonApiResources[Type]["operations"],
         Params extends ToParameters<Operation, Resource>,
         Return extends Record<
           Operation,
           "readSingle" extends Operation
-          ? Result<Response<Resource>, DrupalkitError>
+          ? Awaited<ReturnType<typeof getResource<Resource>>>
           : "readMany" extends Operation
-          ? Result<Response<Resource[]>, DrupalkitError>
+          ? Awaited<ReturnType<typeof getResourceCollection<Resource>>>
           : "create" extends Operation
           ? Awaited<ReturnType<typeof createResource<Resource>>>
           : "update" extends Operation

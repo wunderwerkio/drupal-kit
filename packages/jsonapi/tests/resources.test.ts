@@ -2,7 +2,6 @@ import test from "ava";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { Response } from "ts-json-api";
 import { Drupalkit } from "@drupal-kit/core";
 
 import { DrupalkitJsonApi, DrupalkitJsonApiError } from "../src/index.js";
@@ -12,7 +11,6 @@ import JsonApiIncludeError from "./fixtures/jsonapi_include_error.json" assert {
 import JsonApiIndex from "./fixtures/jsonapi_index.json" assert { type: "json" };
 import JsonApiIndexError from "./fixtures/jsonapi_index_error.json" assert { type: "json" };
 import "./types.js";
-import { NodeArticleResource } from "./types.js";
 
 const BASE_URL = "https://my-drupal.com";
 
@@ -164,7 +162,7 @@ test.serial("Simplify single resource", async (t) => {
   );
 
   const res = result.unwrap();
-  const data = drupalkit.jsonApi.simplifyResourceResponse("node--article", res);
+  const data = drupalkit.jsonApi.simplifyResourceResponse(res);
 
   t.snapshot(data);
 });
@@ -308,8 +306,8 @@ test.serial("Simplify many resources", async (t) => {
     {},
   );
 
-  const res = result.unwrap() as Response<NodeArticleResource[]>;
-  const data = drupalkit.jsonApi.simplifyResourceResponse("node--article", res);
+  const res = result.unwrap();
+  const data = drupalkit.jsonApi.simplifyResourceResponse(res);
 
   t.assert(data.length === 8);
   t.snapshot(data);
@@ -382,6 +380,7 @@ test.serial("Create new resource", async (t) => {
           data: {
             type: "user--user",
             id: "1",
+            meta: {}
           },
         },
       },
@@ -390,6 +389,9 @@ test.serial("Create new resource", async (t) => {
 
   const res = result.unwrap();
   t.snapshot(res);
+
+  const simpleData = drupalkit.jsonApi.simplifyResourceResponse(res);
+  t.snapshot(simpleData);
 });
 
 test.serial("Handle error when creating new resource", async (t) => {
@@ -416,6 +418,7 @@ test.serial("Handle error when creating new resource", async (t) => {
           data: {
             type: "user--user",
             id: "1",
+            meta: {}
           },
         },
       },
@@ -452,6 +455,9 @@ test.serial("Update resource", async (t) => {
 
   const res = result.unwrap();
   t.snapshot(res);
+
+  const simpleData = drupalkit.jsonApi.simplifyResourceResponse(res);
+  t.snapshot(simpleData);
 });
 
 test.serial("Handle error when updating resource", async (t) => {
