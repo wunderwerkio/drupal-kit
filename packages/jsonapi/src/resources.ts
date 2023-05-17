@@ -76,7 +76,7 @@ export interface JsonApiResource {
  * }
  * ```
  */
-export interface JsonApiResources { }
+export interface JsonApiResources {}
 
 /**
  * Defines all valid operations that can be made via the API.
@@ -114,35 +114,35 @@ type ExtractArrayElementType<T> = T extends Array<infer U> ? U : never;
 
 type DeriveSimpleJsonApiResourceUnion<T> =
   T extends infer U extends JsonApiResource
-  ? DeriveSimpleJsonApiResource<U>
-  : never;
+    ? DeriveSimpleJsonApiResource<U>
+    : never;
 
 export type DeriveSimpleJsonApiResource<TResource extends JsonApiResource> = {
   id: TResource["id"];
   type: TResource["type"];
   resourceIdObjMeta: {
     [key in keyof TResource["meta"]]: TResource["meta"][key] extends Meta[0]
-    ? TResource["meta"][key]
-    : never;
+      ? TResource["meta"][key]
+      : never;
   };
   links: {
     [key in keyof TResource["links"]]: TResource["links"][key] extends Link
-    ? TResource["links"][key]
-    : never;
+      ? TResource["links"][key]
+      : never;
   };
 } & {
-    [key in keyof TResource["attributes"]]: TResource["attributes"][key] extends Attributes[0]
+  [key in keyof TResource["attributes"]]: TResource["attributes"][key] extends Attributes[0]
     ? TResource["attributes"][key]
     : never;
-  } & {
-    [key in keyof TResource["relationships"]]: TResource["relationships"][key] extends JsonApiResource
+} & {
+  [key in keyof TResource["relationships"]]: TResource["relationships"][key] extends JsonApiResource
     ? DeriveSimpleJsonApiResource<TResource["relationships"][key]>
     : TResource["relationships"][key] extends JsonApiResource[]
     ? DeriveSimpleJsonApiResourceUnion<
-      ExtractArrayElementType<TResource["relationships"][key]>
-    >[]
+        ExtractArrayElementType<TResource["relationships"][key]>
+      >[]
     : never;
-  };
+};
 
 /**
  * The following types are used to derive a ts-json-api resource
@@ -158,29 +158,29 @@ export type DeriveResourceObject<TResource extends JsonApiResource> = {
   id: TResource["id"];
   attributes: {
     [key in keyof TResource["attributes"]]: TResource["attributes"][key] extends Attributes[0]
-    ? TResource["attributes"][key]
-    : never;
+      ? TResource["attributes"][key]
+      : never;
   };
   meta: {
     [key in keyof TResource["meta"]]: TResource["meta"][key] extends Meta[0]
-    ? TResource["meta"][key]
-    : never;
+      ? TResource["meta"][key]
+      : never;
   };
   links: {
     [key in keyof TResource["links"]]: TResource["links"][key] extends Link
-    ? TResource["links"][key]
-    : never;
+      ? TResource["links"][key]
+      : never;
   };
   relationships: {
     [key in keyof TResource["relationships"]]: TResource["relationships"][key] extends JsonApiResource
-    ? Relationship<DeriveResourceObject<TResource["relationships"][key]>>
-    : TResource["relationships"][key] extends JsonApiResource[]
-    ? Relationship<
-      DeriveResourceObjectUnion<
-        ExtractArrayElementType<TResource["relationships"][key]>
-      >[]
-    >
-    : never;
+      ? Relationship<DeriveResourceObject<TResource["relationships"][key]>>
+      : TResource["relationships"][key] extends JsonApiResource[]
+      ? Relationship<
+          DeriveResourceObjectUnion<
+            ExtractArrayElementType<TResource["relationships"][key]>
+          >[]
+        >
+      : never;
   };
 };
 
@@ -230,8 +230,8 @@ export type ResourceResult<
   TReturnSimple extends boolean,
 > = Result<
   TReturnSimple extends true
-  ? DeriveSimpleJsonApiResource<TResource>
-  : Response<DeriveResourceObject<TResource>>,
+    ? DeriveSimpleJsonApiResource<TResource>
+    : Response<DeriveResourceObject<TResource>>,
   DrupalkitJsonApiError
 >;
 
@@ -242,10 +242,10 @@ export type ResourceResult<
  */
 export type RemoveIndex<T> = {
   [key in keyof T as string extends key
-  ? never
-  : number extends key
-  ? never
-  : key]: T[key];
+    ? never
+    : number extends key
+    ? never
+    : key]: T[key];
 };
 
 /**

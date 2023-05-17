@@ -311,7 +311,7 @@ test.serial("Simplify many resources", async (t) => {
 
   t.assert(data.length === 8);
   t.snapshot(data);
-})
+});
 
 test.serial("Handle error when getting many resource", async (t) => {
   const drupalkit = createDrupalkit();
@@ -380,7 +380,7 @@ test.serial("Create new resource", async (t) => {
           data: {
             type: "user--user",
             id: "1",
-            meta: {}
+            meta: {},
           },
         },
       },
@@ -418,7 +418,7 @@ test.serial("Handle error when creating new resource", async (t) => {
           data: {
             type: "user--user",
             id: "1",
-            meta: {}
+            meta: {},
           },
         },
       },
