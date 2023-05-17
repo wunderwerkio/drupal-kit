@@ -10,11 +10,11 @@
       "inputs": ["src/**/*.ts", "tests/**/*.ts"]
     },
     "typecheck": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "tests/**/*.ts"]
     },
     "test": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["build"],
       "outputs": [],
       "inputs": ["src/**/*.ts", "tests/**/*.ts"]
     },
