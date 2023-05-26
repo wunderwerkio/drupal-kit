@@ -30,7 +30,7 @@
     "typecheck": "turbo run typecheck",
     "version-packages": "turbo run build lint test typecheck && changeset version && pnpm install --lockfile-only"
   },
-  "packageManager": "pnpm@7.26.3",
+  "packageManager": "pnpm@8.5.1",
   "pnpm": {
     "patchedDependencies": {
       "is-plain-object@5.0.0": "patches/is-plain-object@5.0.0.patch"

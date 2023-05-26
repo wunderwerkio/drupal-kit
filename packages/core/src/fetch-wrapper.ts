@@ -1,9 +1,7 @@
 import { isPlainObject } from "is-plain-object";
-import nodeFetch, { HeadersInit, Response } from "node-fetch";
 import { Fetch, RequestRequestOptions } from "@drupal-kit/types";
 
 import { DrupalkitError } from "./DrupalkitError.js";
-import getBuffer from "./get-buffer-response.js";
 
 /**
  * Function that wraps the fetch call.
@@ -31,10 +29,8 @@ export default function fetchWrapper<R>(
   let status: number;
   let url: string;
 
-  const fetch: typeof nodeFetch =
-    requestOptions.fetch ||
-    globalThis.fetch ||
-    /* istanbul ignore next */ nodeFetch;
+  const fetch: typeof globalThis.fetch =
+    requestOptions.fetch || globalThis.fetch;
 
   return fetch(
     requestOptions.url,
@@ -110,11 +106,7 @@ async function getResponseData(response: Response) {
     return response.json();
   }
 
-  if (!contentType || /^text\/|charset=utf-8$/.test(contentType)) {
-    return response.text();
-  }
-
-  return getBuffer(response);
+  return response.text();
 }
 
 /**
