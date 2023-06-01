@@ -1,5 +1,11 @@
 # @drupal-kit/core
 
+## 0.6.1
+
+### Patch Changes
+
+- [#34](https://github.com/wunderwerkio/drupal-kit/pull/34) [`8b7c9ed`](https://github.com/wunderwerkio/drupal-kit/commit/8b7c9ed168d40ac95b0e8cbf8985bfb357cfe8f6) Thanks [@chfoidl](https://github.com/chfoidl)! - Downgrade "qs" module to ensure compatibility with the edge runtime
+
 ## 0.6.0
 
 ### Minor Changes
