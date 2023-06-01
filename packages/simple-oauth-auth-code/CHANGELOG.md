@@ -1,5 +1,12 @@
 # @drupal-kit/simple-oauth-auth-code
 
+## 0.6.1
+
+### Patch Changes
+
+- Updated dependencies [[`8b7c9ed`](https://github.com/wunderwerkio/drupal-kit/commit/8b7c9ed168d40ac95b0e8cbf8985bfb357cfe8f6)]:
+  - @drupal-kit/core@0.6.1
+
 ## 0.6.0
 
 ### Patch Changes
