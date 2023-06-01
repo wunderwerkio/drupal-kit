@@ -46,3 +46,21 @@ test("Set agent", (t) => {
 
   t.is(instance.agent, `drupal-kit/0.0.0-development`);
 });
+
+test("Build url with query", (t) => {
+  const instance = new Drupalkit({
+    baseUrl: "https://drupal-headless-boilerplate.ddev.site",
+  });
+
+  const url = instance.buildUrl("/api/some-endpoint", {
+    query: {
+      limit: 10,
+      page: 5,
+    },
+  });
+
+  t.is(
+    url,
+    `https://drupal-headless-boilerplate.ddev.site/api/some-endpoint?limit=10&page=5`,
+  );
+});
