@@ -1,5 +1,14 @@
 # @drupal-kit/jsonapi
 
+## 0.6.2
+
+### Patch Changes
+
+- [#37](https://github.com/wunderwerkio/drupal-kit/pull/37) [`6928e40`](https://github.com/wunderwerkio/drupal-kit/commit/6928e401ba851f83888b18825c66c165b2f2dc8b) Thanks [@chfoidl](https://github.com/chfoidl)! - Add type and id in create and update payload if applicable
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.6.2
+
 ## 0.6.1
 
 ### Patch Changes
