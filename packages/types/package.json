@@ -1,10 +1,10 @@
 {
   "name": "@drupal-kit/types",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "types": "./src/index.ts",
   "devDependencies": {
-    "@drupal-kit/config-typescript": "workspace:0.6.1",
-    "@drupal-kit/eslint-config": "workspace:0.6.1",
+    "@drupal-kit/config-typescript": "workspace:0.6.2",
+    "@drupal-kit/eslint-config": "workspace:0.6.2",
     "typescript": "5.0.4"
   },
   "scripts": {
