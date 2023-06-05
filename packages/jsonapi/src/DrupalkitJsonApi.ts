@@ -186,6 +186,11 @@ export const DrupalkitJsonApi = (
 
     const url = buildJsonApiUrl(path, options);
 
+    // Set the type if not already set.
+    if (!parameters.payload.type) {
+      parameters.payload.type = type;
+    }
+
     const result = await drupalkit.request<Response<TResourceObject>>(url, {
       method: "POST",
       headers: defaultHeaders,
@@ -221,6 +226,13 @@ export const DrupalkitJsonApi = (
     const path = type.replace("--", "/") + "/" + parameters.uuid;
 
     const url = buildJsonApiUrl(path, options);
+
+    parameters.payload.id = parameters.uuid;
+
+    // Set the type if not already set.
+    if (!parameters.payload.type) {
+      parameters.payload.type = type;
+    }
 
     const result = await drupalkit.request<Response<TResourceObject>>(url, {
       method: "PATCH",

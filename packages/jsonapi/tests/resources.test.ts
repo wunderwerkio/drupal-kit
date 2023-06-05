@@ -360,18 +360,22 @@ test.serial("Handle network error", async (t) => {
 test.serial("Create new resource", async (t) => {
   const drupalkit = createDrupalkit();
 
+  t.plan(3);
+
   server.use(
-    rest.post("*/jsonapi/node/article", (_req, res, ctx) =>
-      res(
+    rest.post("*/jsonapi/node/article", async (req, res, ctx) => {
+      const payload = await req.json();
+      t.is(payload.type, "node--article");
+
+      return res(
         ctx.set("Content-Type", "application/vnd.api+json"),
         ctx.json(JsonApiArticleDetail),
-      ),
-    ),
+      );
+    }),
   );
 
   const result = await drupalkit.jsonApi.resource("node--article", "create", {
     payload: {
-      type: "node--article",
       attributes: {
         title: "New Article",
       },
@@ -435,13 +439,20 @@ test.serial("Update resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
+  t.plan(4);
+
   server.use(
-    rest.patch("*/jsonapi/node/article/" + uuid, (_req, res, ctx) =>
-      res(
+    rest.patch("*/jsonapi/node/article/" + uuid, async (req, res, ctx) => {
+      const payload = await req.json();
+
+      t.is(payload.type, "node--article");
+      t.is(payload.id, uuid);
+
+      return res(
         ctx.set("Content-Type", "application/vnd.api+json"),
         ctx.json(JsonApiArticleDetail),
-      ),
-    ),
+      );
+    }),
   );
 
   const result = await drupalkit.jsonApi.resource("node--article", "update", {
