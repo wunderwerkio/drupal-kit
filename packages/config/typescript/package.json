@@ -1,6 +1,6 @@
 {
   "name": "@drupal-kit/config-typescript",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "private": true,
   "devDependencies": {
     "typescript": "5.0.4"

@@ -1,5 +1,14 @@
 # @drupal-kit/jsonapi
 
+## 0.6.3
+
+### Patch Changes
+
+- [#40](https://github.com/wunderwerkio/drupal-kit/pull/40) [`769750e`](https://github.com/wunderwerkio/drupal-kit/commit/769750e5cf4a14b657afe2b48e98ba34bf06427a) Thanks [@chfoidl](https://github.com/chfoidl)! - Make sure create and update payloads are passed in `data` prop
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.6.3
+
 ## 0.6.2
 
 ### Patch Changes

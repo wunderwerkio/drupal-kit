@@ -1,5 +1,12 @@
 # @drupal-kit/user-api
 
+## 0.6.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.6.3
+
 ## 0.6.2
 
 ### Patch Changes
