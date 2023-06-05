@@ -213,6 +213,7 @@ type ResourceCreatePayload<
  * Extract the update payload type from a resource object.
  */
 type ResourceUpdatePayload<R extends JsonApiResource> = object & {
+  id?: R["id"];
   type?: R["type"];
   attributes?: Partial<R["attributes"]>;
   relationships?: Partial<R["relationships"]>;
