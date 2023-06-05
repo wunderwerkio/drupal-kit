@@ -365,7 +365,7 @@ test.serial("Create new resource", async (t) => {
   server.use(
     rest.post("*/jsonapi/node/article", async (req, res, ctx) => {
       const payload = await req.json();
-      t.is(payload.type, "node--article");
+      t.is(payload.data.type, "node--article");
 
       return res(
         ctx.set("Content-Type", "application/vnd.api+json"),
@@ -445,8 +445,8 @@ test.serial("Update resource", async (t) => {
     rest.patch("*/jsonapi/node/article/" + uuid, async (req, res, ctx) => {
       const payload = await req.json();
 
-      t.is(payload.type, "node--article");
-      t.is(payload.id, uuid);
+      t.is(payload.data.type, "node--article");
+      t.is(payload.data.id, uuid);
 
       return res(
         ctx.set("Content-Type", "application/vnd.api+json"),

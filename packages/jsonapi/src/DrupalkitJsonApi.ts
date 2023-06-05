@@ -194,7 +194,9 @@ export const DrupalkitJsonApi = (
     const result = await drupalkit.request<Response<TResourceObject>>(url, {
       method: "POST",
       headers: defaultHeaders,
-      body: JSON.stringify(parameters.payload),
+      body: JSON.stringify({
+        data: parameters.payload,
+      }),
     });
 
     if (result.err) {
@@ -237,7 +239,7 @@ export const DrupalkitJsonApi = (
     const result = await drupalkit.request<Response<TResourceObject>>(url, {
       method: "PATCH",
       headers: defaultHeaders,
-      body: JSON.stringify(parameters.payload),
+      body: JSON.stringify({ data: parameters.payload }),
     });
 
     if (result.err) {
