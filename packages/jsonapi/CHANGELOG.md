@@ -1,5 +1,14 @@
 # @drupal-kit/jsonapi
 
+## 0.6.4
+
+### Patch Changes
+
+- [#44](https://github.com/wunderwerkio/drupal-kit/pull/44) [`0e23090`](https://github.com/wunderwerkio/drupal-kit/commit/0e23090ef795fa29cfbfee1f4d51c6bee8ff709b) Thanks [@chfoidl](https://github.com/chfoidl)! - Make sure that the derived simple type for a relationship of multiple different resources results in a discriminated union.
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.6.4
+
 ## 0.6.3
 
 ### Patch Changes
