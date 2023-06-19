@@ -1,6 +1,6 @@
 import { JsonApiResource } from "../dist/index.js";
 
-interface UserResource extends JsonApiResource {
+export interface UserResource extends JsonApiResource {
   type: "user--user";
   attributes: {
     created: string;
@@ -18,6 +18,16 @@ export interface NodeArticleResource extends JsonApiResource {
   };
 }
 
+export interface NodeUnionRelResource extends JsonApiResource {
+  type: "node--union-rel";
+  attributes: {
+    title: string;
+  };
+  relationships: {
+    union: NodeArticleResource | UserResource;
+  };
+}
+
 declare module "../src/resources.js" {
   interface JsonApiResources {
     "node--article": {
@@ -26,6 +36,10 @@ declare module "../src/resources.js" {
     };
     "node--readonly": {
       resource: NodeArticleResource;
+      operations: "readSingle" | "readMany";
+    };
+    "node--union-rel": {
+      resource: NodeUnionRelResource;
       operations: "readSingle" | "readMany";
     };
   }

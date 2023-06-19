@@ -136,7 +136,7 @@ export type DeriveSimpleJsonApiResource<TResource extends JsonApiResource> = {
     : never;
 } & {
   [key in keyof TResource["relationships"]]: TResource["relationships"][key] extends JsonApiResource
-    ? DeriveSimpleJsonApiResource<TResource["relationships"][key]>
+    ? DeriveSimpleJsonApiResourceUnion<TResource["relationships"][key]>
     : TResource["relationships"][key] extends JsonApiResource[]
     ? DeriveSimpleJsonApiResourceUnion<
         ExtractArrayElementType<TResource["relationships"][key]>

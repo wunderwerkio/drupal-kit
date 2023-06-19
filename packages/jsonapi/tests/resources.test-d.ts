@@ -1,5 +1,5 @@
 import "./types.js";
-import { Response } from "ts-json-api";
+import { Relationship, Response } from "ts-json-api";
 import { Drupalkit } from "@drupal-kit/core";
 
 import {
@@ -8,7 +8,11 @@ import {
   DrupalkitJsonApi,
   JsonApiResources,
 } from "../src/index.js";
-import { NodeArticleResource } from "./types.js";
+import {
+  NodeArticleResource,
+  NodeUnionRelResource,
+  UserResource,
+} from "./types.js";
 
 const BASE_URL = "https://my-drupal.com";
 
@@ -166,6 +170,28 @@ async function testSimplifiedResourceObject() {
   expectType<DeriveSimpleJsonApiResource<NodeArticleResource>[]>(
     simplifiedResMany,
   );
+}
+
+async function testDiscriminatedUnionRelationType() {
+  const drupalkit = createDrupalkit();
+  const uuid = "0c9b2d1b-1c6a-4e0a-9f7b-4b6b8d6b8f6d";
+
+  const res = (
+    await drupalkit.jsonApi.resource("node--union-rel", "readSingle", {
+      uuid,
+    })
+  ).unwrap();
+
+  expectType<
+    Relationship<DeriveResourceObject<NodeArticleResource | UserResource>>
+  >(res.data!.relationships.union);
+
+  const simple = drupalkit.jsonApi.simplifyResourceResponse(res);
+
+  expectType<
+    | DeriveSimpleJsonApiResource<NodeArticleResource>
+    | DeriveSimpleJsonApiResource<UserResource>
+  >(simple.union);
 }
 
 /**
