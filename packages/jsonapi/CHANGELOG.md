@@ -1,5 +1,16 @@
 # @drupal-kit/jsonapi
 
+## 0.7.0
+
+### Minor Changes
+
+- [#48](https://github.com/wunderwerkio/drupal-kit/pull/48) [`ce29702`](https://github.com/wunderwerkio/drupal-kit/commit/ce29702c155d822676ec314419e419b0c2f61083) Thanks [@chfoidl](https://github.com/chfoidl)! - Add support for JSON:API /menu_items/{menu} endpoint
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.7.0
+
 ## 0.6.4
 
 ### Patch Changes
