@@ -1,5 +1,12 @@
 # @drupal-kit/verification
 
+## 0.7.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.7.1
+
 ## 0.7.0
 
 ### Patch Changes

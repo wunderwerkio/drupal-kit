@@ -1,5 +1,14 @@
 # @drupal-kit/jsonapi
 
+## 0.7.1
+
+### Patch Changes
+
+- [`847aa7a`](https://github.com/wunderwerkio/drupal-kit/commit/847aa7abd2af08777056512adcc14e195bfc4399) Thanks [@chfoidl](https://github.com/chfoidl)! - Fix return type of getMenuItems() method
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.7.1
+
 ## 0.7.0
 
 ### Minor Changes
