@@ -1,0 +1,27 @@
+{
+    "jsonapi": {
+        "version": "1.0",
+        "meta": {
+            "links": {
+                "self": {
+                    "href": "http://jsonapi.org/format/1.0/"
+                }
+            }
+        }
+    },
+    "errors": [
+        {
+            "title": "Not Found",
+            "status": "404",
+            "detail": "The \"menu\" parameter was not converted for the path \"/jsonapi/menu_items/{menu}\" (route name: \"jsonapi_menu_items.menu\")",
+            "links": {
+                "via": {
+                    "href": "https://my-drupal.com/jsonapi/menu_items/non_existant"
+                },
+                "info": {
+                    "href": "http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5"
+                }
+            }
+        }
+    ]
+}
