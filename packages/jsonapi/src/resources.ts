@@ -79,6 +79,21 @@ export interface JsonApiResource {
 export interface JsonApiResources {}
 
 /**
+ * This interface defines the internal jsonapi resources.
+ *
+ * Some resources may not follow the standard entity-type--bundle convention
+ * so they are defined here to make the resource methods work.
+ *
+ * @internal
+ */
+export interface InternalJsonApiResources extends JsonApiResources {
+  "drupalkit_internal--menu_items": {
+    resource: MenuLinkContentResource;
+    operations: "readMany";
+  };
+}
+
+/**
  * Defines all valid operations that can be made via the API.
  */
 export type ValidOperation =
@@ -90,7 +105,7 @@ export type ValidOperation =
 
 export type ResourceType = keyof JsonApiResources extends never
   ? string
-  : keyof JsonApiResources;
+  : keyof InternalJsonApiResources;
 
 export interface JsonApiIndex extends Response<[]> {
   links: {
@@ -293,3 +308,22 @@ export type ToParameters<
   : "delete" extends Operation
   ? DeleteParameters
   : never;
+
+/**
+ * Menu link content.
+ */
+export interface MenuLinkContentResource extends JsonApiResource {
+  type: "menu_link_content--menu_link_content";
+  attributes: {
+    enabled: boolean;
+    expanded: boolean;
+    menu_name: string;
+    meta: {
+      entity_id: string;
+    };
+    parent: string;
+    title: string;
+    url: string;
+    weight: number;
+  };
+}

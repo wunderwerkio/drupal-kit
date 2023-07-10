@@ -70,11 +70,27 @@ export const DrupalkitJsonApi = (
   };
 
   /**
+   * Get menu items for given menu.
+   *
+   * @param menu - System name of the menu.
+   */
+  const getMenuItems = async (menu: string) => {
+    return await getResourceCollection(
+      "drupalkit_internal--menu_items",
+      {},
+      {
+        path: `menu_items/${menu}`,
+      },
+    );
+  };
+
+  /**
    * Retrieves a single JSON:API resource object.
    *
    * @param type - The type of resource object to retrieve.
    * @param parameters - The parameters to use for the query.
    * @param options - Optional settings to override locale and default locale.
+   * @param options.path - An optional override for the request path.
    * @param options.localeOverride - An optional override for the locale.
    * @returns A result object containing the resource object or an error.
    */
@@ -85,10 +101,12 @@ export const DrupalkitJsonApi = (
     type: ResourceType,
     parameters: ReadSingleParameters,
     options?: {
+      path?: string;
       localeOverride?: string;
     },
   ): Promise<Result<Response<TResourceObject>, DrupalkitJsonApiError>> => {
-    const path = type.replace("--", "/") + "/" + parameters.uuid;
+    const path =
+      options?.path ?? type.replace("--", "/") + "/" + parameters.uuid;
 
     const url = buildJsonApiUrl(path, {
       ...options,
@@ -131,6 +149,7 @@ export const DrupalkitJsonApi = (
    * @param type - The type of resource object to retrieve.
    * @param parameters - The parameters to use for the query.
    * @param options - Optional settings to override locale and default locale.
+   * @param options.path - An optional override for the request path.
    * @param options.localeOverride - An optional override for the locale.
    * @returns A result object containing the resource object or an error.
    */
@@ -141,10 +160,11 @@ export const DrupalkitJsonApi = (
     type: ResourceType,
     parameters: ReadManyParameters,
     options?: {
+      path?: string;
       localeOverride?: string;
     },
   ): Promise<Result<Response<TResourceObject[]>, DrupalkitJsonApiError>> => {
-    const path = type.replace("--", "/");
+    const path = options?.path ?? type.replace("--", "/");
 
     const url = buildJsonApiUrl(path, {
       ...options,
@@ -169,6 +189,7 @@ export const DrupalkitJsonApi = (
    * @param type - The type of resource object to create.
    * @param parameters - The parameters to use for the request.
    * @param options - Optional settings to override locale and default locale.
+   * @param options.path - An optional override for the request path.
    * @param options.localeOverride - An optional override for the locale.
    * @returns A result object containing the resource object or an error.
    */
@@ -179,10 +200,11 @@ export const DrupalkitJsonApi = (
     type: ResourceType,
     parameters: CreateParameters<R>,
     options?: {
+      path?: string;
       localeOverride?: string;
     },
   ): Promise<Result<Response<TResourceObject>, DrupalkitJsonApiError>> => {
-    const path = type.replace("--", "/");
+    const path = options?.path ?? type.replace("--", "/");
 
     const url = buildJsonApiUrl(path, options);
 
@@ -212,6 +234,7 @@ export const DrupalkitJsonApi = (
    * @param type - The type of resource object to update.
    * @param parameters - The parameters to use for the request.
    * @param options - Optional settings to override locale and default locale.
+   * @param options.path - An optional override for the request path.
    * @param options.localeOverride - An optional override for the locale.
    * @returns A result object containing the resource object or an error.
    */
@@ -222,10 +245,12 @@ export const DrupalkitJsonApi = (
     type: ResourceType,
     parameters: UpdateParameters<R>,
     options?: {
+      path?: string;
       localeOverride?: string;
     },
   ): Promise<Result<Response<TResourceObject>, DrupalkitJsonApiError>> => {
-    const path = type.replace("--", "/") + "/" + parameters.uuid;
+    const path =
+      options?.path ?? type.replace("--", "/") + "/" + parameters.uuid;
 
     const url = buildJsonApiUrl(path, options);
 
@@ -254,13 +279,19 @@ export const DrupalkitJsonApi = (
    *
    * @param type - The type of resource object to delete.
    * @param parameters - The parameters to use for the request.
+   * @param options - Optional settings to override locale and default locale.
+   * @param options.path - An optional override for the request path.
    * @returns A result object containing the resource object or an error.
    */
   const deleteResource = async (
     type: ResourceType,
     parameters: DeleteParameters,
+    options?: {
+      path?: string;
+    },
   ): Promise<Result<true, DrupalkitJsonApiError>> => {
-    const path = type.replace("--", "/") + "/" + parameters.uuid;
+    const path =
+      options?.path ?? type.replace("--", "/") + "/" + parameters.uuid;
 
     const url = buildJsonApiUrl(path);
 
@@ -320,6 +351,7 @@ export const DrupalkitJsonApi = (
       buildJsonApiUrl,
       getIndex,
       simplifyResourceResponse,
+      getMenuItems,
       async resource<
         Type extends keyof JsonApiResources,
         Resource extends JsonApiResources[Type]["resource"],
