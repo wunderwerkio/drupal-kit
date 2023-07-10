@@ -1,5 +1,7 @@
 # @drupal-kit/config-typescript
 
+## 0.7.0
+
 ## 0.6.4
 
 ## 0.6.3
