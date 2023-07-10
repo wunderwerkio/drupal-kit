@@ -12,6 +12,7 @@ import {
   JsonApiIndex,
   JsonApiResource,
   JsonApiResources,
+  MenuLinkContentResource,
   ReadManyParameters,
   ReadSingleParameters,
   ResourceType,
@@ -75,7 +76,7 @@ export const DrupalkitJsonApi = (
    * @param menu - System name of the menu.
    */
   const getMenuItems = async (menu: string) => {
-    return await getResourceCollection(
+    return await getResourceCollection<MenuLinkContentResource>(
       "drupalkit_internal--menu_items",
       {},
       {
