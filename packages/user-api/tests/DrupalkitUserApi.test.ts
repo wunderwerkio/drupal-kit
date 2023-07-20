@@ -533,7 +533,10 @@ test.serial("Resend verification email", async (t) => {
     }),
   );
 
-  const result = await drupalkit.userApi.resendVerificationEmail(email, operation);
+  const result = await drupalkit.userApi.resendVerificationEmail(
+    email,
+    operation,
+  );
 
   const res = result.unwrap();
 
@@ -554,7 +557,10 @@ test.serial("Resend verification email with custom endpoint", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.resendVerificationEmail(email, operation);
+  const result = await drupalkit.userApi.resendVerificationEmail(
+    email,
+    operation,
+  );
 
   t.assert(result.ok);
 });
@@ -570,7 +576,10 @@ test.serial("Handle error while resending verification email", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.resendVerificationEmail(email, operation);
+  const result = await drupalkit.userApi.resendVerificationEmail(
+    email,
+    operation,
+  );
 
   t.assert(result.err);
 });

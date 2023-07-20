@@ -47,14 +47,14 @@
       "ts-node/esm"
     ]
   },
+  "engines": {
+    "node": ">=18"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs"
     }
-  },
-  "engines": {
-    "node": ">=18"
   },
   "files": [
     "dist",
