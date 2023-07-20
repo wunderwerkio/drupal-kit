@@ -1,5 +1,16 @@
 # @drupal-kit/user-api
 
+## 0.8.0
+
+### Minor Changes
+
+- [#52](https://github.com/wunderwerkio/drupal-kit/pull/52) [`0d6370d`](https://github.com/wunderwerkio/drupal-kit/commit/0d6370d175fcfa79a573bb8247bd4d5683a9b3b8) Thanks [@chfoidl](https://github.com/chfoidl)! - Add support for user-api/resend-mail endpoint
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.8.0
+
 ## 0.7.1
 
 ### Patch Changes
