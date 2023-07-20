@@ -511,3 +511,66 @@ test.serial("Handle error while updating email", async (t) => {
 
   t.assert(result.err);
 });
+
+/**
+ * Resend verification email.
+ */
+
+test.serial("Resend verification email", async (t) => {
+  t.plan(3);
+
+  const drupalkit = createDrupalkit();
+  const email = "JzWZg@example.com";
+  const operation = "register";
+
+  server.use(
+    rest.post("*/user-api/resend-mail", async (req, res, ctx) => {
+      t.is(req.headers.get("content-type"), "application/json");
+
+      t.deepEqual(await req.json(), { email, operation });
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  const result = await drupalkit.userApi.resendVerificationEmail(email, operation);
+
+  const res = result.unwrap();
+
+  t.deepEqual(res, successResponse);
+});
+
+test.serial("Resend verification email with custom endpoint", async (t) => {
+  const drupalkit = createDrupalkit({
+    baseUrl: BASE_URL,
+    userApiResendMailEndpoint: "/custom/resend-mail",
+  });
+  const email = "JzWZg@example.com";
+  const operation = "register";
+
+  server.use(
+    rest.post("*/custom/resend-mail", async (_req, res, ctx) =>
+      res(ctx.json(successResponse)),
+    ),
+  );
+
+  const result = await drupalkit.userApi.resendVerificationEmail(email, operation);
+
+  t.assert(result.ok);
+});
+
+test.serial("Handle error while resending verification email", async (t) => {
+  const drupalkit = createDrupalkit();
+  const email = "JzWZg@example.com";
+  const operation = "register";
+
+  server.use(
+    rest.post("*/user-api/resend-mail", async (_req, res, ctx) =>
+      res(ctx.status(400)),
+    ),
+  );
+
+  const result = await drupalkit.userApi.resendVerificationEmail(email, operation);
+
+  t.assert(result.err);
+});

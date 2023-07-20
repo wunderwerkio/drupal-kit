@@ -13,6 +13,7 @@ declare module "@drupal-kit/core" {
     userApiPasswordlessLoginEndpoint?: string;
     userApiUpdateEmailEndpoint?: string;
     userApiVerifyEmailEndpoint?: string;
+    userApiResendMailEndpoint?: string;
   }
 }
 
@@ -47,6 +48,8 @@ export const DrupalkitUserApi = (
     drupalkitOptions.userApiUpdateEmailEndpoint ?? "/user-api/update-email";
   const verifyEmailEndpoint =
     drupalkitOptions.userApiVerifyEmailEndpoint ?? "/user-api/verify-email";
+  const resendMailEndpoint =
+    drupalkitOptions.userApiResendMailEndpoint ?? "/user-api/resend-mail";
 
   const headers = {
     "content-type": "application/json",
@@ -277,6 +280,32 @@ export const DrupalkitUserApi = (
   };
 
   /**
+   * Resend verification email.
+   *
+   * Resend the verification email for the given operation.
+   *
+   * @param email - E-Mail address to resend to.
+   * @param operation - Operation of which to resend email.
+   */
+  const resendVerificationEmail = async (email: string, operation: string) => {
+    const url = drupalkit.buildUrl(resendMailEndpoint);
+
+    const result = await drupalkit.request<{ status: "success" }>(url, {
+      method: "POST",
+      body: { email, operation },
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+
+    if (result.err) {
+      return result;
+    }
+
+    return Result.Ok(result.val.data);
+  };
+
+  /**
    * Extend the Drupalkit instance.
    */
   return {
@@ -289,6 +318,7 @@ export const DrupalkitUserApi = (
       passwordlessLogin,
       verifyEmail,
       updateEmail,
+      resendVerificationEmail,
     },
   };
 };
