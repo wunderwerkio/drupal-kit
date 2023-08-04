@@ -54,6 +54,33 @@ test.serial("Request auth code", async (t) => {
   t.deepEqual(res, AuthCodeResponse);
 });
 
+test.serial("Request auth code with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  const operation = "register";
+  const email = "F3f6Z@example.com";
+
+  server.use(
+    rest.post("*/simple-oauth/auth-code", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+      return res(ctx.json(AuthCodeResponse));
+    }),
+  );
+
+  await drupalkit.simpleOauth.requestAuthCode(operation, email, {
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
+});
+
 test.serial("Request auth code with explicit endpoint", async (t) => {
   const endpoint = "/custom/auth-code";
   const drupalkit = createDrupalkit({

@@ -255,3 +255,48 @@ test.serial("Handle network errors", async (t) => {
   t.assert(error instanceof DrupalkitError);
   t.is(error.response, undefined);
 });
+
+test.serial("Allow options overrides", async (t) => {
+  t.plan(3);
+
+  server.use(
+    rest.get("*/en/demo-endpoint", (req, res, ctx) => {
+      return res(ctx.json(DemoEndpointResponse));
+    }),
+  );
+
+  const drupalkit = new Drupalkit({
+    baseUrl: BASE_URL,
+    defaultLocale: "de",
+  });
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "force-cache");
+    t.deepEqual(options.next, {
+      revalidate: 5,
+      tags: ["tag1", "user:3"],
+    });
+  });
+
+  const result = await drupalkit.request(
+    "/demo-endpoint",
+    {
+      method: "GET",
+      headers: {},
+      locale: "de",
+    },
+    {
+      locale: "en",
+      cache: "force-cache",
+      // @ts-ignore
+      next: {
+        revalidate: 5,
+        tags: ["tag1", "user:3"],
+      },
+    },
+  );
+
+  const response = result.unwrap();
+
+  t.assert(response.url.includes("/en/demo-endpoint"));
+});

@@ -16,8 +16,6 @@ export default function fetchWrapper<R>(
     fetch?: Fetch;
   },
 ) {
-  //const log = requestOptions.log ? requestOptions.log : console;
-
   if (
     isPlainObject(requestOptions.body) ||
     Array.isArray(requestOptions.body)

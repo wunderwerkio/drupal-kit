@@ -5,6 +5,7 @@ import {
   DrupalkitResponse,
   Fetch,
   Log,
+  OverrideableRequestOptions,
   RequestOptions,
   RequestRequestOptions,
   Url,
@@ -135,10 +136,12 @@ export class Drupalkit {
    *
    * @param url - Relative or absolute url.
    * @param options - Request options.
+   * @param optionOverrides - Optional overridden options. These options are merged correctly with the actual options and allow for user-specific overrides.
    */
   public request<R>(
     url: Url,
     options: RequestOptions,
+    optionOverrides?: OverrideableRequestOptions,
   ): Promise<Result<DrupalkitResponse<R, number>, DrupalkitError>> {
     // eslint-disable-next-line jsdoc/require-jsdoc
     const request = (options: RequestRequestOptions) => {
@@ -150,8 +153,12 @@ export class Drupalkit {
       "user-agent": this.agent,
     };
 
+    if (optionOverrides?.headers) {
+      Object.assign(headers, optionOverrides.headers);
+    }
+
     // Delete auth header if unauthenticated is true.
-    if (options.unauthenticated) {
+    if (options.unauthenticated || optionOverrides?.unauthenticated) {
       delete headers.authorization;
     } else if (this.auth) {
       headers.authorization = this.auth;
@@ -159,8 +166,9 @@ export class Drupalkit {
 
     const requestOptions = {
       ...options,
+      ...optionOverrides,
       url: this.buildUrl(url, {
-        localeOverride: options.locale,
+        localeOverride: optionOverrides?.locale ?? options.locale,
       }),
       baseUrl: this.baseUrl,
       log: this.log,

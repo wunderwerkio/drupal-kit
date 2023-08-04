@@ -36,7 +36,7 @@ test.after(() => {
   server.close();
 });
 
-test("Get menu items", async (t) => {
+test.serial("Get menu items", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -55,7 +55,35 @@ test("Get menu items", async (t) => {
   t.snapshot(res);
 });
 
-test("Get menu items for non-existant menu", async (t) => {
+test.serial("Get menu items with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.get("*/jsonapi/menu_items/my_menu", (req, res, ctx) => {
+      t.is(req.headers.get("x-custom"), "1");
+
+      return res(
+        ctx.set("Content-Type", "application/vnd.api+json"),
+        ctx.json(JsonApiMenuItems),
+      );
+    }),
+  );
+
+  await drupalkit.jsonApi.getMenuItems("my_menu", {
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
+});
+
+test.serial("Get menu items for non-existant menu", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(

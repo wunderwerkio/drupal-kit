@@ -82,6 +82,38 @@ test.serial("Request token with client credentials grant", async (t) => {
   t.snapshot(res);
 });
 
+test.serial("Request token with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.post("*/oauth/token", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(ctx.json(TokenResponse));
+    }),
+  );
+
+  await drupalkit.simpleOauth.requestToken(
+    "client_credentials",
+    {
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+    },
+    {
+      cache: "no-cache",
+      headers: {
+        "X-Custom": "1",
+      },
+    },
+  );
+});
+
 test.serial("Request token with explicit endpoint", async (t) => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
@@ -184,6 +216,31 @@ test.serial("Request user info", async (t) => {
   const res = result.unwrap();
 
   t.snapshot(res);
+});
+
+test.serial("Request user info with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.get("*/oauth/userinfo", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(ctx.json(UserInfoResponse));
+    }),
+  );
+
+  await drupalkit.simpleOauth.getUserInfo({
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
 });
 
 test.serial("Request user info with explicit endpoint", async (t) => {
