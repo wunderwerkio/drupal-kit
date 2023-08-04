@@ -1,5 +1,6 @@
 import { Result } from "@wunderwerk/ts-functional/results";
 import { Drupalkit, DrupalkitError, DrupalkitOptions } from "@drupal-kit/core";
+import { OverrideableRequestOptions } from "@drupal-kit/types";
 
 import { AuthCodeResponse } from "./types.js";
 
@@ -33,21 +34,27 @@ export const DrupalkitSimpleOauthAuthCode = <Operation extends string>(
    *
    * @param operation - The operation this auth code is for.
    * @param email - The email address of the user.
+   * @param requestOptions - Optional request options.
    */
   const requestAuthCode = async (
     operation: Operation,
     email: string,
+    requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<AuthCodeResponse, DrupalkitError>> => {
     const url = drupalkit.buildUrl(authCodeEndpoint);
 
-    const result = await drupalkit.request<AuthCodeResponse>(url, {
-      method: "POST",
-      body: { operation, email },
-      unauthenticated: true,
-      headers: {
-        "content-type": "application/json",
+    const result = await drupalkit.request<AuthCodeResponse>(
+      url,
+      {
+        method: "POST",
+        body: { operation, email },
+        unauthenticated: true,
+        headers: {
+          "content-type": "application/json",
+        },
       },
-    });
+      requestOptions,
+    );
 
     if (result.err) {
       return result;

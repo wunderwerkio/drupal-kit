@@ -1,5 +1,6 @@
 import { Result } from "@wunderwerk/ts-functional/results";
 import { Drupalkit, DrupalkitError, DrupalkitOptions } from "@drupal-kit/core";
+import { OverrideableRequestOptions } from "@drupal-kit/types";
 
 import { DrupalkitSimpleOauthError } from "./DrupalkitSimpleOauthError.js";
 import {
@@ -38,6 +39,7 @@ export const DrupalkitSimpleOauth = (
    *
    * @param grantType - The grant type to use.
    * @param grant - Grant options object.
+   * @param requestOptions - Optional request options.
    */
   const requestToken = async <
     GrantType extends keyof SimpleOauthGrantTypes,
@@ -45,6 +47,7 @@ export const DrupalkitSimpleOauth = (
   >(
     grantType: GrantType,
     grant: Grant,
+    requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<SimpleOauthTokenResponse, DrupalkitSimpleOauthError>> => {
     const url = drupalkit.buildUrl(oauthTokenEndpoint);
 
@@ -54,14 +57,18 @@ export const DrupalkitSimpleOauth = (
       body.append(key, value);
     }
 
-    const result = await drupalkit.request<SimpleOauthTokenResponse>(url, {
-      method: "POST",
-      body,
-      unauthenticated: true,
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
+    const result = await drupalkit.request<SimpleOauthTokenResponse>(
+      url,
+      {
+        method: "POST",
+        body,
+        unauthenticated: true,
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
       },
-    });
+      requestOptions,
+    );
 
     if (result.err) {
       return Result.Err(
@@ -80,18 +87,24 @@ export const DrupalkitSimpleOauth = (
    *
    * Do not forget to augment the SimpleOauthUserInfo interface
    * to match the OpenID Connect claims of your drupal installation!
+   *
+   * @param requestOptions - Optional request options.
    */
-  const getUserInfo = async (): Promise<
-    Result<SimpleOauthUserInfo, DrupalkitError>
-  > => {
+  const getUserInfo = async (
+    requestOptions?: OverrideableRequestOptions,
+  ): Promise<Result<SimpleOauthUserInfo, DrupalkitError>> => {
     const url = drupalkit.buildUrl(oauthUserInfoEndpoint);
 
-    const result = await drupalkit.request<SimpleOauthUserInfo>(url, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
+    const result = await drupalkit.request<SimpleOauthUserInfo>(
+      url,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
       },
-    });
+      requestOptions,
+    );
 
     if (result.err) {
       return result;

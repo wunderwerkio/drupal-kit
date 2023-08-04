@@ -69,6 +69,36 @@ test.serial("Register", async (t) => {
   t.deepEqual(res, UserResponse);
 });
 
+test.serial("Register with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  const payload = {
+    name: { value: "john-doe-1" },
+    mail: { value: "JzWZg@example.com" },
+  };
+
+  server.use(
+    rest.post("*/user-api/register", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(ctx.json(UserResponse));
+    }),
+  );
+
+  await drupalkit.userApi.register(payload, {
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
+});
+
 test.serial("Register with explicit endpoint", async (t) => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
@@ -110,6 +140,10 @@ test.serial("Handle register error", async (t) => {
   t.assert(result.err);
 });
 
+/**
+ * initAccountCancel().
+ */
+
 test.serial("Init account cancel", async (t) => {
   t.plan(2);
 
@@ -128,6 +162,31 @@ test.serial("Init account cancel", async (t) => {
   const res = result.unwrap();
 
   t.deepEqual(res, successResponse);
+});
+
+test.serial("Init account cancel with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.post("*/user-api/init-account-cancel", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  await drupalkit.userApi.initAccountCancel({
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
 });
 
 test.serial("Init account cancel with custom endpoint", async (t) => {
@@ -161,6 +220,10 @@ test.serial("Handle error while init account cancel", async (t) => {
   t.assert(result.err);
 });
 
+/**
+ * cancelAccount().
+ */
+
 test.serial("Cancel account", async (t) => {
   t.plan(2);
 
@@ -179,6 +242,31 @@ test.serial("Cancel account", async (t) => {
   const res = result.unwrap();
 
   t.deepEqual(res, successResponse);
+});
+
+test.serial("Cancel account with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.post("*/user-api/cancel-account", async (req, res, ctx) => {
+      t.is(req.headers.get("content-type"), "application/json");
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  await drupalkit.userApi.cancelAccount({
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
 });
 
 test.serial("Cancel account with custom endpoint", async (t) => {
@@ -237,6 +325,32 @@ test.serial("Reset password", async (t) => {
   const res = result.unwrap();
 
   t.deepEqual(res, successResponse);
+});
+
+test.serial("Reset password with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+  const email = "JzWZg@example.com";
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.post("*/user-api/reset-password", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  await drupalkit.userApi.resetPassword(email, {
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
 });
 
 test.serial("Reset password with custom endpoint", async (t) => {
@@ -299,6 +413,32 @@ test.serial("Update password", async (t) => {
   t.deepEqual(res, successResponse);
 });
 
+test.serial("Update password with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+  const newPassword = "new-password";
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.post("*/user-api/update-password", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  await drupalkit.userApi.updatePassword(newPassword, undefined, {
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
+});
+
 test.serial("Update password with custom endpoint", async (t) => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
@@ -357,6 +497,32 @@ test.serial("Passwordless login", async (t) => {
   const res = result.unwrap();
 
   t.deepEqual(res, successResponse);
+});
+
+test.serial("Passwordless login with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+  const email = "JzWZg@example.com";
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.post("*/user-api/passwordless-login", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  await drupalkit.userApi.passwordlessLogin(email, {
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
 });
 
 test.serial("Passwordless login with custom endpoint", async (t) => {
@@ -419,6 +585,32 @@ test.serial("Verify email", async (t) => {
   t.deepEqual(res, successResponse);
 });
 
+test.serial("Verify email with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+  const email = "JzWZg@example.com";
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.post("*/user-api/verify-email", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  await drupalkit.userApi.verifyEmail(email, {
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
+});
+
 test.serial("Verify email with custom endpoint", async (t) => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
@@ -477,6 +669,32 @@ test.serial("Update email", async (t) => {
   const res = result.unwrap();
 
   t.deepEqual(res, successResponse);
+});
+
+test.serial("Update email with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+  const email = "JzWZg@example.com";
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.post("*/user-api/update-email", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  await drupalkit.userApi.updateEmail(email, {
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
 });
 
 test.serial("Update email with custom endpoint", async (t) => {
@@ -542,6 +760,36 @@ test.serial("Resend verification email", async (t) => {
 
   t.deepEqual(res, successResponse);
 });
+
+test.serial(
+  "Resend verification email with custom request options",
+  async (t) => {
+    t.plan(2);
+
+    const drupalkit = createDrupalkit();
+    const email = "JzWZg@example.com";
+    const operation = "register";
+
+    drupalkit.hook.before("request", (options) => {
+      t.is(options.cache, "no-cache");
+    });
+
+    server.use(
+      rest.post("*/user-api/resend-mail", async (req, res, ctx) => {
+        t.is(req.headers.get("X-Custom"), "1");
+
+        return res(ctx.json(successResponse));
+      }),
+    );
+
+    await drupalkit.userApi.resendVerificationEmail(email, operation, {
+      cache: "no-cache",
+      headers: {
+        "X-Custom": "1",
+      },
+    });
+  },
+);
 
 test.serial("Resend verification email with custom endpoint", async (t) => {
   const drupalkit = createDrupalkit({

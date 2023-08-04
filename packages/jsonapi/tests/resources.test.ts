@@ -76,6 +76,10 @@ test("Build JSON:API url", (t) => {
   t.snapshot(url);
 });
 
+/**
+ * getIndex().
+ */
+
 test.serial("Get JSON:API index", async (t) => {
   const drupalkit = createDrupalkit();
 
@@ -115,6 +119,38 @@ test.serial("Get JSON:API index", async (t) => {
   t.assert(err instanceof DrupalkitJsonApiError);
 });
 
+test.serial("Get JSON:API index with options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.get("*/jsonapi", (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(
+        ctx.set("Content-Type", "application/vnd.api+json"),
+        ctx.json(JsonApiIndex),
+      );
+    }),
+  );
+
+  await drupalkit.jsonApi.getIndex({
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
+});
+
+/**
+ * .resource() - "readSingle".
+ */
+
 test.serial("Get JSON:API resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
@@ -138,6 +174,42 @@ test.serial("Get JSON:API resource", async (t) => {
 
   const res = result.unwrap();
   t.snapshot(res);
+});
+
+test.serial("Get JSON:API resource with options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+  const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.get("*/jsonapi/node/article/" + uuid, (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(
+        ctx.set("Content-Type", "application/vnd.api+json"),
+        ctx.json(JsonApiArticleDetail),
+      );
+    }),
+  );
+
+  await drupalkit.jsonApi.resource(
+    "node--article",
+    "readSingle",
+    {
+      uuid,
+    },
+    {
+      cache: "no-cache",
+      headers: {
+        "X-Custom": "1",
+      },
+    },
+  );
 });
 
 test.serial("Simplify single resource", async (t) => {
@@ -191,7 +263,7 @@ test.serial("Get localized JSON:API resource", async (t) => {
       uuid,
     },
     {
-      localeOverride: "en",
+      locale: "en",
     },
   );
 
@@ -264,6 +336,10 @@ test.serial("Handle error when getting single resource", async (t) => {
   t.is(err.statusCode, 400);
 });
 
+/**
+ * .resource() - "readMany".
+ */
+
 test.serial("Get many resources", async (t) => {
   const drupalkit = createDrupalkit();
 
@@ -285,6 +361,42 @@ test.serial("Get many resources", async (t) => {
 
   const res = result.unwrap();
   t.snapshot(res);
+});
+
+test.serial("Get many resources with custom request options", async (t) => {
+  t.plan(3);
+
+  const drupalkit = createDrupalkit();
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.get("*/jsonapi/node/article", (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+      t.assert(req.url.toString().includes("/en/jsonapi"));
+
+      return res(
+        ctx.set("Content-Type", "application/vnd.api+json"),
+        ctx.status(200),
+        ctx.json(JsonApiArticleCollection),
+      );
+    }),
+  );
+
+  await drupalkit.jsonApi.resource(
+    "node--article",
+    "readMany",
+    {},
+    {
+      locale: "en",
+      cache: "no-cache",
+      headers: {
+        "X-Custom": "1",
+      },
+    },
+  );
 });
 
 test.serial("Simplify many resources", async (t) => {
@@ -357,6 +469,10 @@ test.serial("Handle network error", async (t) => {
   t.is(err.response, undefined);
 });
 
+/**
+ * .resource() - "create".
+ */
+
 test.serial("Create new resource", async (t) => {
   const drupalkit = createDrupalkit();
 
@@ -398,6 +514,57 @@ test.serial("Create new resource", async (t) => {
   t.snapshot(simpleData);
 });
 
+test.serial("Create resource with custom request options", async (t) => {
+  t.plan(3);
+
+  const drupalkit = createDrupalkit();
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.post("*/jsonapi/node/article", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+      t.assert(req.url.toString().includes("/en/jsonapi"));
+
+      return res(
+        ctx.set("Content-Type", "application/vnd.api+json"),
+        ctx.status(200),
+        ctx.json(JsonApiArticleDetail),
+      );
+    }),
+  );
+
+  await drupalkit.jsonApi.resource(
+    "node--article",
+    "create",
+    {
+      payload: {
+        attributes: {
+          title: "New Article",
+        },
+        relationships: {
+          uid: {
+            data: {
+              type: "user--user",
+              id: "1",
+              meta: {},
+            },
+          },
+        },
+      },
+    },
+    {
+      locale: "en",
+      cache: "no-cache",
+      headers: {
+        "X-Custom": "1",
+      },
+    },
+  );
+});
+
 test.serial("Handle error when creating new resource", async (t) => {
   const drupalkit = createDrupalkit();
 
@@ -435,6 +602,10 @@ test.serial("Handle error when creating new resource", async (t) => {
   t.is(error.statusCode, 400);
 });
 
+/**
+ * .resource() - "update".
+ */
+
 test.serial("Update resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
@@ -471,6 +642,50 @@ test.serial("Update resource", async (t) => {
   t.snapshot(simpleData);
 });
 
+test.serial("Update resource with custom request options", async (t) => {
+  t.plan(3);
+
+  const drupalkit = createDrupalkit();
+  const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.patch("*/jsonapi/node/article/" + uuid, async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+      t.assert(req.url.toString().includes("/en/jsonapi"));
+
+      return res(
+        ctx.set("Content-Type", "application/vnd.api+json"),
+        ctx.status(200),
+        ctx.json(JsonApiArticleDetail),
+      );
+    }),
+  );
+
+  await drupalkit.jsonApi.resource(
+    "node--article",
+    "update",
+    {
+      uuid,
+      payload: {
+        attributes: {
+          title: "New Article",
+        },
+      },
+    },
+    {
+      locale: "en",
+      cache: "no-cache",
+      headers: {
+        "X-Custom": "1",
+      },
+    },
+  );
+});
+
 test.serial("Handle error when updating resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
@@ -500,6 +715,10 @@ test.serial("Handle error when updating resource", async (t) => {
   t.is(error.statusCode, 400);
 });
 
+/**
+ * .resource() - "delete".
+ */
+
 test.serial("Delete resource", async (t) => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
@@ -516,6 +735,43 @@ test.serial("Delete resource", async (t) => {
 
   const res = result.unwrap();
   t.assert(res);
+});
+
+test.serial("Delete resource with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+  const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.delete("*/jsonapi/node/article/" + uuid, (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(
+        ctx.set("Content-Type", "application/vnd.api+json"),
+        ctx.status(400),
+        ctx.json(JsonApiIncludeError),
+      );
+    }),
+  );
+
+  await drupalkit.jsonApi.resource(
+    "node--article",
+    "delete",
+    {
+      uuid,
+    },
+    {
+      cache: "no-cache",
+      headers: {
+        "X-Custom": "1",
+      },
+    },
+  );
 });
 
 test.serial("Handle error when deleting resource", async (t) => {
