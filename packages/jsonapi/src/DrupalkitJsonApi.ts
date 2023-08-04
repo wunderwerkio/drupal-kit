@@ -2,7 +2,7 @@ import { Result } from "@wunderwerk/ts-functional/results";
 import { Jsona } from "jsona";
 import { Response } from "ts-json-api";
 import { Drupalkit, DrupalkitOptions, Query } from "@drupal-kit/core";
-import { RequestHeaders } from "@drupal-kit/types";
+import { OverrideableRequestOptions, RequestHeaders } from "@drupal-kit/types";
 
 import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError.js";
 import {
@@ -51,17 +51,21 @@ export const DrupalkitJsonApi = (
    *
    * @returns A result object containing the JSON:API index or an error.
    */
-  const getIndex = async (): Promise<
-    Result<JsonApiIndex, DrupalkitJsonApiError>
-  > => {
+  const getIndex = async (
+    requestOptions?: OverrideableRequestOptions,
+  ): Promise<Result<JsonApiIndex, DrupalkitJsonApiError>> => {
     const url = buildJsonApiUrl("");
 
-    const result = await drupalkit.request<JsonApiIndex>(url, {
-      method: "GET",
-      headers: {
-        ...defaultHeaders,
+    const result = await drupalkit.request<JsonApiIndex>(
+      url,
+      {
+        method: "GET",
+        headers: {
+          ...defaultHeaders,
+        },
       },
-    });
+      requestOptions,
+    );
 
     if (result.err) {
       return Result.Err(DrupalkitJsonApiError.fromDrupalkitError(result.val));
@@ -75,13 +79,17 @@ export const DrupalkitJsonApi = (
    *
    * @param menu - System name of the menu.
    */
-  const getMenuItems = async (menu: string) => {
+  const getMenuItems = async (
+    menu: string,
+    requestOptions?: OverrideableRequestOptions,
+  ) => {
     return await getResourceCollection<MenuLinkContentResource>(
       "drupalkit_internal--menu_items",
       {},
       {
         path: `menu_items/${menu}`,
       },
+      requestOptions
     );
   };
 
@@ -103,8 +111,8 @@ export const DrupalkitJsonApi = (
     parameters: ReadSingleParameters,
     options?: {
       path?: string;
-      localeOverride?: string;
     },
+    requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<Response<TResourceObject>, DrupalkitJsonApiError>> => {
     const path =
       options?.path ?? type.replace("--", "/") + "/" + parameters.uuid;
@@ -117,7 +125,7 @@ export const DrupalkitJsonApi = (
     const result = await drupalkit.request<Response<TResourceObject>>(url, {
       method: "GET",
       headers: defaultHeaders,
-    });
+    }, requestOptions);
 
     if (result.err) {
       return Result.Err(DrupalkitJsonApiError.fromDrupalkitError(result.val));

@@ -5,6 +5,7 @@ import {
   DrupalkitResponse,
   Fetch,
   Log,
+  OverrideableRequestOptions,
   RequestOptions,
   RequestRequestOptions,
   Url,
@@ -83,8 +84,8 @@ export class Drupalkit {
     /* eslint-disable @typescript-eslint/no-empty-function */
     this.log = Object.assign(
       {
-        debug: () => {},
-        info: () => {},
+        debug: () => { },
+        info: () => { },
         warn: console.warn.bind(console),
         error: console.error.bind(console),
       },
@@ -139,6 +140,7 @@ export class Drupalkit {
   public request<R>(
     url: Url,
     options: RequestOptions,
+    optionOverrides?: OverrideableRequestOptions,
   ): Promise<Result<DrupalkitResponse<R, number>, DrupalkitError>> {
     // eslint-disable-next-line jsdoc/require-jsdoc
     const request = (options: RequestRequestOptions) => {
@@ -150,8 +152,12 @@ export class Drupalkit {
       "user-agent": this.agent,
     };
 
+    if (optionOverrides?.headers) {
+      Object.assign(headers, optionOverrides.headers);
+    }
+
     // Delete auth header if unauthenticated is true.
-    if (options.unauthenticated) {
+    if (options.unauthenticated || optionOverrides?.unauthenticated) {
       delete headers.authorization;
     } else if (this.auth) {
       headers.authorization = this.auth;
@@ -159,8 +165,9 @@ export class Drupalkit {
 
     const requestOptions = {
       ...options,
+      ...optionOverrides,
       url: this.buildUrl(url, {
-        localeOverride: options.locale,
+        localeOverride: optionOverrides?.locale ?? options.locale,
       }),
       baseUrl: this.baseUrl,
       log: this.log,
