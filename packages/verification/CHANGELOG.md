@@ -1,5 +1,12 @@
 # @drupal-kit/verification
 
+## 0.9.0
+
+### Patch Changes
+
+- Updated dependencies [[`12a29cc`](https://github.com/wunderwerkio/drupal-kit/commit/12a29cc10bd5be2740e5897ca073dab4f9e95e6b)]:
+  - @drupal-kit/core@0.9.0
+
 ## 0.8.0
 
 ### Patch Changes
