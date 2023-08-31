@@ -1,5 +1,14 @@
 # @drupal-kit/jsonapi
 
+## 0.9.1
+
+### Patch Changes
+
+- [#57](https://github.com/wunderwerkio/drupal-kit/pull/57) [`60efba7`](https://github.com/wunderwerkio/drupal-kit/commit/60efba76a45c897af0a776d6725d31845c1b484b) Thanks [@chfoidl](https://github.com/chfoidl)! - Fix types of relationship payload in create / update jsonapi actions
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.9.1
+
 ## 0.9.0
 
 ### Minor Changes
