@@ -113,6 +113,11 @@ export interface JsonApiIndex extends Response<[]> {
   };
 }
 
+export interface RelationshipLinkage<T extends string> {
+  type: T;
+  id: string;
+}
+
 /**
  * Utility types.
  */
@@ -199,6 +204,12 @@ export type DeriveResourceObject<TResource extends JsonApiResource> = {
   };
 };
 
+type ResourceRelationshipLinkage<T> = T extends JsonApiResource
+  ? RelationshipLinkage<T["type"]>
+  : T extends JsonApiResource[]
+  ? RelationshipLinkage<ExtractArrayElementType<T>["type"]>[]
+  : never;
+
 /**
  * Creates a simple json api resource from a resource object.
  *
@@ -211,27 +222,18 @@ export type SimpleFromResourceObject<T> = T extends DeriveResourceObject<
   : T extends DeriveResourceObject<infer TResource>[]
   ? DeriveSimpleJsonApiResource<TResource>[]
   : never;
-
-/**
- * Extract the create payload type from a resource object.
- */
-type ResourceCreatePayload<
-  R extends JsonApiResource,
-  TResourceObject extends DeriveResourceObject<R> = DeriveResourceObject<R>,
-> = {
-  id?: TResourceObject["id"];
-  type?: TResourceObject["type"];
-  attributes?: Partial<TResourceObject["attributes"]>;
-  relationships?: Partial<TResourceObject["relationships"]>;
-};
 /**
  * Extract the update payload type from a resource object.
  */
-type ResourceUpdatePayload<R extends JsonApiResource> = object & {
+type ResourceCreateUpdatePayload<R extends JsonApiResource> = object & {
   id?: R["id"];
   type?: R["type"];
   attributes?: Partial<R["attributes"]>;
-  relationships?: Partial<R["relationships"]>;
+  relationships?: Partial<{
+    [key in keyof R["relationships"]]: {
+      data: ResourceRelationshipLinkage<R["relationships"][key]>;
+    };
+  }>;
 };
 
 export type ResourceResponse<
@@ -279,12 +281,12 @@ export type ReadSingleParameters = ReadParameters & {
 export type ReadManyParameters = ReadParameters;
 
 export type CreateParameters<Resource extends JsonApiResource> = {
-  payload: ResourceCreatePayload<Resource>;
+  payload: ResourceCreateUpdatePayload<Resource>;
 };
 
 export type UpdateParameters<Resource extends JsonApiResource> = {
   uuid: string;
-  payload: ResourceUpdatePayload<Resource>;
+  payload: ResourceCreateUpdatePayload<Resource>;
 };
 
 export type DeleteParameters = {
