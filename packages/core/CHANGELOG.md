@@ -1,5 +1,11 @@
 # @drupal-kit/core
 
+## 0.9.2
+
+### Patch Changes
+
+- [#60](https://github.com/wunderwerkio/drupal-kit/pull/60) [`9763229`](https://github.com/wunderwerkio/drupal-kit/commit/976322953351e5262d18006266436cd6180ae88f) Thanks [@chfoidl](https://github.com/chfoidl)! - Implement unsetAuth() method.
+
 ## 0.9.1
 
 ## 0.9.0
