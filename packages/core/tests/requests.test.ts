@@ -202,7 +202,7 @@ test.serial("Execute hooks", async (t) => {
 });
 
 test.serial("Add auth header if present", async (t) => {
-  t.plan(2);
+  t.plan(3);
   const authHeaderValue = "Bearer 00000";
 
   server.use(
@@ -237,6 +237,22 @@ test.serial("Add auth header if present", async (t) => {
   await drupalkit.request("/demo-endpoint", {
     method: "GET",
     unauthenticated: true,
+  });
+
+  // Unset auth.
+  drupalkit.unsetAuth();
+
+  server.resetHandlers();
+  server.use(
+    rest.get("*/demo-endpoint", (req, res) => {
+      t.is(req.headers.get("authorization"), null);
+
+      res.once();
+    }),
+  );
+
+  await drupalkit.request("/demo-endpoint", {
+    method: "GET",
   });
 });
 

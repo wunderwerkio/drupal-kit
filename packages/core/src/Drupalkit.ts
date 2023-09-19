@@ -207,6 +207,15 @@ export class Drupalkit {
   }
 
   /**
+   * Unsets previously set auth info.
+   *
+   * Makes sure that subsequent requests are anonymous.
+   */
+  public unsetAuth() {
+    this.auth = undefined;
+  }
+
+  /**
    * Set the locale.
    *
    * @param locale - The locale.
