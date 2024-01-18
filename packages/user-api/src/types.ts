@@ -60,7 +60,7 @@ declare module "@drupal-kit/core" {
 
     //
     // Deprecated properties.
-    // 
+    //
 
     /**
      * Endpoint path for the User API ResendRegisterEmailResource.
