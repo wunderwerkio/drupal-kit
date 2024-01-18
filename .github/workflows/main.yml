@@ -54,6 +54,11 @@ jobs:
         env:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 
+      - name: Syncpack
+        run: pnpm syncpack
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+
       - name: Build
         run: pnpm build
         env:
