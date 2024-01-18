@@ -1,5 +1,7 @@
 # @drupal-kit/eslint-config
 
+## 0.10.0
+
 ## 0.9.2
 
 ## 0.9.1
