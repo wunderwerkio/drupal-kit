@@ -95,7 +95,7 @@ test.serial("Request token with custom request options", async (t) => {
     http.post("*/oauth/token", async ({ request }) => {
       t.is(request.headers.get("X-Custom"), "1");
 
-      return HttpResponse.json(TokenResponse)
+      return HttpResponse.json(TokenResponse);
     }),
   );
 
@@ -161,11 +161,7 @@ test.serial("Handle request errors", async (t) => {
 test.serial("Handle network errors", async (t) => {
   const drupalkit = createDrupalkit();
 
-  server.use(
-    http.post("*/oauth/token", async () =>
-      HttpResponse.error()
-    ),
-  );
+  server.use(http.post("*/oauth/token", async () => HttpResponse.error()));
 
   const result = await drupalkit.simpleOauth.requestToken(
     "client_credentials",
@@ -185,7 +181,9 @@ test.serial(
     const drupalkit = createDrupalkit();
 
     server.use(
-      http.post("*/not/oauth/related", async () => HttpResponse.text(null, { status: 400 })),
+      http.post("*/not/oauth/related", async () =>
+        HttpResponse.text(null, { status: 400 }),
+      ),
     );
 
     const result = await drupalkit.request("/not/oauth/related", {
@@ -202,7 +200,9 @@ test.serial("Request user info", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    http.get("*/oauth/userinfo", async () => HttpResponse.json(UserInfoResponse)),
+    http.get("*/oauth/userinfo", async () =>
+      HttpResponse.json(UserInfoResponse),
+    ),
   );
 
   const result = await drupalkit.simpleOauth.getUserInfo();

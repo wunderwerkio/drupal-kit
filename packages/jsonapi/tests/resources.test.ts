@@ -165,7 +165,7 @@ test.serial("Get JSON:API resource", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      }),
     ),
   );
 
@@ -199,7 +199,7 @@ test.serial("Get JSON:API resource with options", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -228,7 +228,7 @@ test.serial("Simplify single resource", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      }),
     ),
   );
 
@@ -260,7 +260,7 @@ test.serial("Get localized JSON:API resource", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -297,7 +297,7 @@ test.serial("Get JSON:API resource with query parameters", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -327,7 +327,7 @@ test.serial("Handle error when getting single resource", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -359,7 +359,7 @@ test.serial("Get many resources", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -391,7 +391,7 @@ test.serial("Get many resources with custom request options", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -418,7 +418,7 @@ test.serial("Simplify many resources", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -445,7 +445,7 @@ test.serial("Handle error when getting many resource", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
   const result = await drupalkit.jsonApi.resource(
@@ -498,7 +498,7 @@ test.serial("Create new resource", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -544,7 +544,7 @@ test.serial("Create resource with custom request options", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -587,7 +587,7 @@ test.serial("Handle error when creating new resource", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      }),
     ),
   );
 
@@ -627,7 +627,7 @@ test.serial("Update resource", async (t) => {
 
   server.use(
     http.patch("*/jsonapi/node/article/" + uuid, async ({ request }) => {
-      const payload = await request.json() as any;
+      const payload = (await request.json()) as any;
 
       t.is(payload.data.type, "node--article");
       t.is(payload.data.id, uuid);
@@ -636,7 +636,7 @@ test.serial("Update resource", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -675,7 +675,7 @@ test.serial("Update resource with custom request options", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -711,7 +711,7 @@ test.serial("Handle error when updating resource", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      }),
     ),
   );
 
@@ -745,7 +745,7 @@ test.serial("Delete resource", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      }),
     ),
   );
 
@@ -776,7 +776,7 @@ test.serial("Delete resource with custom request options", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -806,7 +806,7 @@ test.serial("Handle error when deleting resource", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      }),
     ),
   );
 

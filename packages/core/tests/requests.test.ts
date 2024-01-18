@@ -203,11 +203,15 @@ test.serial("Add auth header if present", async (t) => {
   const authHeaderValue = "Bearer 00000";
 
   server.use(
-    http.get("*/demo-endpoint", ({ request }) => {
-      t.is(request.headers.get("authorization"), authHeaderValue);
+    http.get(
+      "*/demo-endpoint",
+      ({ request }) => {
+        t.is(request.headers.get("authorization"), authHeaderValue);
 
-      return HttpResponse.text();
-    }, { once: true }),
+        return HttpResponse.text();
+      },
+      { once: true },
+    ),
   );
 
   const drupalkit = new Drupalkit({
@@ -224,11 +228,15 @@ test.serial("Add auth header if present", async (t) => {
 
   server.resetHandlers();
   server.use(
-    http.get("*/demo-endpoint", ({ request }) => {
-      t.is(request.headers.get("authorization"), null);
+    http.get(
+      "*/demo-endpoint",
+      ({ request }) => {
+        t.is(request.headers.get("authorization"), null);
 
-      return HttpResponse.text();
-    }, { once: true }),
+        return HttpResponse.text();
+      },
+      { once: true },
+    ),
   );
 
   await drupalkit.request("/demo-endpoint", {
@@ -241,11 +249,15 @@ test.serial("Add auth header if present", async (t) => {
 
   server.resetHandlers();
   server.use(
-    http.get("*/demo-endpoint", ({ request }) => {
-      t.is(request.headers.get("authorization"), null);
+    http.get(
+      "*/demo-endpoint",
+      ({ request }) => {
+        t.is(request.headers.get("authorization"), null);
 
-      return HttpResponse.text();
-    }, { once: true }),
+        return HttpResponse.text();
+      },
+      { once: true },
+    ),
   );
 
   await drupalkit.request("/demo-endpoint", {
