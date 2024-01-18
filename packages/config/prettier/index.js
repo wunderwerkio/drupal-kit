@@ -7,23 +7,14 @@ module.exports = {
   semi: true,
   trailingComma: "all",
   tabWidth: 2,
-  plugins: [
-    "@ianvs/prettier-plugin-sort-imports",
-  ],
-  "pluginSearchDirs": false,
-  importOrder: [
-    "^(jest-fetch-mock)$",
-    "<THIRD_PARTY_MODULES>",
-    "^@drupal-kit/(.*)$",
-    "",
-    "^~/utils/(.*)$",
-    "^~/(.*)$",
-    "^[./]",
-  ],
-  importOrderSeparation: false,
-  importOrderSortSpecifiers: true,
-  importOrderBuiltinModulesToTop: true,
-  importOrderParserPlugins: ["decorators-legacy", "importAssertions", "typescript"],
-  importOrderMergeDuplicateImports: true,
-  importOrderCombineTypeAndValueImports: true,
+  // plugins: [
+  //   "@ianvs/prettier-plugin-sort-imports",
+  // ],
+  // importOrder: [
+  //   "<THIRD_PARTY_MODULES>",
+  //   "^@drupal-kit/(.*)$",
+  //   "",
+  //   "^@/(.*)$",
+  //   "^[./]",
+  // ],
 };

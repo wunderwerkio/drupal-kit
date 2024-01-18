@@ -1,15 +1,16 @@
 import test from "ava";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { Drupalkit } from "@drupal-kit/core";
 
 import { DrupalkitJsonApi, DrupalkitJsonApiError } from "../src/index.js";
-import JsonApiArticleCollection from "./fixtures/jsonapi_article_collection.json" assert { type: "json" };
-import JsonApiArticleDetail from "./fixtures/jsonapi_article_detail.json" assert { type: "json" };
-import JsonApiIncludeError from "./fixtures/jsonapi_include_error.json" assert { type: "json" };
-import JsonApiIndex from "./fixtures/jsonapi_index.json" assert { type: "json" };
-import JsonApiIndexError from "./fixtures/jsonapi_index_error.json" assert { type: "json" };
+import JsonApiArticleCollection from "./fixtures/jsonapi_article_collection.json" with { type: "json" };
+import JsonApiArticleDetail from "./fixtures/jsonapi_article_detail.json" with { type: "json" };
+import JsonApiIncludeError from "./fixtures/jsonapi_include_error.json" with { type: "json" };
+import JsonApiIndexError from "./fixtures/jsonapi_index_error.json" with { type: "json" };
+import JsonApiIndex from "./fixtures/jsonapi_index.json" with { type: "json" };
+
 import "./types.js";
 
 const BASE_URL = "https://my-drupal.com";
@@ -84,11 +85,12 @@ test.serial("Get JSON:API index", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.get("*/jsonapi", (_req, res, ctx) =>
-      res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.json(JsonApiIndex),
-      ),
+    http.get("*/jsonapi", () =>
+      HttpResponse.json(JsonApiIndex, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      }),
     ),
   );
 
@@ -104,12 +106,13 @@ test.serial("Get JSON:API index", async (t) => {
   // With error
   server.resetHandlers();
   server.use(
-    rest.get("*/jsonapi", (_req, res, ctx) =>
-      res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.status(500),
-        ctx.json(JsonApiIndexError),
-      ),
+    http.get("*/jsonapi", () =>
+      HttpResponse.json(JsonApiIndexError, {
+        status: 500,
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      }),
     ),
   );
 
@@ -129,13 +132,14 @@ test.serial("Get JSON:API index with options", async (t) => {
   });
 
   server.use(
-    rest.get("*/jsonapi", (req, res, ctx) => {
-      t.is(req.headers.get("X-Custom"), "1");
+    http.get("*/jsonapi", ({ request }) => {
+      t.is(request.headers.get("X-Custom"), "1");
 
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.json(JsonApiIndex),
-      );
+      return HttpResponse.json(JsonApiIndex, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      });
     }),
   );
 
@@ -156,11 +160,12 @@ test.serial("Get JSON:API resource", async (t) => {
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   server.use(
-    rest.get("*/jsonapi/node/article/" + uuid, (_req, res, ctx) =>
-      res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.json(JsonApiArticleDetail),
-      ),
+    http.get("*/jsonapi/node/article/" + uuid, () =>
+      HttpResponse.json(JsonApiArticleDetail, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     ),
   );
 
@@ -187,13 +192,14 @@ test.serial("Get JSON:API resource with options", async (t) => {
   });
 
   server.use(
-    rest.get("*/jsonapi/node/article/" + uuid, (req, res, ctx) => {
-      t.is(req.headers.get("X-Custom"), "1");
+    http.get("*/jsonapi/node/article/" + uuid, ({ request }) => {
+      t.is(request.headers.get("X-Custom"), "1");
 
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.json(JsonApiArticleDetail),
-      );
+      return HttpResponse.json(JsonApiArticleDetail, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
 
@@ -217,11 +223,12 @@ test.serial("Simplify single resource", async (t) => {
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   server.use(
-    rest.get("*/jsonapi/node/article/" + uuid, (_req, res, ctx) =>
-      res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.json(JsonApiArticleDetail),
-      ),
+    http.get("*/jsonapi/node/article/" + uuid, () =>
+      HttpResponse.json(JsonApiArticleDetail, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     ),
   );
 
@@ -246,13 +253,14 @@ test.serial("Get localized JSON:API resource", async (t) => {
   t.plan(2);
 
   server.use(
-    rest.get("*/jsonapi/node/article/" + uuid, (req, res, ctx) => {
-      t.assert(req.url.toString().includes("/en/jsonapi"));
+    http.get("*/jsonapi/node/article/" + uuid, ({ request }) => {
+      t.assert(request.url.toString().includes("/en/jsonapi"));
 
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.json(JsonApiArticleDetail),
-      );
+      return HttpResponse.json(JsonApiArticleDetail, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
 
@@ -282,13 +290,14 @@ test.serial("Get JSON:API resource with query parameters", async (t) => {
   queryParams.addCustomParam({ resourceVersion: "id:3" });
 
   server.use(
-    rest.get("*/jsonapi/node/article/" + uuid, (req, res, ctx) => {
-      t.snapshot(req.url.toString());
+    http.get("*/jsonapi/node/article/" + uuid, ({ request }) => {
+      t.snapshot(request.url.toString());
 
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.json(JsonApiArticleDetail),
-      );
+      return HttpResponse.json(JsonApiArticleDetail, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
 
@@ -312,12 +321,13 @@ test.serial("Handle error when getting single resource", async (t) => {
   queryParams.addInclude(["wrong-field"]);
 
   server.use(
-    rest.get("*/jsonapi/node/article/" + uuid, (_req, res, ctx) => {
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.status(400),
-        ctx.json(JsonApiIncludeError),
-      );
+    http.get("*/jsonapi/node/article/" + uuid, () => {
+      return HttpResponse.json(JsonApiIncludeError, {
+        status: 400,
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
 
@@ -344,12 +354,12 @@ test.serial("Get many resources", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.get("*/jsonapi/node/article", (_req, res, ctx) => {
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.status(200),
-        ctx.json(JsonApiArticleCollection),
-      );
+    http.get("*/jsonapi/node/article", () => {
+      return HttpResponse.json(JsonApiArticleCollection, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
 
@@ -373,15 +383,15 @@ test.serial("Get many resources with custom request options", async (t) => {
   });
 
   server.use(
-    rest.get("*/jsonapi/node/article", (req, res, ctx) => {
-      t.is(req.headers.get("X-Custom"), "1");
-      t.assert(req.url.toString().includes("/en/jsonapi"));
+    http.get("*/jsonapi/node/article", ({ request }) => {
+      t.is(request.headers.get("X-Custom"), "1");
+      t.assert(request.url.toString().includes("/en/jsonapi"));
 
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.status(200),
-        ctx.json(JsonApiArticleCollection),
-      );
+      return HttpResponse.json(JsonApiArticleCollection, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
 
@@ -403,12 +413,12 @@ test.serial("Simplify many resources", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.get("*/jsonapi/node/article", (_req, res, ctx) => {
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.status(200),
-        ctx.json(JsonApiArticleCollection),
-      );
+    http.get("*/jsonapi/node/article", () => {
+      return HttpResponse.json(JsonApiArticleCollection, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
 
@@ -429,12 +439,13 @@ test.serial("Handle error when getting many resource", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.get("*/jsonapi/node/article", (_req, res, ctx) => {
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.status(400),
-        ctx.json(JsonApiIncludeError),
-      );
+    http.get("*/jsonapi/node/article", () => {
+      return HttpResponse.json(JsonApiIncludeError, {
+        status: 400,
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
   const result = await drupalkit.jsonApi.resource(
@@ -453,8 +464,8 @@ test.serial("Handle network error", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.get("*/jsonapi/node/article", (_req, res) => {
-      return res.networkError("Network Error");
+    http.get("*/jsonapi/node/article", () => {
+      return HttpResponse.error();
     }),
   );
   const result = await drupalkit.jsonApi.resource(
@@ -479,14 +490,15 @@ test.serial("Create new resource", async (t) => {
   t.plan(3);
 
   server.use(
-    rest.post("*/jsonapi/node/article", async (req, res, ctx) => {
-      const payload = await req.json();
-      t.is(payload.data.type, "node--article");
+    http.post("*/jsonapi/node/article", async ({ request }) => {
+      const payload = await request.json();
+      t.is((payload as any).data.type, "node--article");
 
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.json(JsonApiArticleDetail),
-      );
+      return HttpResponse.json(JsonApiArticleDetail, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
 
@@ -524,15 +536,15 @@ test.serial("Create resource with custom request options", async (t) => {
   });
 
   server.use(
-    rest.post("*/jsonapi/node/article", async (req, res, ctx) => {
-      t.is(req.headers.get("X-Custom"), "1");
-      t.assert(req.url.toString().includes("/en/jsonapi"));
+    http.post("*/jsonapi/node/article", async ({ request }) => {
+      t.is(request.headers.get("X-Custom"), "1");
+      t.assert(request.url.toString().includes("/en/jsonapi"));
 
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.status(200),
-        ctx.json(JsonApiArticleDetail),
-      );
+      return HttpResponse.json(JsonApiArticleDetail, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
 
@@ -569,12 +581,13 @@ test.serial("Handle error when creating new resource", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.post("*/jsonapi/node/article", (_req, res, ctx) =>
-      res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.status(400),
-        ctx.json(JsonApiIncludeError),
-      ),
+    http.post("*/jsonapi/node/article", () =>
+      HttpResponse.json(JsonApiIncludeError, {
+        status: 400,
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     ),
   );
 
@@ -613,16 +626,17 @@ test.serial("Update resource", async (t) => {
   t.plan(4);
 
   server.use(
-    rest.patch("*/jsonapi/node/article/" + uuid, async (req, res, ctx) => {
-      const payload = await req.json();
+    http.patch("*/jsonapi/node/article/" + uuid, async ({ request }) => {
+      const payload = await request.json() as any;
 
       t.is(payload.data.type, "node--article");
       t.is(payload.data.id, uuid);
 
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.json(JsonApiArticleDetail),
-      );
+      return HttpResponse.json(JsonApiArticleDetail, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
 
@@ -653,15 +667,15 @@ test.serial("Update resource with custom request options", async (t) => {
   });
 
   server.use(
-    rest.patch("*/jsonapi/node/article/" + uuid, async (req, res, ctx) => {
-      t.is(req.headers.get("X-Custom"), "1");
-      t.assert(req.url.toString().includes("/en/jsonapi"));
+    http.patch("*/jsonapi/node/article/" + uuid, async ({ request }) => {
+      t.is(request.headers.get("X-Custom"), "1");
+      t.assert(request.url.toString().includes("/en/jsonapi"));
 
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.status(200),
-        ctx.json(JsonApiArticleDetail),
-      );
+      return HttpResponse.json(JsonApiArticleDetail, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
 
@@ -691,12 +705,13 @@ test.serial("Handle error when updating resource", async (t) => {
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   server.use(
-    rest.patch("*/jsonapi/node/article/" + uuid, (_req, res, ctx) =>
-      res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.status(400),
-        ctx.json(JsonApiIncludeError),
-      ),
+    http.patch("*/jsonapi/node/article/" + uuid, () =>
+      HttpResponse.json(JsonApiIncludeError, {
+        status: 400,
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     ),
   );
 
@@ -724,8 +739,13 @@ test.serial("Delete resource", async (t) => {
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   server.use(
-    rest.delete("*/jsonapi/node/article/" + uuid, (_req, res, ctx) =>
-      res(ctx.set("Content-Type", "application/vnd.api+json"), ctx.status(204)),
+    http.delete("*/jsonapi/node/article/" + uuid, () =>
+      HttpResponse.text(null, {
+        status: 204,
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     ),
   );
 
@@ -748,14 +768,15 @@ test.serial("Delete resource with custom request options", async (t) => {
   });
 
   server.use(
-    rest.delete("*/jsonapi/node/article/" + uuid, (req, res, ctx) => {
-      t.is(req.headers.get("X-Custom"), "1");
+    http.delete("*/jsonapi/node/article/" + uuid, ({ request }) => {
+      t.is(request.headers.get("X-Custom"), "1");
 
-      return res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.status(400),
-        ctx.json(JsonApiIncludeError),
-      );
+      HttpResponse.json(JsonApiIncludeError, {
+        status: 400,
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     }),
   );
 
@@ -779,12 +800,13 @@ test.serial("Handle error when deleting resource", async (t) => {
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   server.use(
-    rest.delete("*/jsonapi/node/article/" + uuid, (_req, res, ctx) =>
-      res(
-        ctx.set("Content-Type", "application/vnd.api+json"),
-        ctx.status(400),
-        ctx.json(JsonApiIncludeError),
-      ),
+    http.delete("*/jsonapi/node/article/" + uuid, () =>
+      HttpResponse.json(JsonApiIncludeError, {
+        status: 400,
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      })
     ),
   );
 

@@ -1,3 +1,6 @@
 {
-  "extends": ["@drupal-kit/eslint-config"]
+  "extends": ["@drupal-kit/eslint-config"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
 }

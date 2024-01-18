@@ -5,7 +5,7 @@
   "devDependencies": {
     "@drupal-kit/config-typescript": "workspace:0.10.0",
     "@drupal-kit/eslint-config": "workspace:0.10.0",
-    "typescript": "5.0.4"
+    "typescript": "5.3.3"
   },
   "scripts": {
     "lint": "eslint --ext .ts,.tsx src --max-warnings 0",

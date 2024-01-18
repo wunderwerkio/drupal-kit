@@ -1,10 +1,10 @@
 import test from "ava";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
 import { DrupalkitSimpleOauthAuthCode } from "../src/index.js";
-import AuthCodeResponse from "./fixtures/auth_code_response.json" assert { type: "json" };
+import AuthCodeResponse from "./fixtures/auth_code_response.json" with { type: "json" };
 
 const BASE_URL = "https://my-drupal.com";
 
@@ -43,8 +43,8 @@ test.serial("Request auth code", async (t) => {
   const email = "F3f6Z@example.com";
 
   server.use(
-    rest.post("*/simple-oauth/auth-code", async (req, res, ctx) =>
-      res(ctx.json(AuthCodeResponse)),
+    http.post("*/simple-oauth/auth-code", async ({ request }) =>
+      HttpResponse.json(AuthCodeResponse),
     ),
   );
 
@@ -67,9 +67,10 @@ test.serial("Request auth code with custom request options", async (t) => {
   const email = "F3f6Z@example.com";
 
   server.use(
-    rest.post("*/simple-oauth/auth-code", async (req, res, ctx) => {
-      t.is(req.headers.get("X-Custom"), "1");
-      return res(ctx.json(AuthCodeResponse));
+    http.post("*/simple-oauth/auth-code", async ({ request }) => {
+      t.is(request.headers.get("X-Custom"), "1");
+
+      return HttpResponse.json(AuthCodeResponse);
     }),
   );
 
@@ -92,8 +93,8 @@ test.serial("Request auth code with explicit endpoint", async (t) => {
   const email = "F3f6Z@example.com";
 
   server.use(
-    rest.post("*/custom/auth-code", async (_req, res, ctx) =>
-      res(ctx.json(AuthCodeResponse)),
+    http.post("*/custom/auth-code", async () =>
+      HttpResponse.json(AuthCodeResponse),
     ),
   );
 
@@ -109,8 +110,8 @@ test.serial("Handle network error", async (t) => {
   const email = "F3f6Z@example.com";
 
   server.use(
-    rest.post("*/simple-oauth/auth-code", async (_req, res) =>
-      res.networkError("Network Error"),
+    http.post("*/simple-oauth/auth-code", async () =>
+      HttpResponse.error()
     ),
   );
 

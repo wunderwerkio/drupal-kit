@@ -1,5 +1,5 @@
 import test from "ava";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitError, DrupalkitOptions } from "@drupal-kit/core";
 
@@ -7,9 +7,9 @@ import {
   DrupalkitSimpleOauth,
   DrupalkitSimpleOauthError,
 } from "../src/index.js";
-import ErrorResponse from "./fixtures/error_response.json" assert { type: "json" };
-import TokenResponse from "./fixtures/token_response.json" assert { type: "json" };
-import UserInfoResponse from "./fixtures/userinfo_response.json" assert { type: "json" };
+import ErrorResponse from "./fixtures/error_response.json" with { type: "json" };
+import TokenResponse from "./fixtures/token_response.json" with { type: "json" };
+import UserInfoResponse from "./fixtures/userinfo_response.json" with { type: "json" };
 
 const BASE_URL = "https://my-drupal.com";
 
@@ -56,16 +56,16 @@ test.serial("Request token with client credentials grant", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.post("*/oauth/token", async (req, res, ctx) => {
-      const body = await req.text();
+    http.post("*/oauth/token", async ({ request }) => {
+      const body = await request.text();
 
       t.is(
-        req.headers.get("content-type"),
+        request.headers.get("content-type"),
         "application/x-www-form-urlencoded",
       );
       t.snapshot(body);
 
-      return res(ctx.json(TokenResponse));
+      return HttpResponse.json(TokenResponse);
     }),
   );
 
@@ -92,10 +92,10 @@ test.serial("Request token with custom request options", async (t) => {
   });
 
   server.use(
-    rest.post("*/oauth/token", async (req, res, ctx) => {
-      t.is(req.headers.get("X-Custom"), "1");
+    http.post("*/oauth/token", async ({ request }) => {
+      t.is(request.headers.get("X-Custom"), "1");
 
-      return res(ctx.json(TokenResponse));
+      return HttpResponse.json(TokenResponse)
     }),
   );
 
@@ -121,9 +121,7 @@ test.serial("Request token with explicit endpoint", async (t) => {
   });
 
   server.use(
-    rest.post("*/custom/token", async (_req, res, ctx) =>
-      res(ctx.json(TokenResponse)),
-    ),
+    http.post("*/custom/token", async () => HttpResponse.json(TokenResponse)),
   );
 
   const result = await drupalkit.simpleOauth.requestToken(
@@ -141,8 +139,8 @@ test.serial("Handle request errors", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.post("*/oauth/token", async (_req, res, ctx) =>
-      res(ctx.status(400), ctx.json(ErrorResponse)),
+    http.post("*/oauth/token", async () =>
+      HttpResponse.json(ErrorResponse, { status: 400 }),
     ),
   );
 
@@ -164,8 +162,8 @@ test.serial("Handle network errors", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.post("*/oauth/token", async (_req, res) =>
-      res.networkError("Network Error"),
+    http.post("*/oauth/token", async () =>
+      HttpResponse.error()
     ),
   );
 
@@ -187,9 +185,7 @@ test.serial(
     const drupalkit = createDrupalkit();
 
     server.use(
-      rest.post("*/not/oauth/related", async (_req, res, ctx) =>
-        res(ctx.status(400)),
-      ),
+      http.post("*/not/oauth/related", async () => HttpResponse.text(null, { status: 400 })),
     );
 
     const result = await drupalkit.request("/not/oauth/related", {
@@ -206,9 +202,7 @@ test.serial("Request user info", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.get("*/oauth/userinfo", async (_req, res, ctx) =>
-      res(ctx.json(UserInfoResponse)),
-    ),
+    http.get("*/oauth/userinfo", async () => HttpResponse.json(UserInfoResponse)),
   );
 
   const result = await drupalkit.simpleOauth.getUserInfo();
@@ -228,10 +222,10 @@ test.serial("Request user info with custom request options", async (t) => {
   });
 
   server.use(
-    rest.get("*/oauth/userinfo", async (req, res, ctx) => {
-      t.is(req.headers.get("X-Custom"), "1");
+    http.get("*/oauth/userinfo", async ({ request }) => {
+      t.is(request.headers.get("X-Custom"), "1");
 
-      return res(ctx.json(UserInfoResponse));
+      return HttpResponse.json(UserInfoResponse);
     }),
   );
 
@@ -252,8 +246,8 @@ test.serial("Request user info with explicit endpoint", async (t) => {
   });
 
   server.use(
-    rest.get("*/custom/userinfo", async (_req, res, ctx) =>
-      res(ctx.json(UserInfoResponse)),
+    http.get("*/custom/userinfo", async () =>
+      HttpResponse.json(UserInfoResponse),
     ),
   );
 
@@ -266,8 +260,8 @@ test.serial("Handle request errors when requesting user info", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.get("*/oauth/userinfo", async (_req, res, ctx) =>
-      res(ctx.status(400), ctx.json(ErrorResponse)),
+    http.get("*/oauth/userinfo", async () =>
+      HttpResponse.json(ErrorResponse, { status: 400 }),
     ),
   );
 
