@@ -83,17 +83,17 @@ importers:
   packages/consumers:
     dependencies:
       '@drupal-kit/core':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../core
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -142,13 +142,13 @@ importers:
         version: 6.9.7
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -190,7 +190,7 @@ importers:
   packages/jsonapi:
     dependencies:
       '@drupal-kit/core':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../core
       '@wunderwerk/ts-functional':
         specifier: 1.0.0-beta.2
@@ -206,13 +206,13 @@ importers:
         version: 1.2.0
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -248,20 +248,20 @@ importers:
   packages/simple-oauth:
     dependencies:
       '@drupal-kit/core':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../core
       '@wunderwerk/ts-functional':
         specifier: 1.0.0-beta.2
         version: 1.0.0-beta.2
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -297,20 +297,20 @@ importers:
   packages/simple-oauth-auth-code:
     dependencies:
       '@drupal-kit/core':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../core
       '@wunderwerk/ts-functional':
         specifier: 1.0.0-beta.2
         version: 1.0.0-beta.2
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -346,10 +346,10 @@ importers:
   packages/types:
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/eslint
       typescript:
         specifier: 5.0.4
@@ -358,7 +358,7 @@ importers:
   packages/user-api:
     dependencies:
       '@drupal-kit/core':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../core
       '@wunderwerk/ts-functional':
         specifier: 1.0.0-beta.2
@@ -368,13 +368,13 @@ importers:
         version: 1.0.2
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -413,17 +413,17 @@ importers:
   packages/verification:
     dependencies:
       '@drupal-kit/core':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../core
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.9.2
+        specifier: workspace:0.10.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1

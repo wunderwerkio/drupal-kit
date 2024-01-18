@@ -1,5 +1,16 @@
 # @drupal-kit/user-api
 
+## 0.10.0
+
+### Minor Changes
+
+- [#64](https://github.com/wunderwerkio/drupal-kit/pull/64) [`3b3d944`](https://github.com/wunderwerkio/drupal-kit/commit/3b3d94495464d383694a63b7210325198186ab90) Thanks [@chfoidl](https://github.com/chfoidl)! - Update user-api methods to reflect latest changes in the drupal user_api module
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.10.0
+
 ## 0.9.2
 
 ### Patch Changes
