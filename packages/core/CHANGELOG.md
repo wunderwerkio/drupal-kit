@@ -1,5 +1,7 @@
 # @drupal-kit/core
 
+## 0.10.0
+
 ## 0.9.2
 
 ### Patch Changes
