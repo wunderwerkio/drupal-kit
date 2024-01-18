@@ -150,7 +150,7 @@ test.serial("Init account cancel", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.post("*/user-api/init-account-cancel", async (req, res, ctx) => {
+    rest.post("*/user-api/cancel-account/init", async (req, res, ctx) => {
       t.is(req.headers.get("content-type"), "application/json");
 
       return res(ctx.json(successResponse));
@@ -174,7 +174,7 @@ test.serial("Init account cancel with custom request options", async (t) => {
   });
 
   server.use(
-    rest.post("*/user-api/init-account-cancel", async (req, res, ctx) => {
+    rest.post("*/user-api/cancel-account/init", async (req, res, ctx) => {
       t.is(req.headers.get("X-Custom"), "1");
 
       return res(ctx.json(successResponse));
@@ -192,11 +192,11 @@ test.serial("Init account cancel with custom request options", async (t) => {
 test.serial("Init account cancel with custom endpoint", async (t) => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
-    userApiInitAccountCancelEndpoint: "/custom/init-account-cancel",
+    userApiInitAccountCancelEndpoint: "/custom/cancel-account/init",
   });
 
   server.use(
-    rest.post("*/custom/init-account-cancel", async (req, res, ctx) =>
+    rest.post("*/custom/cancel-account/init", async (req, res, ctx) =>
       res(ctx.json(successResponse)),
     ),
   );
@@ -210,7 +210,7 @@ test.serial("Handle error while init account cancel", async (t) => {
   const drupalkit = createDrupalkit();
 
   server.use(
-    rest.post("*/user-api/init-account-cancel", async (req, res, ctx) =>
+    rest.post("*/user-api/cancel-account/init", async (req, res, ctx) =>
       res(ctx.status(400)),
     ),
   );
@@ -311,7 +311,7 @@ test.serial("Reset password", async (t) => {
   const email = "JzWZg@example.com";
 
   server.use(
-    rest.post("*/user-api/reset-password", async (req, res, ctx) => {
+    rest.post("*/user-api/set-password/init", async (req, res, ctx) => {
       t.is(req.headers.get("content-type"), "application/json");
 
       t.deepEqual(await req.json(), { email });
@@ -338,7 +338,7 @@ test.serial("Reset password with custom request options", async (t) => {
   });
 
   server.use(
-    rest.post("*/user-api/reset-password", async (req, res, ctx) => {
+    rest.post("*/user-api/set-password/init", async (req, res, ctx) => {
       t.is(req.headers.get("X-Custom"), "1");
 
       return res(ctx.json(successResponse));
@@ -356,12 +356,12 @@ test.serial("Reset password with custom request options", async (t) => {
 test.serial("Reset password with custom endpoint", async (t) => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
-    userApiResetPasswordEndpoint: "/custom/reset-password",
+    userApiResetPasswordEndpoint: "/custom/set-password/init",
   });
   const email = "JzWZg@example.com";
 
   server.use(
-    rest.post("*/custom/reset-password", async (_req, res, ctx) =>
+    rest.post("*/custom/set-password/init", async (_req, res, ctx) =>
       res(ctx.json(successResponse)),
     ),
   );
@@ -376,7 +376,7 @@ test.serial("Handle error while resetting password", async (t) => {
   const email = "JzWZg@example.com";
 
   server.use(
-    rest.post("*/user-api/reset-password", async (_req, res, ctx) =>
+    rest.post("*/user-api/set-password/init", async (_req, res, ctx) =>
       res(ctx.status(400)),
     ),
   );
@@ -397,7 +397,7 @@ test.serial("Update password", async (t) => {
   const newPassword = "new-password";
 
   server.use(
-    rest.post("*/user-api/update-password", async (req, res, ctx) => {
+    rest.post("*/user-api/set-password", async (req, res, ctx) => {
       t.is(req.headers.get("content-type"), "application/json");
 
       t.deepEqual(await req.json(), { newPassword });
@@ -424,7 +424,7 @@ test.serial("Update password with custom request options", async (t) => {
   });
 
   server.use(
-    rest.post("*/user-api/update-password", async (req, res, ctx) => {
+    rest.post("*/user-api/set-password", async (req, res, ctx) => {
       t.is(req.headers.get("X-Custom"), "1");
 
       return res(ctx.json(successResponse));
@@ -442,12 +442,12 @@ test.serial("Update password with custom request options", async (t) => {
 test.serial("Update password with custom endpoint", async (t) => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
-    userApiUpdatePasswordEndpoint: "/custom/update-password",
+    userApiUpdatePasswordEndpoint: "/custom/set-password",
   });
   const newPassword = "new-password";
 
   server.use(
-    rest.post("*/custom/update-password", async (_req, res, ctx) =>
+    rest.post("*/custom/set-password", async (_req, res, ctx) =>
       res(ctx.json(successResponse)),
     ),
   );
@@ -462,7 +462,7 @@ test.serial("Handle error while updating password", async (t) => {
   const newPassword = "new-password";
 
   server.use(
-    rest.post("*/user-api/update-password", async (_req, res, ctx) =>
+    rest.post("*/user-api/set-password", async (_req, res, ctx) =>
       res(ctx.status(400)),
     ),
   );
@@ -569,7 +569,7 @@ test.serial("Verify email", async (t) => {
   const email = "JzWZg@example.com";
 
   server.use(
-    rest.post("*/user-api/verify-email", async (req, res, ctx) => {
+    rest.post("*/user-api/set-email/init", async (req, res, ctx) => {
       t.is(req.headers.get("content-type"), "application/json");
 
       t.deepEqual(await req.json(), { email });
@@ -596,7 +596,7 @@ test.serial("Verify email with custom request options", async (t) => {
   });
 
   server.use(
-    rest.post("*/user-api/verify-email", async (req, res, ctx) => {
+    rest.post("*/user-api/set-email/init", async (req, res, ctx) => {
       t.is(req.headers.get("X-Custom"), "1");
 
       return res(ctx.json(successResponse));
@@ -614,12 +614,12 @@ test.serial("Verify email with custom request options", async (t) => {
 test.serial("Verify email with custom endpoint", async (t) => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
-    userApiVerifyEmailEndpoint: "/custom/verify-email",
+    userApiVerifyEmailEndpoint: "/custom/set-email/init",
   });
   const email = "JzWZg@example.com";
 
   server.use(
-    rest.post("*/custom/verify-email", async (_req, res, ctx) =>
+    rest.post("*/custom/set-email/init", async (_req, res, ctx) =>
       res(ctx.json(successResponse)),
     ),
   );
@@ -634,7 +634,7 @@ test.serial("Handle error while verifying email", async (t) => {
   const email = "JzWZg@example.com";
 
   server.use(
-    rest.post("*/user-api/verify-email", async (_req, res, ctx) =>
+    rest.post("*/user-api/set-email/init", async (_req, res, ctx) =>
       res(ctx.status(400)),
     ),
   );
@@ -655,7 +655,7 @@ test.serial("Update email", async (t) => {
   const email = "JzWZg@example.com";
 
   server.use(
-    rest.post("*/user-api/update-email", async (req, res, ctx) => {
+    rest.post("*/user-api/set-email", async (req, res, ctx) => {
       t.is(req.headers.get("content-type"), "application/json");
 
       t.deepEqual(await req.json(), { email });
@@ -682,7 +682,7 @@ test.serial("Update email with custom request options", async (t) => {
   });
 
   server.use(
-    rest.post("*/user-api/update-email", async (req, res, ctx) => {
+    rest.post("*/user-api/set-email", async (req, res, ctx) => {
       t.is(req.headers.get("X-Custom"), "1");
 
       return res(ctx.json(successResponse));
@@ -700,12 +700,12 @@ test.serial("Update email with custom request options", async (t) => {
 test.serial("Update email with custom endpoint", async (t) => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
-    userApiUpdateEmailEndpoint: "/custom/update-email",
+    userApiUpdateEmailEndpoint: "/custom/set-email",
   });
   const email = "JzWZg@example.com";
 
   server.use(
-    rest.post("*/custom/update-email", async (_req, res, ctx) =>
+    rest.post("*/custom/set-email", async (_req, res, ctx) =>
       res(ctx.json(successResponse)),
     ),
   );
@@ -720,7 +720,7 @@ test.serial("Handle error while updating email", async (t) => {
   const email = "JzWZg@example.com";
 
   server.use(
-    rest.post("*/user-api/update-email", async (_req, res, ctx) =>
+    rest.post("*/user-api/set-email", async (_req, res, ctx) =>
       res(ctx.status(400)),
     ),
   );
@@ -742,7 +742,7 @@ test.serial("Resend verification email", async (t) => {
   const operation = "register";
 
   server.use(
-    rest.post("*/user-api/resend-mail", async (req, res, ctx) => {
+    rest.post("*/user-api/register/resend-email", async (req, res, ctx) => {
       t.is(req.headers.get("content-type"), "application/json");
 
       t.deepEqual(await req.json(), { email, operation });
@@ -775,7 +775,7 @@ test.serial(
     });
 
     server.use(
-      rest.post("*/user-api/resend-mail", async (req, res, ctx) => {
+      rest.post("*/user-api/register/resend-email", async (req, res, ctx) => {
         t.is(req.headers.get("X-Custom"), "1");
 
         return res(ctx.json(successResponse));
@@ -794,13 +794,13 @@ test.serial(
 test.serial("Resend verification email with custom endpoint", async (t) => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
-    userApiResendMailEndpoint: "/custom/resend-mail",
+    userApiResendMailEndpoint: "/custom/register/resend-email",
   });
   const email = "JzWZg@example.com";
   const operation = "register";
 
   server.use(
-    rest.post("*/custom/resend-mail", async (_req, res, ctx) =>
+    rest.post("*/custom/register/resend-email", async (_req, res, ctx) =>
       res(ctx.json(successResponse)),
     ),
   );
@@ -819,7 +819,7 @@ test.serial("Handle error while resending verification email", async (t) => {
   const operation = "register";
 
   server.use(
-    rest.post("*/user-api/resend-mail", async (_req, res, ctx) =>
+    rest.post("*/user-api/register/resend-email", async (_req, res, ctx) =>
       res(ctx.status(400)),
     ),
   );

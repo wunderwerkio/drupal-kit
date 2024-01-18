@@ -32,25 +32,26 @@ export const DrupalkitUserApi = (
 ) => {
   const registrationEndpoint =
     drupalkitOptions.userApiRegistrationEndpoint ?? "/user-api/register";
-  const cancelAccountEndpoint =
-    drupalkitOptions.userApiCancelAccountEndpoint ?? "/user-api/cancel-account";
   const initAccountCancelEndpoint =
     drupalkitOptions.userApiInitAccountCancelEndpoint ??
-    "/user-api/init-account-cancel";
+    "/user-api/cancel-account/init";
+  const cancelAccountEndpoint =
+    drupalkitOptions.userApiCancelAccountEndpoint ?? "/user-api/cancel-account";
   const resetPasswordEndpoint =
-    drupalkitOptions.userApiResetPasswordEndpoint ?? "/user-api/reset-password";
+    drupalkitOptions.userApiResetPasswordEndpoint ??
+    "/user-api/set-password/init";
   const updatePasswordEndpoint =
-    drupalkitOptions.userApiUpdatePasswordEndpoint ??
-    "/user-api/update-password";
+    drupalkitOptions.userApiUpdatePasswordEndpoint ?? "/user-api/set-password";
   const passwordlessLoginEndpoint =
     drupalkitOptions.userApiPasswordlessLoginEndpoint ??
     "/user-api/passwordless-login";
   const updateEmailEndpoint =
-    drupalkitOptions.userApiUpdateEmailEndpoint ?? "/user-api/update-email";
+    drupalkitOptions.userApiUpdateEmailEndpoint ?? "/user-api/set-email";
   const verifyEmailEndpoint =
-    drupalkitOptions.userApiVerifyEmailEndpoint ?? "/user-api/verify-email";
+    drupalkitOptions.userApiVerifyEmailEndpoint ?? "/user-api/set-email/init";
   const resendMailEndpoint =
-    drupalkitOptions.userApiResendMailEndpoint ?? "/user-api/resend-mail";
+    drupalkitOptions.userApiResendMailEndpoint ??
+    "/user-api/register/resend-email";
 
   const headers = {
     "content-type": "application/json",
