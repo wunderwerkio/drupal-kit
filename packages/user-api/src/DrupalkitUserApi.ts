@@ -3,6 +3,7 @@ import { Drupalkit, DrupalkitError, DrupalkitOptions } from "@drupal-kit/core";
 import { OverrideableRequestOptions } from "@drupal-kit/types";
 
 import { RegisterPayload, RegisterResponse, SuccessResponse } from "./types.js";
+import { deprecate } from "./utils.js";
 
 /**
  * DrupalkitUserApi plugin for Drupalkit.
@@ -17,22 +18,28 @@ export const DrupalkitUserApi = (
   drupalkitOptions: DrupalkitOptions,
 ) => {
   if (drupalkitOptions.userApiResendMailEndpoint) {
-    drupalkitOptions.userApiRegisterResendEmailEndpoint = drupalkitOptions.userApiResendMailEndpoint;
+    drupalkitOptions.userApiRegisterResendEmailEndpoint =
+      drupalkitOptions.userApiResendMailEndpoint;
   }
   if (drupalkitOptions.userApiInitAccountCancelEndpoint) {
-    drupalkitOptions.userApiInitCancelAccountEndpoint = drupalkitOptions.userApiInitAccountCancelEndpoint;
+    drupalkitOptions.userApiInitCancelAccountEndpoint =
+      drupalkitOptions.userApiInitAccountCancelEndpoint;
   }
   if (drupalkitOptions.userApiResetPasswordEndpoint) {
-    drupalkitOptions.userApiInitSetPasswordEndpoint = drupalkitOptions.userApiResetPasswordEndpoint;
+    drupalkitOptions.userApiInitSetPasswordEndpoint =
+      drupalkitOptions.userApiResetPasswordEndpoint;
   }
   if (drupalkitOptions.userApiUpdatePasswordEndpoint) {
-    drupalkitOptions.userApiSetPasswordEndpoint = drupalkitOptions.userApiUpdatePasswordEndpoint;
+    drupalkitOptions.userApiSetPasswordEndpoint =
+      drupalkitOptions.userApiUpdatePasswordEndpoint;
   }
   if (drupalkitOptions.userApiVerifyEmailEndpoint) {
-    drupalkitOptions.userApiInitSetEmailEndpoint = drupalkitOptions.userApiVerifyEmailEndpoint;
+    drupalkitOptions.userApiInitSetEmailEndpoint =
+      drupalkitOptions.userApiVerifyEmailEndpoint;
   }
   if (drupalkitOptions.userApiUpdateEmailEndpoint) {
-    drupalkitOptions.userApiSetEmailEndpoint = drupalkitOptions.userApiUpdateEmailEndpoint;
+    drupalkitOptions.userApiSetEmailEndpoint =
+      drupalkitOptions.userApiUpdateEmailEndpoint;
   }
 
   const registrationEndpoint =
@@ -100,6 +107,41 @@ export const DrupalkitUserApi = (
   };
 
   /**
+   * Resend verification email.
+   *
+   * Resend the verification email for the given operation.
+   *
+   * @param email - E-Mail address to resend to.
+   * @param operation - Operation of which to resend email.
+   * @param requestOptions - Optional request options.
+   */
+  const resendRegisterEmail = async (
+    email: string,
+    operation: string,
+    requestOptions?: OverrideableRequestOptions,
+  ) => {
+    const url = drupalkit.buildUrl(registerResendEmailEndpoint);
+
+    const result = await drupalkit.request<{ status: "success" }>(
+      url,
+      {
+        method: "POST",
+        body: { email, operation },
+        headers: {
+          "content-type": "application/json",
+        },
+      },
+      requestOptions,
+    );
+
+    if (result.err) {
+      return result;
+    }
+
+    return Result.Ok(result.val.data);
+  };
+
+  /**
    * Initialize account cancellation.
    *
    * The request MUST be authorized!
@@ -109,7 +151,7 @@ export const DrupalkitUserApi = (
    *
    * @param requestOptions - Optional request options.
    */
-  const initAccountCancel = async (
+  const initCancelAccount = async (
     requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<SuccessResponse, DrupalkitError>> => {
     const url = drupalkit.buildUrl(initCancelAccountEndpoint);
@@ -163,7 +205,7 @@ export const DrupalkitUserApi = (
   };
 
   /**
-   * Initialize password reset.
+   * Initialize set password.
    *
    * The request MUST be authorized!
    *
@@ -173,7 +215,7 @@ export const DrupalkitUserApi = (
    * @param email - E-Mail address of the user.
    * @param requestOptions - Optional request options.
    */
-  const resetPassword = async (
+  const initSetPassword = async (
     email: string,
     requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<SuccessResponse, DrupalkitError>> => {
@@ -206,7 +248,7 @@ export const DrupalkitUserApi = (
    * @param currentPassword - The current password for the user.
    * @param requestOptions - Optional request options.
    */
-  const updatePassword = async (
+  const setPassword = async (
     newPassword: string,
     currentPassword?: string,
     requestOptions?: OverrideableRequestOptions,
@@ -273,7 +315,7 @@ export const DrupalkitUserApi = (
   };
 
   /**
-   * Verify new email change.
+   * Initialize email update.
    *
    * The request MUST be authorized!
    *
@@ -283,7 +325,7 @@ export const DrupalkitUserApi = (
    * @param email - New E-Mail address of the user.
    * @param requestOptions - Optional request options.
    */
-  const verifyEmail = async (
+  const initSetEmail = async (
     email: string,
     requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<SuccessResponse, DrupalkitError>> => {
@@ -315,7 +357,7 @@ export const DrupalkitUserApi = (
    * @param email - New E-Mail address of the user.
    * @param requestOptions - Optional request options.
    */
-  const updateEmail = async (
+  const setEmail = async (
     email: string,
     requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<SuccessResponse, DrupalkitError>> => {
@@ -339,54 +381,48 @@ export const DrupalkitUserApi = (
   };
 
   /**
-   * Resend verification email.
-   *
-   * Resend the verification email for the given operation.
-   *
-   * @param email - E-Mail address to resend to.
-   * @param operation - Operation of which to resend email.
-   * @param requestOptions - Optional request options.
-   */
-  const resendVerificationEmail = async (
-    email: string,
-    operation: string,
-    requestOptions?: OverrideableRequestOptions,
-  ) => {
-    const url = drupalkit.buildUrl(registerResendEmailEndpoint);
-
-    const result = await drupalkit.request<{ status: "success" }>(
-      url,
-      {
-        method: "POST",
-        body: { email, operation },
-        headers: {
-          "content-type": "application/json",
-        },
-      },
-      requestOptions,
-    );
-
-    if (result.err) {
-      return result;
-    }
-
-    return Result.Ok(result.val.data);
-  };
-
-  /**
    * Extend the Drupalkit instance.
    */
   return {
     userApi: {
       register,
-      initAccountCancel,
+      resendRegisterEmail,
+      initCancelAccount,
       cancelAccount,
-      resetPassword,
-      updatePassword,
+      initSetPassword,
+      setPassword,
       passwordlessLogin,
-      verifyEmail,
-      updateEmail,
-      resendVerificationEmail,
+      initSetEmail,
+      setEmail,
+      /* eslint-disable */
+      /**
+       * @deprecated Deprecated in `0.9.3` will be removed in `1.0.0`. Use `resendRegisterEmail` instead.
+       */
+      resendVerificationEmail: deprecate(
+        resendRegisterEmail,
+        "resendVerificationEmail",
+      ),
+      /**
+       * @deprecated Deprecated in `0.9.3` will be removed in `1.0.0`. Use `initCancelAccount` instead.
+       */
+      initAccountCancel: deprecate(initCancelAccount, "initAccountCancel"),
+      /**
+       * @deprecated Deprecated in `0.9.3` will be removed in `1.0.0`. Use `initSetPassword` instead.
+       */
+      resetPassword: deprecate(initSetPassword, "resetPassword"),
+      /**
+       * @deprecated Deprecated in `0.9.3` will be removed in `1.0.0`. Use `setPassword` instead.
+       */
+      updatePassword: deprecate(setPassword, "updatePassword"),
+      /**
+       * @deprecated Deprecated in `0.9.3` will be removed in `1.0.0`. Use `initSetEmail` instead.
+       */
+      verifyEmail: deprecate(initSetEmail, "verifyEmail"),
+      /**
+       * @deprecated Deprecated in `0.9.3` will be removed in `1.0.0`. Use `setEmail` instead.
+       */
+      updateEmail: deprecate(setEmail, "updateEmail"),
+      /* eslint-enable */
     },
   };
 };

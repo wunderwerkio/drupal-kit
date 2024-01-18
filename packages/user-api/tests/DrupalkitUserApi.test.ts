@@ -140,7 +140,6 @@ test.serial("Handle register error", async (t) => {
   t.assert(result.err);
 });
 
-
 /**
  * Resend register email.
  */
@@ -162,45 +161,39 @@ test.serial("Resend register email", async (t) => {
     }),
   );
 
-  const result = await drupalkit.userApi.resendVerificationEmail(
-    email,
-    operation,
-  );
+  const result = await drupalkit.userApi.resendRegisterEmail(email, operation);
 
   const res = result.unwrap();
 
   t.deepEqual(res, successResponse);
 });
 
-test.serial(
-  "Resend register email with custom request options",
-  async (t) => {
-    t.plan(2);
+test.serial("Resend register email with custom request options", async (t) => {
+  t.plan(2);
 
-    const drupalkit = createDrupalkit();
-    const email = "JzWZg@example.com";
-    const operation = "register";
+  const drupalkit = createDrupalkit();
+  const email = "JzWZg@example.com";
+  const operation = "register";
 
-    drupalkit.hook.before("request", (options) => {
-      t.is(options.cache, "no-cache");
-    });
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
 
-    server.use(
-      rest.post("*/user-api/register/resend-email", async (req, res, ctx) => {
-        t.is(req.headers.get("X-Custom"), "1");
+  server.use(
+    rest.post("*/user-api/register/resend-email", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
 
-        return res(ctx.json(successResponse));
-      }),
-    );
+      return res(ctx.json(successResponse));
+    }),
+  );
 
-    await drupalkit.userApi.resendVerificationEmail(email, operation, {
-      cache: "no-cache",
-      headers: {
-        "X-Custom": "1",
-      },
-    });
-  },
-);
+  await drupalkit.userApi.resendRegisterEmail(email, operation, {
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
+});
 
 test.serial("Resend register email with custom endpoint", async (t) => {
   const drupalkit = createDrupalkit({
@@ -216,10 +209,7 @@ test.serial("Resend register email with custom endpoint", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.resendVerificationEmail(
-    email,
-    operation,
-  );
+  const result = await drupalkit.userApi.resendRegisterEmail(email, operation);
 
   t.assert(result.ok);
 });
@@ -257,16 +247,13 @@ test.serial("Handle error while resend register email", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.resendVerificationEmail(
-    email,
-    operation,
-  );
+  const result = await drupalkit.userApi.resendRegisterEmail(email, operation);
 
   t.assert(result.err);
 });
 
 /**
- * initAccountCancel().
+ * initCancelAccount().
  */
 
 test.serial("Init cancel account", async (t) => {
@@ -282,7 +269,7 @@ test.serial("Init cancel account", async (t) => {
     }),
   );
 
-  const result = await drupalkit.userApi.initAccountCancel();
+  const result = await drupalkit.userApi.initCancelAccount();
 
   const res = result.unwrap();
 
@@ -306,7 +293,7 @@ test.serial("Init cancel account with custom request options", async (t) => {
     }),
   );
 
-  await drupalkit.userApi.initAccountCancel({
+  await drupalkit.userApi.initCancelAccount({
     cache: "no-cache",
     headers: {
       "X-Custom": "1",
@@ -326,7 +313,7 @@ test.serial("Init cancel account with custom endpoint", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.initAccountCancel();
+  const result = await drupalkit.userApi.initCancelAccount();
 
   t.assert(result.ok);
 });
@@ -357,7 +344,7 @@ test.serial("Handle error while init cancel account", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.initAccountCancel();
+  const result = await drupalkit.userApi.initCancelAccount();
 
   t.assert(result.err);
 });
@@ -462,7 +449,7 @@ test.serial("Init set password", async (t) => {
     }),
   );
 
-  const result = await drupalkit.userApi.resetPassword(email);
+  const result = await drupalkit.userApi.initSetPassword(email);
 
   const res = result.unwrap();
 
@@ -487,7 +474,7 @@ test.serial("Init set password with custom request options", async (t) => {
     }),
   );
 
-  await drupalkit.userApi.resetPassword(email, {
+  await drupalkit.userApi.initSetPassword(email, {
     cache: "no-cache",
     headers: {
       "X-Custom": "1",
@@ -508,7 +495,7 @@ test.serial("Init set password with custom endpoint", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.resetPassword(email);
+  const result = await drupalkit.userApi.initSetPassword(email);
 
   t.assert(result.ok);
 });
@@ -541,7 +528,7 @@ test.serial("Handle error while init set password", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.resetPassword(email);
+  const result = await drupalkit.userApi.initSetPassword(email);
 
   t.assert(result.err);
 });
@@ -566,7 +553,7 @@ test.serial("Set password", async (t) => {
     }),
   );
 
-  const result = await drupalkit.userApi.updatePassword(newPassword);
+  const result = await drupalkit.userApi.setPassword(newPassword);
 
   const res = result.unwrap();
 
@@ -591,7 +578,7 @@ test.serial("Set password with custom request options", async (t) => {
     }),
   );
 
-  await drupalkit.userApi.updatePassword(newPassword, undefined, {
+  await drupalkit.userApi.setPassword(newPassword, undefined, {
     cache: "no-cache",
     headers: {
       "X-Custom": "1",
@@ -612,7 +599,7 @@ test.serial("Set password with custom endpoint", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.updatePassword(newPassword);
+  const result = await drupalkit.userApi.setPassword(newPassword);
 
   t.assert(result.ok);
 });
@@ -645,7 +632,7 @@ test.serial("Handle error while set password", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.updatePassword(newPassword);
+  const result = await drupalkit.userApi.setPassword(newPassword);
 
   t.assert(result.err);
 });
@@ -756,7 +743,7 @@ test.serial("Init set email", async (t) => {
     }),
   );
 
-  const result = await drupalkit.userApi.verifyEmail(email);
+  const result = await drupalkit.userApi.initSetEmail(email);
 
   const res = result.unwrap();
 
@@ -781,7 +768,7 @@ test.serial("Init set email with custom request options", async (t) => {
     }),
   );
 
-  await drupalkit.userApi.verifyEmail(email, {
+  await drupalkit.userApi.initSetEmail(email, {
     cache: "no-cache",
     headers: {
       "X-Custom": "1",
@@ -802,7 +789,7 @@ test.serial("Init set email with custom endpoint", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.verifyEmail(email);
+  const result = await drupalkit.userApi.initSetEmail(email);
 
   t.assert(result.ok);
 });
@@ -835,7 +822,7 @@ test.serial("Handle error while init set email", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.verifyEmail(email);
+  const result = await drupalkit.userApi.initSetEmail(email);
 
   t.assert(result.err);
 });
@@ -860,7 +847,7 @@ test.serial("Set email", async (t) => {
     }),
   );
 
-  const result = await drupalkit.userApi.updateEmail(email);
+  const result = await drupalkit.userApi.setEmail(email);
 
   const res = result.unwrap();
 
@@ -885,7 +872,7 @@ test.serial("Set email with custom request options", async (t) => {
     }),
   );
 
-  await drupalkit.userApi.updateEmail(email, {
+  await drupalkit.userApi.setEmail(email, {
     cache: "no-cache",
     headers: {
       "X-Custom": "1",
@@ -906,7 +893,7 @@ test.serial("Set email with custom endpoint", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.updateEmail(email);
+  const result = await drupalkit.userApi.setEmail(email);
 
   t.assert(result.ok);
 });
@@ -939,7 +926,7 @@ test.serial("Handle error while set email", async (t) => {
     ),
   );
 
-  const result = await drupalkit.userApi.updateEmail(email);
+  const result = await drupalkit.userApi.setEmail(email);
 
   t.assert(result.err);
 });
