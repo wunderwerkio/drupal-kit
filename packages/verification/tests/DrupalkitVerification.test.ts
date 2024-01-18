@@ -1,5 +1,5 @@
 import test from "ava";
-import { rest } from "msw";
+import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
@@ -53,15 +53,15 @@ test.serial("Add Hash verification to a request once", async (t) => {
   const hash = "0123456789abcdef";
 
   server.use(
-    rest.get("*/", async (req, res, ctx) => {
+    http.get("*/", async ({ request }) => {
       if (first) {
-        t.is(req.headers.get("x-verification-hash"), hash);
+        t.is(request.headers.get("x-verification-hash"), hash);
         first = false;
       } else {
-        t.not(req.headers.get("x-verification-hash"), hash);
+        t.not(request.headers.get("x-verification-hash"), hash);
       }
 
-      return res(ctx.status(200));
+      return HttpResponse.text()
     }),
   );
 
@@ -89,15 +89,15 @@ test.serial("Add Magic code verification to a request once", async (t) => {
   const code = "5ZL-KD2";
 
   server.use(
-    rest.get("*/", async (req, res, ctx) => {
+    http.get("*/", async ({ request }) => {
       if (first) {
-        t.is(req.headers.get("x-verification-magic-code"), code);
+        t.is(request.headers.get("x-verification-magic-code"), code);
         first = false;
       } else {
-        t.not(req.headers.get("x-verification-magic-code"), code);
+        t.not(request.headers.get("x-verification-magic-code"), code);
       }
 
-      return res(ctx.status(200));
+      return HttpResponse.text()
     }),
   );
 

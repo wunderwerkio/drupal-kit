@@ -1,5 +1,5 @@
 import test from "ava";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
@@ -40,9 +40,10 @@ test.serial("Add consumer id to request", async (t) => {
   t.plan(2);
 
   server.use(
-    rest.get("*", (req, res) => {
-      t.is(req.headers.get("X-Consumer-ID"), CONSUMER_UUID);
-      return res();
+    http.get("*", ({ request }) => {
+      t.is(request.headers.get("X-Consumer-ID"), CONSUMER_UUID);
+
+      return HttpResponse.text();
     }),
   );
 
@@ -64,9 +65,10 @@ test.serial(
     t.plan(1);
 
     server.use(
-      rest.get("*", (req, res) => {
-        t.is(req.headers.get("X-Consumer-ID"), null);
-        return res();
+      http.get("*", ({ request }) => {
+        t.is(request.headers.get("X-Consumer-ID"), null);
+
+        return HttpResponse.text();
       }),
     );
 
@@ -84,9 +86,10 @@ test.serial("Add consumer id with custom header name", async (t) => {
   t.plan(1);
 
   server.use(
-    rest.get("*", (req, res) => {
-      t.is(req.headers.get("X-Custom-Consumer-ID"), CONSUMER_UUID);
-      return res();
+    http.get("*", ({ request }) => {
+      t.is(request.headers.get("X-Custom-Consumer-ID"), CONSUMER_UUID);
+
+      return HttpResponse.text();
     }),
   );
 

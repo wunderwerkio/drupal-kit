@@ -1,20 +1,18 @@
 import test from "ava";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 
 import { Drupalkit, DrupalkitError } from "../src/index.js";
-import DemoEndpointResponse from "./fixtures/demo-endpoint.json" assert { type: "json" };
+import DemoEndpointResponse from "./fixtures/demo-endpoint.json" with { type: "json" };
 
 const BASE_URL = "https://my-drupal.com";
 
 const server = setupServer(
-  rest.get("*/demo-endpoint", (_req, res, ctx) => {
-    return res(ctx.json(DemoEndpointResponse));
+  http.get("*/demo-endpoint", () => {
+    return HttpResponse.json(DemoEndpointResponse);
   }),
-  rest.get("*/not-found", (_req, res, ctx) => res(ctx.status(404))),
-  rest.get("*/network-error", (_req, res) =>
-    res.networkError("Failed to connect"),
-  ),
+  http.get("*/not-found", () => HttpResponse.text("", { status: 404 })),
+  http.get("*/network-error", () => HttpResponse.error()),
 );
 
 test.before(() => {
@@ -61,12 +59,12 @@ test.serial("Make request with payload", async (t) => {
   };
 
   server.use(
-    rest.post("*/demo-endpoint", async (req, res, ctx) => {
-      const payload = await req.json();
+    http.post("*/demo-endpoint", async ({ request }) => {
+      const payload = await request.json();
       t.deepEqual(payload, body);
-      t.deepEqual(req.headers.get("X-Custom"), headers["X-Custom"]);
+      t.deepEqual(request.headers.get("X-Custom"), headers["X-Custom"]);
 
-      return res();
+      return HttpResponse.text();
     }),
   );
 
@@ -94,14 +92,13 @@ test.serial("Add response data to result", async (t) => {
 
   t.deepEqual(result.unwrap().headers, {
     "content-type": "application/json",
-    "x-powered-by": "msw",
   });
 });
 
 test.serial("Do not add response data for 204 and 205 responses", async (t) => {
   server.use(
-    rest.get("*/demo-endpoint-204", async (req, res, ctx) => {
-      return res(ctx.status(204));
+    http.get("*/demo-endpoint-204", async () => {
+      return HttpResponse.text(null, { status: 204 });
     }),
   );
 
@@ -135,8 +132,8 @@ test.serial("Return drupalkit errors", async (t) => {
 });
 
 test.serial("Append locale to url", async (t) => {
-  rest.get("*/en/demo-endpoint", (req, res, ctx) => {
-    return res(ctx.json(DemoEndpointResponse));
+  http.get("*/en/demo-endpoint", () => {
+    return HttpResponse.json(DemoEndpointResponse);
   });
 
   const drupalkit = new Drupalkit({
@@ -156,8 +153,8 @@ test.serial("Append locale to url", async (t) => {
 });
 
 test.serial("Append overwritten locale to url", async (t) => {
-  rest.get("*/en/demo-endpoint", (req, res, ctx) => {
-    return res(ctx.json(DemoEndpointResponse));
+  http.get("*/en/demo-endpoint", () => {
+    return HttpResponse.json(DemoEndpointResponse);
   });
 
   const drupalkit = new Drupalkit({
@@ -206,11 +203,11 @@ test.serial("Add auth header if present", async (t) => {
   const authHeaderValue = "Bearer 00000";
 
   server.use(
-    rest.get("*/demo-endpoint", (req, res) => {
-      t.is(req.headers.get("authorization"), authHeaderValue);
+    http.get("*/demo-endpoint", ({ request }) => {
+      t.is(request.headers.get("authorization"), authHeaderValue);
 
-      res.once();
-    }),
+      return HttpResponse.text();
+    }, { once: true }),
   );
 
   const drupalkit = new Drupalkit({
@@ -227,11 +224,11 @@ test.serial("Add auth header if present", async (t) => {
 
   server.resetHandlers();
   server.use(
-    rest.get("*/demo-endpoint", (req, res) => {
-      t.is(req.headers.get("authorization"), null);
+    http.get("*/demo-endpoint", ({ request }) => {
+      t.is(request.headers.get("authorization"), null);
 
-      res.once();
-    }),
+      return HttpResponse.text();
+    }, { once: true }),
   );
 
   await drupalkit.request("/demo-endpoint", {
@@ -244,11 +241,11 @@ test.serial("Add auth header if present", async (t) => {
 
   server.resetHandlers();
   server.use(
-    rest.get("*/demo-endpoint", (req, res) => {
-      t.is(req.headers.get("authorization"), null);
+    http.get("*/demo-endpoint", ({ request }) => {
+      t.is(request.headers.get("authorization"), null);
 
-      res.once();
-    }),
+      return HttpResponse.text();
+    }, { once: true }),
   );
 
   await drupalkit.request("/demo-endpoint", {
@@ -276,8 +273,8 @@ test.serial("Allow options overrides", async (t) => {
   t.plan(3);
 
   server.use(
-    rest.get("*/en/demo-endpoint", (req, res, ctx) => {
-      return res(ctx.json(DemoEndpointResponse));
+    http.get("*/en/demo-endpoint", () => {
+      return HttpResponse.json(DemoEndpointResponse);
     }),
   );
 
