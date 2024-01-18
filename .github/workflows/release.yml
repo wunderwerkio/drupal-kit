@@ -49,8 +49,8 @@ jobs:
         uses: changesets/action@v1
         with:
           commit: 'release: version packages'
-          version: pnpm version-packages
-          publish: pnpm publish-packages
+          version: nix develop --command pnpm version-packages
+          publish: nix develop --command pnpm publish-packages
           createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
