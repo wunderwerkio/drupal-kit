@@ -17,6 +17,7 @@ export const DrupalkitUserApi = (
   drupalkit: Drupalkit,
   drupalkitOptions: DrupalkitOptions,
 ) => {
+  // Support deprecated enpoint options.
   if (drupalkitOptions.userApiResendMailEndpoint) {
     drupalkitOptions.userApiRegisterResendEmailEndpoint =
       drupalkitOptions.userApiResendMailEndpoint;
@@ -42,6 +43,7 @@ export const DrupalkitUserApi = (
       drupalkitOptions.userApiUpdateEmailEndpoint;
   }
 
+  // Set endpoints.
   const registrationEndpoint =
     drupalkitOptions.userApiRegistrationEndpoint ?? "/user-api/register";
   const registerResendEmailEndpoint =
