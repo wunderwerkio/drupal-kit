@@ -40,6 +40,18 @@ declare module "@drupal-kit/core" {
      */
     userApiSetPasswordEndpoint?: string;
     /**
+     * Endpoint path for the User API InitSetPasswordResource.
+     *
+     * @default '/user-api/set-password/init'
+     */
+    userApiInitUnsetPasswordEndpoint?: string;
+    /**
+     * Endpoint path for the User API SetPasswordResource.
+     *
+     * @default '/user-api/set-password'
+     */
+    userApiUnsetPasswordEndpoint?: string;
+    /**
      * Endpoint path for the User API PasswordlessLoginResource.
      *
      * @default '/user-api/passwordless-login'

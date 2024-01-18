@@ -62,6 +62,12 @@ export const DrupalkitUserApi = (
   const setPasswordEndpoint =
     drupalkitOptions.userApiSetPasswordEndpoint ?? "/user-api/set-password";
 
+  const initUnetPasswordEndpoint =
+    drupalkitOptions.userApiInitUnsetPasswordEndpoint ??
+    "/user-api/unset-password/init";
+  const unsetPasswordEndpoint =
+    drupalkitOptions.userApiUnsetPasswordEndpoint ?? "/user-api/unset-password";
+
   const passwordlessLoginEndpoint =
     drupalkitOptions.userApiPasswordlessLoginEndpoint ??
     "/user-api/passwordless-login";
@@ -282,6 +288,77 @@ export const DrupalkitUserApi = (
   };
 
   /**
+   * Initialize unset password.
+   *
+   * The request MUST be authorized!
+   *
+   * This endpoint does not return useful data.
+   * Only the status code is important.
+   *
+   * @param email - E-Mail address of the user.
+   * @param requestOptions - Optional request options.
+   */
+  const initUnsetPassword = async (
+    email: string,
+    requestOptions?: OverrideableRequestOptions,
+  ): Promise<Result<SuccessResponse, DrupalkitError>> => {
+    const url = drupalkit.buildUrl(initUnetPasswordEndpoint);
+
+    const result = await drupalkit.request<SuccessResponse>(
+      url,
+      {
+        method: "POST",
+        body: { email },
+        headers,
+      },
+      requestOptions,
+    );
+
+    if (result.err) {
+      return result;
+    }
+
+    return Result.Ok(result.val.data);
+  };
+
+  /**
+   * Unset user password.
+   *
+   * This endpoint must either supply the current password or
+   * be verified via the verification plugin!
+   *
+   * @param currentPassword - The current password for the user.
+   * @param requestOptions - Optional request options.
+   */
+  const unsetPassword = async (
+    currentPassword?: string,
+    requestOptions?: OverrideableRequestOptions,
+  ): Promise<Result<SuccessResponse, DrupalkitError>> => {
+    const url = drupalkit.buildUrl(unsetPasswordEndpoint);
+
+    const payload: { currentPassword?: string } = {};
+    if (currentPassword) {
+      payload.currentPassword = currentPassword;
+    }
+
+    const result = await drupalkit.request<SuccessResponse>(
+      url,
+      {
+        method: "POST",
+        body: payload,
+        headers,
+      },
+      requestOptions,
+    );
+
+    if (result.err) {
+      return result;
+    }
+
+    return Result.Ok(result.val.data);
+  };
+
+  /**
    * Trigger passwordless login.
    *
    * The request MUST be authorized!
@@ -393,6 +470,8 @@ export const DrupalkitUserApi = (
       cancelAccount,
       initSetPassword,
       setPassword,
+      initUnsetPassword,
+      unsetPassword,
       passwordlessLogin,
       initSetEmail,
       setEmail,
