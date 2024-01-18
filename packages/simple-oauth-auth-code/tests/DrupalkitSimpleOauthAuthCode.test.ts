@@ -110,9 +110,7 @@ test.serial("Handle network error", async (t) => {
   const email = "F3f6Z@example.com";
 
   server.use(
-    http.post("*/simple-oauth/auth-code", async () =>
-      HttpResponse.error()
-    ),
+    http.post("*/simple-oauth/auth-code", async () => HttpResponse.error()),
   );
 
   const result = await drupalkit.simpleOauth.requestAuthCode(operation, email);

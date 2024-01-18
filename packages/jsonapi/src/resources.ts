@@ -132,10 +132,10 @@ export interface RelationshipLinkage<T extends string> {
 
 type ExtractArrayElementType<T> = T extends Array<infer U> ? U : never;
 
-type DeriveSimpleJsonApiResourceUnion<T> =
-  T extends infer U extends JsonApiResource
-    ? DeriveSimpleJsonApiResource<U>
-    : never;
+type DeriveSimpleJsonApiResourceUnion<T> = T extends infer U extends
+  JsonApiResource
+  ? DeriveSimpleJsonApiResource<U>
+  : never;
 
 export type DeriveSimpleJsonApiResource<TResource extends JsonApiResource> = {
   id: TResource["id"];
@@ -158,10 +158,10 @@ export type DeriveSimpleJsonApiResource<TResource extends JsonApiResource> = {
   [key in keyof TResource["relationships"]]: TResource["relationships"][key] extends JsonApiResource
     ? DeriveSimpleJsonApiResourceUnion<TResource["relationships"][key]>
     : TResource["relationships"][key] extends JsonApiResource[]
-    ? DeriveSimpleJsonApiResourceUnion<
-        ExtractArrayElementType<TResource["relationships"][key]>
-      >[]
-    : never;
+      ? DeriveSimpleJsonApiResourceUnion<
+          ExtractArrayElementType<TResource["relationships"][key]>
+        >[]
+      : never;
 };
 
 /**
@@ -195,33 +195,32 @@ export type DeriveResourceObject<TResource extends JsonApiResource> = {
     [key in keyof TResource["relationships"]]: TResource["relationships"][key] extends JsonApiResource
       ? Relationship<DeriveResourceObject<TResource["relationships"][key]>>
       : TResource["relationships"][key] extends JsonApiResource[]
-      ? Relationship<
-          DeriveResourceObjectUnion<
-            ExtractArrayElementType<TResource["relationships"][key]>
-          >[]
-        >
-      : never;
+        ? Relationship<
+            DeriveResourceObjectUnion<
+              ExtractArrayElementType<TResource["relationships"][key]>
+            >[]
+          >
+        : never;
   };
 };
 
 type ResourceRelationshipLinkage<T> = T extends JsonApiResource
   ? RelationshipLinkage<T["type"]>
   : T extends JsonApiResource[]
-  ? RelationshipLinkage<ExtractArrayElementType<T>["type"]>[]
-  : never;
+    ? RelationshipLinkage<ExtractArrayElementType<T>["type"]>[]
+    : never;
 
 /**
  * Creates a simple json api resource from a resource object.
  *
  * Supports both single and an array of resource objects.
  */
-export type SimpleFromResourceObject<T> = T extends DeriveResourceObject<
-  infer TResource
->
-  ? DeriveSimpleJsonApiResource<TResource>
-  : T extends DeriveResourceObject<infer TResource>[]
-  ? DeriveSimpleJsonApiResource<TResource>[]
-  : never;
+export type SimpleFromResourceObject<T> =
+  T extends DeriveResourceObject<infer TResource>
+    ? DeriveSimpleJsonApiResource<TResource>
+    : T extends DeriveResourceObject<infer TResource>[]
+      ? DeriveSimpleJsonApiResource<TResource>[]
+      : never;
 /**
  * Extract the update payload type from a resource object.
  */
@@ -262,8 +261,8 @@ export type RemoveIndex<T> = {
   [key in keyof T as string extends key
     ? never
     : number extends key
-    ? never
-    : key]: T[key];
+      ? never
+      : key]: T[key];
 };
 
 /**
@@ -302,14 +301,14 @@ export type ToParameters<
 > = "readSingle" extends Operation
   ? ReadSingleParameters
   : "readMany" extends Operation
-  ? ReadManyParameters
-  : "create" extends Operation
-  ? CreateParameters<Resource>
-  : "update" extends Operation
-  ? UpdateParameters<Resource>
-  : "delete" extends Operation
-  ? DeleteParameters
-  : never;
+    ? ReadManyParameters
+    : "create" extends Operation
+      ? CreateParameters<Resource>
+      : "update" extends Operation
+        ? UpdateParameters<Resource>
+        : "delete" extends Operation
+          ? DeleteParameters
+          : never;
 
 /**
  * Menu link content.

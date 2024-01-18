@@ -72,7 +72,7 @@ test.serial("Get menu items with custom request options", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      });
     }),
   );
 
@@ -94,7 +94,7 @@ test.serial("Get menu items for non-existant menu", async (t) => {
         headers: {
           "Content-Type": "application/vnd.api+json",
         },
-      })
+      }),
     ),
   );
 

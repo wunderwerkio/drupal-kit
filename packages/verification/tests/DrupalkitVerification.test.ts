@@ -61,7 +61,7 @@ test.serial("Add Hash verification to a request once", async (t) => {
         t.not(request.headers.get("x-verification-hash"), hash);
       }
 
-      return HttpResponse.text()
+      return HttpResponse.text();
     }),
   );
 
@@ -97,7 +97,7 @@ test.serial("Add Magic code verification to a request once", async (t) => {
         t.not(request.headers.get("x-verification-magic-code"), code);
       }
 
-      return HttpResponse.text()
+      return HttpResponse.text();
     }),
   );
 

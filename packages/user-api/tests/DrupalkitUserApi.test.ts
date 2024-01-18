@@ -58,7 +58,7 @@ test.serial("Register", async (t) => {
 
       t.deepEqual(data, payload);
 
-      return HttpResponse.json(UserResponse)
+      return HttpResponse.json(UserResponse);
     }),
   );
 
@@ -87,7 +87,7 @@ test.serial("Register with custom request options", async (t) => {
     http.post("*/user-api/register", async ({ request }) => {
       t.is(request.headers.get("X-Custom"), "1");
 
-      return HttpResponse.json(UserResponse)
+      return HttpResponse.json(UserResponse);
     }),
   );
 
@@ -112,7 +112,7 @@ test.serial("Register with custom endpoint", async (t) => {
 
   server.use(
     http.post("*/custom/register", async ({ request }) =>
-      HttpResponse.json(UserResponse)
+      HttpResponse.json(UserResponse),
     ),
   );
 
@@ -131,7 +131,7 @@ test.serial("Handle register error", async (t) => {
 
   server.use(
     http.post("*/user-api/register", async () =>
-      HttpResponse.text(null, { status: 400 })
+      HttpResponse.text(null, { status: 400 }),
     ),
   );
 
@@ -157,7 +157,7 @@ test.serial("Resend register email", async (t) => {
 
       t.deepEqual(await request.json(), { email, operation });
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -183,7 +183,7 @@ test.serial("Resend register email with custom request options", async (t) => {
     http.post("*/user-api/register/resend-email", async ({ request }) => {
       t.is(request.headers.get("X-Custom"), "1");
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -205,7 +205,7 @@ test.serial("Resend register email with custom endpoint", async (t) => {
 
   server.use(
     http.post("*/custom/register/resend-email", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -224,7 +224,7 @@ test.serial("Resend register email - deprecated version", async (t) => {
 
   server.use(
     http.post("*/custom/register/resend-email", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -243,7 +243,7 @@ test.serial("Handle error while resend register email", async (t) => {
 
   server.use(
     http.post("*/user-api/register/resend-email", async () =>
-      HttpResponse.text(null, { status: 400 })
+      HttpResponse.text(null, { status: 400 }),
     ),
   );
 
@@ -265,7 +265,7 @@ test.serial("Init cancel account", async (t) => {
     http.post("*/user-api/cancel-account/init", async ({ request }) => {
       t.is(request.headers.get("content-type"), "application/json");
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -289,7 +289,7 @@ test.serial("Init cancel account with custom request options", async (t) => {
     http.post("*/user-api/cancel-account/init", async ({ request }) => {
       t.is(request.headers.get("X-Custom"), "1");
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -309,7 +309,7 @@ test.serial("Init cancel account with custom endpoint", async (t) => {
 
   server.use(
     http.post("*/custom/cancel-account/init", async ({ request }) =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -326,7 +326,7 @@ test.serial("Init cancel account - deprecated version", async (t) => {
 
   server.use(
     http.post("*/custom/cancel-account/init", async ({ request }) =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -340,7 +340,7 @@ test.serial("Handle error while init cancel account", async (t) => {
 
   server.use(
     http.post("*/user-api/cancel-account/init", async ({ request }) =>
-      HttpResponse.text(null, { status: 400 })
+      HttpResponse.text(null, { status: 400 }),
     ),
   );
 
@@ -362,7 +362,7 @@ test.serial("Cancel account", async (t) => {
     http.post("*/user-api/cancel-account", async ({ request }) => {
       t.is(request.headers.get("content-type"), "application/json");
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -386,7 +386,7 @@ test.serial("Cancel account with custom request options", async (t) => {
     http.post("*/user-api/cancel-account", async ({ request }) => {
       t.is(request.headers.get("content-type"), "application/json");
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -406,7 +406,7 @@ test.serial("Cancel account with custom endpoint", async (t) => {
 
   server.use(
     http.post("*/custom/cancel-account", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -420,7 +420,7 @@ test.serial("Handle error while cancel account", async (t) => {
 
   server.use(
     http.post("*/user-api/cancel-account", async () =>
-      HttpResponse.text(null, { status: 400 })
+      HttpResponse.text(null, { status: 400 }),
     ),
   );
 
@@ -445,7 +445,7 @@ test.serial("Init set password", async (t) => {
 
       t.deepEqual(await request.json(), { email });
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -470,7 +470,7 @@ test.serial("Init set password with custom request options", async (t) => {
     http.post("*/user-api/set-password/init", async ({ request }) => {
       t.is(request.headers.get("X-Custom"), "1");
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -491,7 +491,7 @@ test.serial("Init set password with custom endpoint", async (t) => {
 
   server.use(
     http.post("*/custom/set-password/init", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -509,7 +509,7 @@ test.serial("Init set password - deprecated version", async (t) => {
 
   server.use(
     http.post("*/custom/set-password/init", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -524,7 +524,7 @@ test.serial("Handle error while init set password", async (t) => {
 
   server.use(
     http.post("*/user-api/set-password/init", async () =>
-      HttpResponse.text(null, { status: 400 })
+      HttpResponse.text(null, { status: 400 }),
     ),
   );
 
@@ -549,7 +549,7 @@ test.serial("Set password", async (t) => {
 
       t.deepEqual(await request.json(), { newPassword });
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -574,7 +574,7 @@ test.serial("Set password with custom request options", async (t) => {
     http.post("*/user-api/set-password", async ({ request }) => {
       t.is(request.headers.get("X-Custom"), "1");
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -595,7 +595,7 @@ test.serial("Set password with custom endpoint", async (t) => {
 
   server.use(
     http.post("*/custom/set-password", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -613,7 +613,7 @@ test.serial("Set password - deprecated version", async (t) => {
 
   server.use(
     http.post("*/custom/set-password", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -628,7 +628,7 @@ test.serial("Handle error while set password", async (t) => {
 
   server.use(
     http.post("*/user-api/set-password", async () =>
-      HttpResponse.text(null, { status: 400 })
+      HttpResponse.text(null, { status: 400 }),
     ),
   );
 
@@ -653,7 +653,7 @@ test.serial("Init unset password", async (t) => {
 
       t.deepEqual(await request.json(), { email });
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -678,7 +678,7 @@ test.serial("Init unset password with custom request options", async (t) => {
     http.post("*/user-api/unset-password/init", async ({ request }) => {
       t.is(request.headers.get("X-Custom"), "1");
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -699,7 +699,7 @@ test.serial("Init unset password with custom endpoint", async (t) => {
 
   server.use(
     http.post("*/custom/unset-password/init", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -714,7 +714,7 @@ test.serial("Handle error while init unset password", async (t) => {
 
   server.use(
     http.post("*/user-api/unset-password/init", async () =>
-      HttpResponse.text(null, { status: 400 })
+      HttpResponse.text(null, { status: 400 }),
     ),
   );
 
@@ -738,7 +738,7 @@ test.serial("Unset password with verification", async (t) => {
 
       t.deepEqual(await request.json(), {});
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -761,7 +761,7 @@ test.serial("Unset password with currentPassword", async (t) => {
 
       t.deepEqual(await request.json(), { currentPassword });
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -785,7 +785,7 @@ test.serial("Unset password with custom request options", async (t) => {
     http.post("*/user-api/unset-password", async ({ request }) => {
       t.is(request.headers.get("X-Custom"), "1");
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -805,7 +805,7 @@ test.serial("Unset password with custom endpoint", async (t) => {
 
   server.use(
     http.post("*/custom/unset-password", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -820,7 +820,7 @@ test.serial("Handle error while unset password", async (t) => {
 
   server.use(
     http.post("*/user-api/unset-password", async () =>
-      HttpResponse.text(null, { status: 400 })
+      HttpResponse.text(null, { status: 400 }),
     ),
   );
 
@@ -845,7 +845,7 @@ test.serial("Passwordless login", async (t) => {
 
       t.deepEqual(await request.json(), { email });
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -870,7 +870,7 @@ test.serial("Passwordless login with custom request options", async (t) => {
     http.post("*/user-api/passwordless-login", async ({ request }) => {
       t.is(request.headers.get("X-Custom"), "1");
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -891,7 +891,7 @@ test.serial("Passwordless login with custom endpoint", async (t) => {
 
   server.use(
     http.post("*/custom/passwordless-login", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -906,7 +906,7 @@ test.serial("Handle error while passwordless login", async (t) => {
 
   server.use(
     http.post("*/user-api/passwordless-login", async () =>
-      HttpResponse.text(null, { status: 400 })
+      HttpResponse.text(null, { status: 400 }),
     ),
   );
 
@@ -931,7 +931,7 @@ test.serial("Init set email", async (t) => {
 
       t.deepEqual(await request.json(), { email });
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -956,7 +956,7 @@ test.serial("Init set email with custom request options", async (t) => {
     http.post("*/user-api/set-email/init", async ({ request }) => {
       t.is(request.headers.get("X-Custom"), "1");
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -977,7 +977,7 @@ test.serial("Init set email with custom endpoint", async (t) => {
 
   server.use(
     http.post("*/custom/set-email/init", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -995,7 +995,7 @@ test.serial("Init set email - deprecated version", async (t) => {
 
   server.use(
     http.post("*/custom/set-email/init", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -1010,7 +1010,7 @@ test.serial("Handle error while init set email", async (t) => {
 
   server.use(
     http.post("*/user-api/set-email/init", async () =>
-      HttpResponse.text(null, { status: 400 })
+      HttpResponse.text(null, { status: 400 }),
     ),
   );
 
@@ -1035,7 +1035,7 @@ test.serial("Set email", async (t) => {
 
       t.deepEqual(await request.json(), { email });
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -1060,7 +1060,7 @@ test.serial("Set email with custom request options", async (t) => {
     http.post("*/user-api/set-email", async ({ request }) => {
       t.is(request.headers.get("X-Custom"), "1");
 
-      return HttpResponse.json(successResponse)
+      return HttpResponse.json(successResponse);
     }),
   );
 
@@ -1081,7 +1081,7 @@ test.serial("Set email with custom endpoint", async (t) => {
 
   server.use(
     http.post("*/custom/set-email", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -1099,7 +1099,7 @@ test.serial("Set email - deprecated version", async (t) => {
 
   server.use(
     http.post("*/custom/set-email", async () =>
-      HttpResponse.json(successResponse)
+      HttpResponse.json(successResponse),
     ),
   );
 
@@ -1114,7 +1114,7 @@ test.serial("Handle error while set email", async (t) => {
 
   server.use(
     http.post("*/user-api/set-email", async () =>
-      HttpResponse.text(null, { status: 400 })
+      HttpResponse.text(null, { status: 400 }),
     ),
   );
 

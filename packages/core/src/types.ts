@@ -30,9 +30,9 @@ export type ReturnTypeOf<T extends AnyFunction | AnyFunction[]> =
   T extends AnyFunction
     ? ReturnType<T>
     : T extends AnyFunction[]
-    ? // exclude `void` from intersection
-      UnionToIntersection<Exclude<ReturnType<T[number]>, void>>
-    : never;
+      ? // exclude `void` from intersection
+        UnionToIntersection<Exclude<ReturnType<T[number]>, void>>
+      : never;
 
 /**
  * Taken from stack overflow.
