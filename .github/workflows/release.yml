@@ -11,21 +11,15 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: nix develop --command bash {0}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        id: pnpm-install
-        with:
-          version: 8
-          run_install: false
+      - name: Install nix
+        uses: nixbuild/nix-quick-install-action@v25
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -41,10 +35,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Install dependencies
+      - name: Set token config
         run: |
-          echo '//npm.wunderwerk.dev/:_authToken=${NPM_TOKEN}' > ~/.npmrc
-          pnpm install
+          echo "//npm.wunderwerk.dev/:_authToken=${NPM_TOKEN}" >> .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
