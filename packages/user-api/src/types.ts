@@ -1,4 +1,106 @@
 /**
+ * Augment DrupalkitOptions and add custom configuration.
+ */
+declare module "@drupal-kit/core" {
+  interface DrupalkitOptions {
+    /**
+     * Endpoint path for the User API AdvancedRegistrationResource.
+     *
+     * @default '/user-api/register'
+     */
+    userApiRegistrationEndpoint?: string;
+    /**
+     * Endpoint path for the User API ResendRegisterEmailResource.
+     *
+     * @default '/user-api/register/resend-email'
+     */
+    userApiRegisterResendEmailEndpoint?: string;
+    /**
+     * Endpoint path for the User API InitCancelAccountResource.
+     *
+     * @default '/user-api/cancel-account/init'
+     */
+    userApiInitCancelAccountEndpoint?: string;
+    /**
+     * Endpoint path for the User API CancelAccountResource.
+     *
+     * @default '/user-api/cancel-account'
+     */
+    userApiCancelAccountEndpoint?: string;
+    /**
+     * Endpoint path for the User API InitSetPasswordResource.
+     *
+     * @default '/user-api/set-password/init'
+     */
+    userApiInitSetPasswordEndpoint?: string;
+    /**
+     * Endpoint path for the User API SetPasswordResource.
+     *
+     * @default '/user-api/set-password'
+     */
+    userApiSetPasswordEndpoint?: string;
+    /**
+     * Endpoint path for the User API PasswordlessLoginResource.
+     *
+     * @default '/user-api/passwordless-login'
+     */
+    userApiPasswordlessLoginEndpoint?: string;
+    /**
+     * Endpoint path for the User API InitSetEmailResource.
+     *
+     * @default '/user-api/set-email/init'
+     */
+    userApiInitSetEmailEndpoint?: string;
+    /**
+     * Endpoint path for the User API SetEmailResource.
+     *
+     * @default '/user-api/set-email'
+     */
+    userApiSetEmailEndpoint?: string;
+
+    //
+    // Deprecated properties.
+    // 
+
+    /**
+     * Endpoint path for the User API ResendRegisterEmailResource.
+     *
+     * @deprecated Deprecated in `0.9.3` will be removed in `1.0.0`. Use `userApiRegisterResendEmailEndpoint` instead.
+     */
+    userApiResendMailEndpoint?: string;
+    /**
+     * Endpoint path for the User API InitCancelAccountResource.
+     *
+     * @deprecated Deprecated in `0.9.3` will be removed in `1.0.0`. Use `userApiInitCancelAccountEndpoint` instead.
+     */
+    userApiInitAccountCancelEndpoint?: string;
+    /**
+     * Endpoint path for the User API InitSetPasswordResource.
+     *
+     * @deprecated Deprecated in `0.9.3` will be removed in `1.0.0`. Use `userApiInitSetPasswordEndpoint` instead.
+     */
+    userApiResetPasswordEndpoint?: string;
+    /**
+     * Endpoint path for the User API SetPasswordResource.
+     *
+     * @deprecated Deprecated in `0.9.3` will be removed in `1.0.0`. Use `userApiSetPasswordEndpoint` instead.
+     */
+    userApiUpdatePasswordEndpoint?: string;
+    /**
+     * Endpoint path for the User API InitSetEmailResource.
+     *
+     * @deprecated Deprecated in `0.9.3` will be removed in `1.0.0`. Use `userApiInitSetEmailEndpoint` instead.
+     */
+    userApiUpdateEmailEndpoint?: string;
+    /**
+     * Endpoint path for the User API SetEmailResource.
+     *
+     * @deprecated Deprecated in `0.9.3` will be removed in `1.0.0`. Use `userApiSetEmailEndpoint` instead.
+     */
+    userApiVerifyEmailEndpoint?: string;
+  }
+}
+/**
  * Augment this interface to include all fields
  * that are needed for registration.
  */

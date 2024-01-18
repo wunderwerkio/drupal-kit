@@ -4,20 +4,6 @@ import { OverrideableRequestOptions } from "@drupal-kit/types";
 
 import { RegisterPayload, RegisterResponse, SuccessResponse } from "./types.js";
 
-declare module "@drupal-kit/core" {
-  interface DrupalkitOptions {
-    userApiRegistrationEndpoint?: string;
-    userApiCancelAccountEndpoint?: string;
-    userApiInitAccountCancelEndpoint?: string;
-    userApiResetPasswordEndpoint?: string;
-    userApiUpdatePasswordEndpoint?: string;
-    userApiPasswordlessLoginEndpoint?: string;
-    userApiUpdateEmailEndpoint?: string;
-    userApiVerifyEmailEndpoint?: string;
-    userApiResendMailEndpoint?: string;
-  }
-}
-
 /**
  * DrupalkitUserApi plugin for Drupalkit.
  *
@@ -30,28 +16,51 @@ export const DrupalkitUserApi = (
   drupalkit: Drupalkit,
   drupalkitOptions: DrupalkitOptions,
 ) => {
+  if (drupalkitOptions.userApiResendMailEndpoint) {
+    drupalkitOptions.userApiRegisterResendEmailEndpoint = drupalkitOptions.userApiResendMailEndpoint;
+  }
+  if (drupalkitOptions.userApiInitAccountCancelEndpoint) {
+    drupalkitOptions.userApiInitCancelAccountEndpoint = drupalkitOptions.userApiInitAccountCancelEndpoint;
+  }
+  if (drupalkitOptions.userApiResetPasswordEndpoint) {
+    drupalkitOptions.userApiInitSetPasswordEndpoint = drupalkitOptions.userApiResetPasswordEndpoint;
+  }
+  if (drupalkitOptions.userApiUpdatePasswordEndpoint) {
+    drupalkitOptions.userApiSetPasswordEndpoint = drupalkitOptions.userApiUpdatePasswordEndpoint;
+  }
+  if (drupalkitOptions.userApiVerifyEmailEndpoint) {
+    drupalkitOptions.userApiInitSetEmailEndpoint = drupalkitOptions.userApiVerifyEmailEndpoint;
+  }
+  if (drupalkitOptions.userApiUpdateEmailEndpoint) {
+    drupalkitOptions.userApiSetEmailEndpoint = drupalkitOptions.userApiUpdateEmailEndpoint;
+  }
+
   const registrationEndpoint =
     drupalkitOptions.userApiRegistrationEndpoint ?? "/user-api/register";
-  const initAccountCancelEndpoint =
-    drupalkitOptions.userApiInitAccountCancelEndpoint ??
-    "/user-api/cancel-account/init";
+  const registerResendEmailEndpoint =
+    drupalkitOptions.userApiRegisterResendEmailEndpoint ??
+    "/user-api/register/resend-email";
+
   const cancelAccountEndpoint =
     drupalkitOptions.userApiCancelAccountEndpoint ?? "/user-api/cancel-account";
-  const resetPasswordEndpoint =
-    drupalkitOptions.userApiResetPasswordEndpoint ??
+  const initCancelAccountEndpoint =
+    drupalkitOptions.userApiInitCancelAccountEndpoint ??
+    "/user-api/cancel-account/init";
+
+  const initSetPasswordEndpoint =
+    drupalkitOptions.userApiInitSetPasswordEndpoint ??
     "/user-api/set-password/init";
-  const updatePasswordEndpoint =
-    drupalkitOptions.userApiUpdatePasswordEndpoint ?? "/user-api/set-password";
+  const setPasswordEndpoint =
+    drupalkitOptions.userApiSetPasswordEndpoint ?? "/user-api/set-password";
+
   const passwordlessLoginEndpoint =
     drupalkitOptions.userApiPasswordlessLoginEndpoint ??
     "/user-api/passwordless-login";
-  const updateEmailEndpoint =
-    drupalkitOptions.userApiUpdateEmailEndpoint ?? "/user-api/set-email";
-  const verifyEmailEndpoint =
-    drupalkitOptions.userApiVerifyEmailEndpoint ?? "/user-api/set-email/init";
-  const resendMailEndpoint =
-    drupalkitOptions.userApiResendMailEndpoint ??
-    "/user-api/register/resend-email";
+
+  const initSetEmailEndpoint =
+    drupalkitOptions.userApiInitSetEmailEndpoint ?? "/user-api/set-email/init";
+  const setEmailEndpoint =
+    drupalkitOptions.userApiSetEmailEndpoint ?? "/user-api/set-email";
 
   const headers = {
     "content-type": "application/json",
@@ -103,7 +112,7 @@ export const DrupalkitUserApi = (
   const initAccountCancel = async (
     requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<SuccessResponse, DrupalkitError>> => {
-    const url = drupalkit.buildUrl(initAccountCancelEndpoint);
+    const url = drupalkit.buildUrl(initCancelAccountEndpoint);
 
     const result = await drupalkit.request<SuccessResponse>(
       url,
@@ -168,7 +177,7 @@ export const DrupalkitUserApi = (
     email: string,
     requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<SuccessResponse, DrupalkitError>> => {
-    const url = drupalkit.buildUrl(resetPasswordEndpoint);
+    const url = drupalkit.buildUrl(initSetPasswordEndpoint);
 
     const result = await drupalkit.request<SuccessResponse>(
       url,
@@ -202,7 +211,7 @@ export const DrupalkitUserApi = (
     currentPassword?: string,
     requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<SuccessResponse, DrupalkitError>> => {
-    const url = drupalkit.buildUrl(updatePasswordEndpoint);
+    const url = drupalkit.buildUrl(setPasswordEndpoint);
 
     const payload: { newPassword: string; currentPassword?: string } = {
       newPassword,
@@ -278,7 +287,7 @@ export const DrupalkitUserApi = (
     email: string,
     requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<SuccessResponse, DrupalkitError>> => {
-    const url = drupalkit.buildUrl(verifyEmailEndpoint);
+    const url = drupalkit.buildUrl(initSetEmailEndpoint);
 
     const result = await drupalkit.request<SuccessResponse>(
       url,
@@ -310,7 +319,7 @@ export const DrupalkitUserApi = (
     email: string,
     requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<SuccessResponse, DrupalkitError>> => {
-    const url = drupalkit.buildUrl(updateEmailEndpoint);
+    const url = drupalkit.buildUrl(setEmailEndpoint);
 
     const result = await drupalkit.request<SuccessResponse>(
       url,
@@ -343,7 +352,7 @@ export const DrupalkitUserApi = (
     operation: string,
     requestOptions?: OverrideableRequestOptions,
   ) => {
-    const url = drupalkit.buildUrl(resendMailEndpoint);
+    const url = drupalkit.buildUrl(registerResendEmailEndpoint);
 
     const result = await drupalkit.request<{ status: "success" }>(
       url,
