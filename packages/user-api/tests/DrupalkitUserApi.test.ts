@@ -638,6 +638,198 @@ test.serial("Handle error while set password", async (t) => {
 });
 
 /**
+ * Init unset password
+ */
+
+test.serial("Init unset password", async (t) => {
+  t.plan(3);
+
+  const drupalkit = createDrupalkit();
+  const email = "JzWZg@example.com";
+
+  server.use(
+    rest.post("*/user-api/unset-password/init", async (req, res, ctx) => {
+      t.is(req.headers.get("content-type"), "application/json");
+
+      t.deepEqual(await req.json(), { email });
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  const result = await drupalkit.userApi.initUnsetPassword(email);
+
+  const res = result.unwrap();
+
+  t.deepEqual(res, successResponse);
+});
+
+test.serial("Init unset password with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+  const email = "JzWZg@example.com";
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.post("*/user-api/unset-password/init", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  await drupalkit.userApi.initUnsetPassword(email, {
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
+});
+
+test.serial("Init unset password with custom endpoint", async (t) => {
+  const drupalkit = createDrupalkit({
+    baseUrl: BASE_URL,
+    userApiInitUnsetPasswordEndpoint: "/custom/unset-password/init",
+  });
+  const email = "JzWZg@example.com";
+
+  server.use(
+    rest.post("*/custom/unset-password/init", async (_req, res, ctx) =>
+      res(ctx.json(successResponse)),
+    ),
+  );
+
+  const result = await drupalkit.userApi.initUnsetPassword(email);
+
+  t.assert(result.ok);
+});
+
+test.serial("Handle error while init unset password", async (t) => {
+  const drupalkit = createDrupalkit();
+  const email = "JzWZg@example.com";
+
+  server.use(
+    rest.post("*/user-api/unset-password/init", async (_req, res, ctx) =>
+      res(ctx.status(400)),
+    ),
+  );
+
+  const result = await drupalkit.userApi.initUnsetPassword(email);
+
+  t.assert(result.err);
+});
+
+/**
+ * Unset password
+ */
+
+test.serial("Unset password with verification", async (t) => {
+  t.plan(3);
+
+  const drupalkit = createDrupalkit();
+
+  server.use(
+    rest.post("*/user-api/unset-password", async (req, res, ctx) => {
+      t.is(req.headers.get("content-type"), "application/json");
+
+      t.deepEqual(await req.json(), {});
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  const result = await drupalkit.userApi.unsetPassword();
+
+  const res = result.unwrap();
+
+  t.deepEqual(res, successResponse);
+});
+
+test.serial("Unset password with currentPassword", async (t) => {
+  t.plan(3);
+
+  const drupalkit = createDrupalkit();
+  const currentPassword = "abc123";
+
+  server.use(
+    rest.post("*/user-api/unset-password", async (req, res, ctx) => {
+      t.is(req.headers.get("content-type"), "application/json");
+
+      t.deepEqual(await req.json(), { currentPassword });
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  const result = await drupalkit.userApi.unsetPassword(currentPassword);
+
+  const res = result.unwrap();
+
+  t.deepEqual(res, successResponse);
+});
+
+test.serial("Unset password with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    rest.post("*/user-api/unset-password", async (req, res, ctx) => {
+      t.is(req.headers.get("X-Custom"), "1");
+
+      return res(ctx.json(successResponse));
+    }),
+  );
+
+  await drupalkit.userApi.unsetPassword(undefined, {
+    cache: "no-cache",
+    headers: {
+      "X-Custom": "1",
+    },
+  });
+});
+
+test.serial("Unset password with custom endpoint", async (t) => {
+  const drupalkit = createDrupalkit({
+    baseUrl: BASE_URL,
+    userApiUnsetPasswordEndpoint: "/custom/unset-password",
+  });
+
+  server.use(
+    rest.post("*/custom/unset-password", async (_req, res, ctx) =>
+      res(ctx.json(successResponse)),
+    ),
+  );
+
+  const result = await drupalkit.userApi.unsetPassword();
+
+  t.assert(result.ok);
+});
+
+test.serial("Handle error while unset password", async (t) => {
+  const drupalkit = createDrupalkit();
+  const newPassword = "new-password";
+
+  server.use(
+    rest.post("*/user-api/unset-password", async (_req, res, ctx) =>
+      res(ctx.status(400)),
+    ),
+  );
+
+  const result = await drupalkit.userApi.unsetPassword(newPassword);
+
+  t.assert(result.err);
+});
+
+/**
  * Passwordless login
  */
 
