@@ -1,5 +1,11 @@
 # @drupal-kit/types
 
+## 0.10.1
+
+### Patch Changes
+
+- [#67](https://github.com/wunderwerkio/drupal-kit/pull/67) [`86a7d94`](https://github.com/wunderwerkio/drupal-kit/commit/86a7d94bd30cba42cfd6235c0d0965ea608e7bcd) Thanks [@chfoidl](https://github.com/chfoidl)! - Update all dependencies; Update to nodejs 20 for dev / test / ci environment.
+
 ## 0.10.0
 
 ## 0.9.2
