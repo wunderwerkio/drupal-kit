@@ -26,7 +26,7 @@
     "format:check": "prettier --check 'packages/*/**/*.{ts,tsx}'",
     "format:write": "prettier --write 'packages/*/**/*.{ts,tsx}' && syncpack format",
     "lint": "turbo run lint",
-    "publish-packages": "turbo run test && turbo run export-version && turbo run build lint typecheck && changeset publish",
+    "publish-packages": "turbo run test && turbo run export-version && turbo run build lint typecheck && changeset publish --no-git-tag && node scripts/tag.mjs",
     "syncpack": "syncpack lint",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
