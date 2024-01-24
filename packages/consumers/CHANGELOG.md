@@ -1,5 +1,14 @@
 # @drupal-kit/consumers
 
+## 0.10.2
+
+### Patch Changes
+
+- [#70](https://github.com/wunderwerkio/drupal-kit/pull/70) [`d04c7d1`](https://github.com/wunderwerkio/drupal-kit/commit/d04c7d191fdc261537e89caa25c7e531d7a8b5e2) Thanks [@chfoidl](https://github.com/chfoidl)! - Change consumerUUID to consumerId in options
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.10.2
+
 ## 0.10.1
 
 ### Patch Changes
