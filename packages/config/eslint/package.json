@@ -1,6 +1,6 @@
 {
   "name": "@drupal-kit/eslint-config",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "main": "index.js",
   "private": true,
   "devDependencies": {
