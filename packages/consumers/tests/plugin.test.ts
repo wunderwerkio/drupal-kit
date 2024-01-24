@@ -20,7 +20,7 @@ test.after(() => {
 });
 
 const BASE_URL = "https://my-drupal.com";
-const CONSUMER_UUID = "my-consumer-uuid";
+const CONSUMER_ID = "my-consumer-uuid";
 
 const createDrupalkit = (
   options: DrupalkitOptions = {
@@ -41,7 +41,7 @@ test.serial("Add consumer id to request", async (t) => {
 
   server.use(
     http.get("*", ({ request }) => {
-      t.is(request.headers.get("X-Consumer-ID"), CONSUMER_UUID);
+      t.is(request.headers.get("X-Consumer-ID"), CONSUMER_ID);
 
       return HttpResponse.text();
     }),
@@ -49,7 +49,7 @@ test.serial("Add consumer id to request", async (t) => {
 
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
-    consumerUUID: CONSUMER_UUID,
+    consumerId: CONSUMER_ID,
   });
 
   const result = await drupalkit.request("/", {
@@ -87,7 +87,7 @@ test.serial("Add consumer id with custom header name", async (t) => {
 
   server.use(
     http.get("*", ({ request }) => {
-      t.is(request.headers.get("X-Custom-Consumer-ID"), CONSUMER_UUID);
+      t.is(request.headers.get("X-Custom-Consumer-ID"), CONSUMER_ID);
 
       return HttpResponse.text();
     }),
@@ -95,7 +95,7 @@ test.serial("Add consumer id with custom header name", async (t) => {
 
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
-    consumerUUID: CONSUMER_UUID,
+    consumerId: CONSUMER_ID,
     consumerHeaderName: "X-Custom-Consumer-ID",
   });
 
@@ -103,3 +103,29 @@ test.serial("Add consumer id with custom header name", async (t) => {
     method: "GET",
   });
 });
+
+test.serial(
+  "Add consumer id to request - via deprecated consumerUUID",
+  async (t) => {
+    t.plan(2);
+
+    server.use(
+      http.get("*", ({ request }) => {
+        t.is(request.headers.get("X-Consumer-ID"), CONSUMER_ID);
+
+        return HttpResponse.text();
+      }),
+    );
+
+    const drupalkit = createDrupalkit({
+      baseUrl: BASE_URL,
+      consumerUUID: CONSUMER_ID,
+    });
+
+    const result = await drupalkit.request("/", {
+      method: "GET",
+    });
+
+    t.assert(result.ok);
+  },
+);

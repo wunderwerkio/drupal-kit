@@ -1,11 +1,5 @@
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
-
-declare module "@drupal-kit/core" {
-  interface DrupalkitOptions {
-    consumerHeaderName?: string;
-    consumerUUID?: string;
-  }
-}
+import "./types.js";
 
 /**
  * DrupalkitConsumers plugin for Drupalkit.
@@ -19,14 +13,19 @@ export const DrupalkitConsumers = (
   drupalkit: Drupalkit,
   drupalkitOptions: DrupalkitOptions,
 ) => {
+  // Support deprecated options.
+  if (drupalkitOptions.consumerUUID) {
+    drupalkitOptions.consumerId = drupalkitOptions.consumerUUID;
+  }
+
   const headerName = drupalkitOptions.consumerHeaderName ?? "X-Consumer-ID";
 
   /**
    * Add the consumer id header to the request if value is set.
    */
   drupalkit.hook.before("request", (requestOptions) => {
-    if (drupalkitOptions.consumerUUID) {
-      requestOptions.headers[headerName] = drupalkitOptions.consumerUUID;
+    if (drupalkitOptions.consumerId) {
+      requestOptions.headers[headerName] = drupalkitOptions.consumerId;
     }
   });
 };
