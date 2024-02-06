@@ -328,3 +328,11 @@ export interface MenuLinkContentResource extends JsonApiResource {
     weight: number;
   };
 }
+
+/**
+ * Utility types.
+ */
+export type JsonApiCreatePayload<TResource extends JsonApiResource> =
+  CreateParameters<TResource>["payload"];
+export type JsonApiUpdatePayload<TResource extends JsonApiResource> =
+  UpdateParameters<TResource>["payload"];

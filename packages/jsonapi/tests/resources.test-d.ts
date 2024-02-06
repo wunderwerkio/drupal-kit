@@ -1,18 +1,16 @@
 import "./types.js";
-import { Relationship, Response } from "ts-json-api";
+import { Relationship } from "ts-json-api";
 import { Drupalkit } from "@drupal-kit/core";
 
 import {
   DeriveResourceObject,
   DeriveSimpleJsonApiResource,
   DrupalkitJsonApi,
+  JsonApiCreatePayload,
   JsonApiResources,
+  JsonApiUpdatePayload,
 } from "../src/index.js";
-import {
-  NodeArticleResource,
-  NodeUnionRelResource,
-  UserResource,
-} from "./types.js";
+import { NodeArticleResource, UserResource } from "./types.js";
 
 const BASE_URL = "https://my-drupal.com";
 
@@ -192,6 +190,36 @@ async function testDiscriminatedUnionRelationType() {
     | DeriveSimpleJsonApiResource<NodeArticleResource>
     | DeriveSimpleJsonApiResource<UserResource>
   >(simple.union);
+}
+
+function testCreatePayload() {
+  const drupalkit = createDrupalkit();
+
+  const payload: JsonApiCreatePayload<NodeArticleResource> = {
+    attributes: {
+      title: "some title",
+    },
+  };
+
+  drupalkit.jsonApi.resource("node--article", "create", {
+    payload,
+  });
+}
+
+function testUpdatePayload() {
+  const drupalkit = createDrupalkit();
+  const uuid = "0c9b2d1b-1c6a-4e0a-9f7b-4b6b8d6b8f6d";
+
+  const payload: JsonApiUpdatePayload<NodeArticleResource> = {
+    attributes: {
+      title: "new title",
+    },
+  };
+
+  drupalkit.jsonApi.resource("node--article", "update", {
+    uuid,
+    payload,
+  });
 }
 
 /**
