@@ -18,16 +18,19 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - uses: actions/cache@v3
-        name: Setup nix cache
-        with:
-          path: /nix/store
-          key: ${{ runner.os }}-nix-store-${{ hashFiles('**/flake.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-nix-store-
-
       - name: Install nix
         uses: nixbuild/nix-quick-install-action@v25
+
+      - name: Restore and cache Nix store
+        uses: nix-community/cache-nix-action@v5
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+          gc-max-store-size-linux: 1073741824
+          purge: true
+          purge-prefixes: cache-${{ matrix.os }}-
+          purge-created: 0
+          purge-primary-key: never
 
       - name: Get pnpm store directory
         id: pnpm-cache
