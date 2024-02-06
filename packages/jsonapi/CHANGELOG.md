@@ -1,5 +1,14 @@
 # @drupal-kit/jsonapi
 
+## 0.10.3
+
+### Patch Changes
+
+- [#75](https://github.com/wunderwerkio/drupal-kit/pull/75) [`d7ae6da`](https://github.com/wunderwerkio/drupal-kit/commit/d7ae6dabf53a2d8f8c22050f60146f501b9e6f47) Thanks [@chfoidl](https://github.com/chfoidl)! - Implemented utility types for JSON:API create and update payloads.
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.10.3
+
 ## 0.10.2
 
 ### Patch Changes
