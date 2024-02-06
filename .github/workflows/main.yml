@@ -18,6 +18,14 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
+      - uses: actions/cache@v3
+        name: Setup nix cache
+        with:
+          path: /nix/store
+          key: ${{ runner.os }}-nix-store-${{ hashFiles('**/flake.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-nix-store-
+
       - name: Install nix
         uses: nixbuild/nix-quick-install-action@v25
 
