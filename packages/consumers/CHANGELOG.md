@@ -1,5 +1,14 @@
 # @drupal-kit/consumers
 
+## 0.10.4
+
+### Patch Changes
+
+- [#79](https://github.com/wunderwerkio/drupal-kit/pull/79) [`5dec53b`](https://github.com/wunderwerkio/drupal-kit/commit/5dec53b1bcfba55a881a1013babee2013938495b) Thanks [@chfoidl](https://github.com/chfoidl)! - Do not set consumer id header if already set
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.10.4
+
 ## 0.10.3
 
 ### Patch Changes
