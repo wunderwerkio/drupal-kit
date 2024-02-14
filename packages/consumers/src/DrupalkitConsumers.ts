@@ -24,7 +24,7 @@ export const DrupalkitConsumers = (
    * Add the consumer id header to the request if value is set.
    */
   drupalkit.hook.before("request", (requestOptions) => {
-    if (drupalkitOptions.consumerId) {
+    if (drupalkitOptions.consumerId && !requestOptions.headers[headerName]) {
       requestOptions.headers[headerName] = drupalkitOptions.consumerId;
     }
   });

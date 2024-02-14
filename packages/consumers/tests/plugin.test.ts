@@ -129,3 +129,33 @@ test.serial(
     t.assert(result.ok);
   },
 );
+
+test.serial(
+  "Do not overwrite already existing consumer id header",
+  async (t) => {
+    const otherId = "other";
+    t.plan(2);
+
+    server.use(
+      http.get("*", ({ request }) => {
+        t.is(request.headers.get("X-Consumer-ID"), otherId);
+
+        return HttpResponse.text();
+      }),
+    );
+
+    const drupalkit = createDrupalkit({
+      baseUrl: BASE_URL,
+      consumerUUID: CONSUMER_ID,
+    });
+
+    const result = await drupalkit.request("/", {
+      method: "GET",
+      headers: {
+        "X-Consumer-ID": otherId,
+      },
+    });
+
+    t.assert(result.ok);
+  },
+);
