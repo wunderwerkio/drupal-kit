@@ -1,5 +1,14 @@
 # @drupal-kit/user-api
 
+## 0.10.5
+
+### Patch Changes
+
+- [#82](https://github.com/wunderwerkio/drupal-kit/pull/82) [`09d5786`](https://github.com/wunderwerkio/drupal-kit/commit/09d57861287174f654cd8a01f9d63444a24d93b6) Thanks [@nimoatwoodway](https://github.com/nimoatwoodway)! - Export RegisterPayload to allow declaration-merging.
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.10.5
+
 ## 0.10.4
 
 ### Patch Changes
