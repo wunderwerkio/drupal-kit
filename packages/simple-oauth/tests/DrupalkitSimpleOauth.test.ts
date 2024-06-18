@@ -114,6 +114,43 @@ test.serial("Request token with custom request options", async (t) => {
   );
 });
 
+test.serial("Request token authenticated", async (t) => {
+  t.plan(3);
+
+  const authinfo = "Bearer abc123";
+
+  const drupalkit = createDrupalkit();
+  drupalkit.setAuth(authinfo);
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    http.post("*/oauth/token", async ({ request }) => {
+      t.is(request.headers.get("X-Custom"), "1");
+      t.is(request.headers.get("Authorization"), authinfo);
+
+      return HttpResponse.json(TokenResponse);
+    }),
+  );
+
+  await drupalkit.simpleOauth.requestToken(
+    "client_credentials",
+    {
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+    },
+    {
+      cache: "no-cache",
+      headers: {
+        "X-Custom": "1",
+      },
+      unauthenticated: false,
+    },
+  );
+});
+
 test.serial("Request token with explicit endpoint", async (t) => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,

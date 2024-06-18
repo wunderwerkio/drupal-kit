@@ -62,7 +62,7 @@ export const DrupalkitSimpleOauth = (
       {
         method: "POST",
         body,
-        unauthenticated: true,
+        unauthenticated: requestOptions?.unauthenticated !== false,
         headers: {
           "content-type": "application/x-www-form-urlencoded",
         },
