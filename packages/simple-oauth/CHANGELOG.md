@@ -1,5 +1,14 @@
 # @drupal-kit/simple-oauth
 
+## 0.10.6
+
+### Patch Changes
+
+- [#87](https://github.com/wunderwerkio/drupal-kit/pull/87) [`f3deed9`](https://github.com/wunderwerkio/drupal-kit/commit/f3deed9dba03b8aa0757d578fcfcd7d7aeeb5da6) Thanks [@chfoidl](https://github.com/chfoidl)! - Add support to explicitly allow authenticated token requests on per request basis
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.10.6
+
 ## 0.10.5
 
 ### Patch Changes
