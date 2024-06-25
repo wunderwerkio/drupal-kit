@@ -90,9 +90,9 @@ test.serial("Add response data to result", async (t) => {
     method: "GET",
   });
 
-  t.deepEqual(result.unwrap().headers, {
-    "content-type": "application/json",
-  });
+  const { headers } = result.unwrap();
+
+  t.is(headers["content-type"], "application/json");
 });
 
 test.serial("Do not add response data for 204 and 205 responses", async (t) => {

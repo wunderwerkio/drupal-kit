@@ -4,13 +4,13 @@
   "main": "index.js",
   "private": true,
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.19.0",
-    "@typescript-eslint/parser": "^6.19.0",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.14.1",
     "@wunderwerk/eslint-config": "^1.0.7",
     "eslint": "^8.56.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsdoc": "^48.0.2",
-    "typescript": "5.3.3"
+    "typescript": "5.4.5"
   },
   "files": [
     "index.js"

@@ -10,14 +10,13 @@
   "private": true,
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
-    "@changesets/cli": "^2.27.1",
+    "@changesets/cli": "^2.27.6",
     "@changesets/git": "^3.0.0",
-    "@commitlint/cli": "^18.4.4",
-    "@commitlint/config-conventional": "^18.4.4",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@drupal-kit/config-prettier": "workspace:*",
-    "@manypkg/get-packages": "^2.2.0",
-    "husky": "^8.0.3",
-    "syncpack": "^12.3.0",
+    "@manypkg/get-packages": "^2.2.1",
+    "syncpack": "^12.3.3",
     "turbo": "^2.0.5"
   },
   "scripts": {
