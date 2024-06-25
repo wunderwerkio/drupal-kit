@@ -1,5 +1,11 @@
 # @drupal-kit/config-typescript
 
+## 0.11.1
+
+### Patch Changes
+
+- [`d069971`](https://github.com/wunderwerkio/drupal-kit/commit/d069971854cc34f627f453c1007f861578e10ee7) Thanks [@chfoidl](https://github.com/chfoidl)! - Update dependencies
+
 ## 0.11.0
 
 ## 0.10.6
