@@ -91,11 +91,83 @@ test.serial("Register with custom request options", async (t) => {
     }),
   );
 
-  await drupalkit.userApi.register(payload, {
+  await drupalkit.userApi.register(payload, undefined, {
     cache: "no-cache",
     headers: {
       "X-Custom": "1",
     },
+  });
+});
+
+test.serial("Register with email notification disabled", async (t) => {
+  t.plan(1);
+
+  const drupalkit = createDrupalkit();
+
+  const payload = {
+    name: { value: "john-doe-1" },
+    mail: { value: "JzWZg@example.com" },
+  };
+
+  server.use(
+    http.post("*/user-api/register", async ({ request }) => {
+      t.is(request.headers.get("X-Disable-Email-Notification"), "1");
+
+      return HttpResponse.json(UserResponse);
+    }),
+  );
+
+  await drupalkit.userApi.register(payload, {
+    disableEmailNotification: true,
+  });
+});
+
+test.serial("Register with account activation disabled", async (t) => {
+  t.plan(1);
+
+  const drupalkit = createDrupalkit();
+
+  const payload = {
+    name: { value: "john-doe-1" },
+    mail: { value: "JzWZg@example.com" },
+  };
+
+  server.use(
+    http.post("*/user-api/register", async ({ request }) => {
+      t.is(request.headers.get("X-Disable-Account-Activation"), "1");
+
+      return HttpResponse.json(UserResponse);
+    }),
+  );
+
+  await drupalkit.userApi.register(payload, {
+    disableEmailNotification: false,
+    disableAccountActivation: true,
+  });
+});
+
+test.serial("Register with all options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+
+  const payload = {
+    name: { value: "john-doe-1" },
+    mail: { value: "JzWZg@example.com" },
+  };
+
+  server.use(
+    http.post("*/user-api/register", async ({ request }) => {
+      t.is(request.headers.get("X-Disable-Email-Notification"), "1");
+      t.is(request.headers.get("X-Disable-Account-Activation"), "1");
+
+      return HttpResponse.json(UserResponse);
+    }),
+  );
+
+  await drupalkit.userApi.register(payload, {
+    disableEmailNotification: true,
+    disableAccountActivation: true,
   });
 });
 
