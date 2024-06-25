@@ -1,5 +1,16 @@
 # @drupal-kit/user-api
 
+## 0.11.0
+
+### Minor Changes
+
+- [#90](https://github.com/wunderwerkio/drupal-kit/pull/90) [`e268594`](https://github.com/wunderwerkio/drupal-kit/commit/e268594e9b568c8805738d8c7fb1534c75ae564d) Thanks [@chfoidl](https://github.com/chfoidl)! - Support latest `user_api` registration options.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.11.0
+
 ## 0.10.6
 
 ### Patch Changes
