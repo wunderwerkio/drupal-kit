@@ -122,6 +122,14 @@ export interface RegisterPayload {
 }
 
 /**
+ * Register options.
+ */
+export interface RegisterOptions {
+  disableEmailNotification?: boolean;
+  disableAccountActivation?: boolean;
+}
+
+/**
  * Augment this interface to include additional
  * fields for the user entity.
  */

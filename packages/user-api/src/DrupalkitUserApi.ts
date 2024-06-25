@@ -2,7 +2,12 @@ import { Result } from "@wunderwerk/ts-functional/results";
 import { Drupalkit, DrupalkitError, DrupalkitOptions } from "@drupal-kit/core";
 import { OverrideableRequestOptions } from "@drupal-kit/types";
 
-import { RegisterPayload, RegisterResponse, SuccessResponse } from "./types.js";
+import {
+  RegisterOptions,
+  RegisterPayload,
+  RegisterResponse,
+  SuccessResponse,
+} from "./types.js";
 import { deprecate } from "./utils.js";
 
 /**
@@ -89,20 +94,34 @@ export const DrupalkitUserApi = (
    * interfaces to suit your needs!
    *
    * @param payload - The registration payload.
+   * @param options - Registration options.
    * @param requestOptions - Optional request options.
    */
   const register = async (
     payload: RegisterPayload,
+    options?: RegisterOptions,
     requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<RegisterResponse, DrupalkitError>> => {
     const url = drupalkit.buildUrl(registrationEndpoint);
 
+    const localHeaders: Record<string, string> = { ...headers };
+
+    // Handle options.
+    if (options?.disableEmailNotification) {
+      localHeaders["X-Disable-Email-Notification"] = "1";
+    }
+
+    if (options?.disableAccountActivation) {
+      localHeaders["X-Disable-Account-Activation"] = "1";
+    }
+
+    // Make request.
     const result = await drupalkit.request<RegisterResponse>(
       url,
       {
         method: "POST",
         body: payload,
-        headers,
+        headers: localHeaders,
       },
       requestOptions,
     );
