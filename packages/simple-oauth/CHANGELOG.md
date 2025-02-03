@@ -1,5 +1,12 @@
 # @drupal-kit/simple-oauth
 
+## 0.11.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.11.2
+
 ## 0.11.1
 
 ### Patch Changes

@@ -1,16 +1,16 @@
 {
   "name": "@drupal-kit/simple-oauth-auth-code",
-  "version": "0.11.1",
+  "version": "0.11.2",
   "type": "module",
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "@drupal-kit/core": "workspace:0.11.1",
+    "@drupal-kit/core": "workspace:0.11.2",
     "@wunderwerk/ts-functional": "1.0.0-beta.3"
   },
   "devDependencies": {
-    "@drupal-kit/config-typescript": "workspace:0.11.1",
-    "@drupal-kit/eslint-config": "workspace:0.11.1",
-    "@drupal-kit/types": "workspace:0.11.1",
+    "@drupal-kit/config-typescript": "workspace:0.11.2",
+    "@drupal-kit/eslint-config": "workspace:0.11.2",
+    "@drupal-kit/types": "workspace:0.11.2",
     "@rollup/plugin-typescript": "^11.1.1",
     "@swc/core": "^1.6.5",
     "ava": "^6.1.3",
