@@ -231,7 +231,7 @@ type ResourceCreateUpdatePayload<R extends JsonApiResource> = object & {
   relationships?: Partial<{
     [key in keyof R["relationships"]]: {
       data: ResourceRelationshipLinkage<R["relationships"][key]>;
-    };
+    } | null;
   }>;
 };
 
