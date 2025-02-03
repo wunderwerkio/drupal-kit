@@ -1,5 +1,14 @@
 # @drupal-kit/jsonapi
 
+## 0.11.2
+
+### Patch Changes
+
+- [#96](https://github.com/wunderwerkio/drupal-kit/pull/96) [`a2efbac`](https://github.com/wunderwerkio/drupal-kit/commit/a2efbac7ed5734b54f5c2d83f521ae2046ec501d) Thanks [@chfoidl](https://github.com/chfoidl)! - Allow `null` for relationship fields to allow for relationship removal.
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.11.2
+
 ## 0.11.1
 
 ### Patch Changes
