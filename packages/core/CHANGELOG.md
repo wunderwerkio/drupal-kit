@@ -1,5 +1,11 @@
 # @drupal-kit/core
 
+## 0.11.3
+
+### Patch Changes
+
+- [#99](https://github.com/wunderwerkio/drupal-kit/pull/99) [`344c9ae`](https://github.com/wunderwerkio/drupal-kit/commit/344c9ae8092785e70193c81547d86479b7a57a0c) Thanks [@chfoidl](https://github.com/chfoidl)! - Remove negative lookbehind regex to support older browsers
+
 ## 0.11.2
 
 ## 0.11.1
