@@ -28,7 +28,9 @@ test("Extract errors from JSON:API response", (t) => {
   const error = new DrupalkitError("test-error", 400, {
     request,
     response: {
-      headers: {},
+      headers: {
+        "Content-Type": "application/vnd.api+json",
+      },
       status: 422,
       data: JsonApiErrorResponse,
       url: "some-url",

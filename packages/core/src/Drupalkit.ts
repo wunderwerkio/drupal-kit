@@ -138,11 +138,11 @@ export class Drupalkit {
    * @param options - Request options.
    * @param optionOverrides - Optional overridden options. These options are merged correctly with the actual options and allow for user-specific overrides.
    */
-  public request<R>(
+  public request<R, E = unknown>(
     url: Url,
     options: RequestOptions,
     optionOverrides?: OverrideableRequestOptions,
-  ): Promise<Result<DrupalkitResponse<R, number>, DrupalkitError>> {
+  ): Promise<Result<DrupalkitResponse<R, number>, DrupalkitError<E>>> {
     // eslint-disable-next-line jsdoc/require-jsdoc
     const request = (options: RequestRequestOptions) => {
       return fetchWrapper<R>(options);

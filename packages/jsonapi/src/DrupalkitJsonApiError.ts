@@ -1,41 +1,20 @@
-import { DrupalkitError, DrupalkitErrorOptions } from "@drupal-kit/core";
-
-type JsonApiError = {
-  title: string;
-  status: string;
-  detail: string;
-  source?: {
-    pointer?: string;
-  };
-};
+import { DrupalkitError } from "@drupal-kit/core";
+import { JsonApiError } from "@drupal-kit/types";
 
 /**
  * Enhanced DrupalkitError with JSON:API specific data.
  */
-export class DrupalkitJsonApiError extends DrupalkitError {
-  /**
-   * Array of JSON:API errors.
-   */
-  readonly errors: JsonApiError[];
-
-  /**
-   * @inheritdoc
-   */
-  constructor(
-    message: string,
-    statusCode: number,
-    errors: JsonApiError[],
-    options: DrupalkitErrorOptions,
-  ) {
-    super(message, statusCode, options);
-
-    this.errors = errors;
-  }
-
+export class DrupalkitJsonApiError<
+  T extends JsonApiError = JsonApiError,
+> extends DrupalkitError<T> {
   /**
    * Checks if this error instance contains validation errors.
    */
   public hasValidationErrors() {
+    if (!this.isJsonApiError()) {
+      return false;
+    }
+
     return this.errors.some((error) => error.status == "422");
   }
 
@@ -62,8 +41,12 @@ export class DrupalkitJsonApiError extends DrupalkitError {
    * @param statusCode - The status code to filter by.
    */
   public getErrorsByStatus(statusCode: number) {
+    if (!this.isJsonApiError()) {
+      return [];
+    }
+
     return this.errors.filter(
-      (error) => error.status.toString() == statusCode.toString(),
+      (error) => error.status?.toString() == statusCode.toString(),
     );
   }
 
@@ -73,29 +56,9 @@ export class DrupalkitJsonApiError extends DrupalkitError {
    * @param error - The DrupalkitError to create an instance from.
    */
   public static fromDrupalkitError(error: DrupalkitError) {
-    const errors = error.response
-      ? this.extractJsonApiErrorsFromResponse(error.response.data)
-      : [];
-
-    return new DrupalkitJsonApiError(error.message, error.statusCode, errors, {
+    return new DrupalkitJsonApiError(error.message, error.statusCode, {
       request: error.request,
       response: error.response,
     });
-  }
-
-  /**
-   * Extract JSON API errors from response data.
-   *
-   * @param data - The response data to extract errors from.
-   */
-  public static extractJsonApiErrorsFromResponse(
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    data: any,
-  ) {
-    if (!data?.errors) {
-      return [];
-    }
-
-    return data.errors as JsonApiError[];
   }
 }

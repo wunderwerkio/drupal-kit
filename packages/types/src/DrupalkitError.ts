@@ -8,3 +8,14 @@ export type DrupalkitError = {
     message?: string;
   }>;
 };
+
+export type JsonApiError = {
+  code?: string;
+  title?: string;
+  status?: string;
+  detail?: string;
+  source?: {
+    pointer?: string;
+  };
+  meta?: Record<string, unknown>;
+};
