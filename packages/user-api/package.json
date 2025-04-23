@@ -1,17 +1,17 @@
 {
   "name": "@drupal-kit/user-api",
-  "version": "0.11.3",
+  "version": "0.12.0",
   "type": "module",
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "@drupal-kit/core": "workspace:0.11.3",
+    "@drupal-kit/core": "workspace:0.12.0",
     "@wunderwerk/ts-functional": "1.0.0-beta.3",
     "util-deprecate": "^1.0.2"
   },
   "devDependencies": {
-    "@drupal-kit/config-typescript": "workspace:0.11.3",
-    "@drupal-kit/eslint-config": "workspace:0.11.3",
-    "@drupal-kit/types": "workspace:0.11.3",
+    "@drupal-kit/config-typescript": "workspace:0.12.0",
+    "@drupal-kit/eslint-config": "workspace:0.12.0",
+    "@drupal-kit/types": "workspace:0.12.0",
     "@rollup/plugin-typescript": "^11.1.1",
     "@swc/core": "^1.6.5",
     "@types/util-deprecate": "^1.0.3",

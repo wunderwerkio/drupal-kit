@@ -1,5 +1,16 @@
 # @drupal-kit/jsonapi
 
+## 0.12.0
+
+### Minor Changes
+
+- [#102](https://github.com/wunderwerkio/drupal-kit/pull/102) [`a0f21bf`](https://github.com/wunderwerkio/drupal-kit/commit/a0f21bf97565db83a0357698a6cc608a92855576) Thanks [@chfoidl](https://github.com/chfoidl)! - Allow specifying a type for error responses with special support for JSON:API compliant errors.
+
+### Patch Changes
+
+- Updated dependencies [[`a0f21bf`](https://github.com/wunderwerkio/drupal-kit/commit/a0f21bf97565db83a0357698a6cc608a92855576)]:
+  - @drupal-kit/core@0.12.0
+
 ## 0.11.3
 
 ### Patch Changes

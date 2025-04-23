@@ -1,5 +1,12 @@
 # @drupal-kit/user-api
 
+## 0.12.0
+
+### Patch Changes
+
+- Updated dependencies [[`a0f21bf`](https://github.com/wunderwerkio/drupal-kit/commit/a0f21bf97565db83a0357698a6cc608a92855576)]:
+  - @drupal-kit/core@0.12.0
+
 ## 0.11.3
 
 ### Patch Changes
