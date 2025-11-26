@@ -33,3 +33,23 @@ export const getHeader = (name: string, req: RequestOptions) => {
 
   return null;
 };
+
+/**
+ * Checks if response has JSON:API content-type.
+ *
+ * @param response - The response object.
+ * @param response.headers - The response headers.
+ */
+export const isJsonApiResponse = (response?: {
+  headers?: Record<string, string | number | undefined>;
+}) => {
+  if (!response?.headers) {
+    return false;
+  }
+
+  const contentType = Object.keys(response.headers).find(
+    (key) => key.toLowerCase() === "content-type",
+  );
+
+  return response.headers[contentType ?? ""] === "application/vnd.api+json";
+};
