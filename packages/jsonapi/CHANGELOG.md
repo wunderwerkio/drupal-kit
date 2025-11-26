@@ -1,5 +1,14 @@
 # @drupal-kit/jsonapi
 
+## 0.12.2
+
+### Patch Changes
+
+- [#108](https://github.com/wunderwerkio/drupal-kit/pull/108) [`f1bfc31`](https://github.com/wunderwerkio/drupal-kit/commit/f1bfc319626ee1b3ad74932353edea51d1863e6f) Thanks [@chfoidl](https://github.com/chfoidl)! - Improve error message for transformed DrupalkitJsonApiErrors
+
+- Updated dependencies [[`f1bfc31`](https://github.com/wunderwerkio/drupal-kit/commit/f1bfc319626ee1b3ad74932353edea51d1863e6f)]:
+  - @drupal-kit/core@0.12.2
+
 ## 0.12.1
 
 ### Patch Changes

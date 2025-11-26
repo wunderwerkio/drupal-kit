@@ -1,5 +1,12 @@
 # @drupal-kit/consumers
 
+## 0.12.2
+
+### Patch Changes
+
+- Updated dependencies [[`f1bfc31`](https://github.com/wunderwerkio/drupal-kit/commit/f1bfc319626ee1b3ad74932353edea51d1863e6f)]:
+  - @drupal-kit/core@0.12.2
+
 ## 0.12.1
 
 ### Patch Changes
