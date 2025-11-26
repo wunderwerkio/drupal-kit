@@ -1,4 +1,8 @@
-import { DrupalkitError } from "@drupal-kit/core";
+import {
+  DrupalkitError,
+  DrupalkitErrorOptions,
+  UNKNOWN_ERROR_PREFIX,
+} from "@drupal-kit/core";
 import { JsonApiError } from "@drupal-kit/types";
 
 /**
@@ -7,6 +11,30 @@ import { JsonApiError } from "@drupal-kit/types";
 export class DrupalkitJsonApiError<
   T extends JsonApiError = JsonApiError,
 > extends DrupalkitError<T> {
+  /**
+   * Construct a new DrupalkitJsonApiError.
+   *
+   * @param message - Error message.
+   * @param statusCode - HTTP status code.
+   * @param options - Error options (request/response).
+   */
+  constructor(
+    message: string,
+    statusCode: number,
+    options: DrupalkitErrorOptions,
+  ) {
+    super(message, statusCode, options);
+    // If the message uses the generic unknown error prefix, try to replace it
+    // with a more specific detail from the first JSON:API error if available.
+    if (message.startsWith(UNKNOWN_ERROR_PREFIX) && this.errors?.length) {
+      const first = this.errors[0] as JsonApiError;
+      if (first?.detail) {
+        this.message = first.detail;
+      } else if (first?.title) {
+        this.message = first.title;
+      }
+    }
+  }
   /**
    * Checks if this error instance contains validation errors.
    */

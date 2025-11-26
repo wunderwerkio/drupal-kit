@@ -3,7 +3,7 @@ import { JsonApiError } from "@drupal-kit/types";
 
 import { RequestErrorOptions } from "./types.js";
 
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+export const UNKNOWN_ERROR_PREFIX = "Unknown error:";
 
 export type DrupalkitErrorOptions = RequestErrorOptions;
 
@@ -62,9 +62,9 @@ export class DrupalkitError<T = unknown> extends Error {
     super(message);
 
     // Maintains proper stack trace (only available on V8)
-    // @ts-ignore
+    // @ts-expect-error - Error.captureStackTrace is not available in all browsers.
     if (Error.captureStackTrace) {
-      // @ts-ignore
+      // @ts-expect-error - Error.captureStackTrace is not available in all browsers.
       Error.captureStackTrace(this, this.constructor);
     }
 

@@ -1,7 +1,7 @@
 import { isPlainObject } from "is-plain-object";
 import { Fetch, RequestRequestOptions } from "@drupal-kit/types";
 
-import { DrupalkitError } from "./DrupalkitError.js";
+import { DrupalkitError, UNKNOWN_ERROR_PREFIX } from "./DrupalkitError.js";
 
 /**
  * Function that wraps the fetch call.
@@ -132,5 +132,5 @@ function toErrorMessage(data: unknown): string {
   }
 
   // istanbul ignore next - just in case
-  return `Unknown error: ${JSON.stringify(data)}`;
+  return `${UNKNOWN_ERROR_PREFIX} ${JSON.stringify(data)}`;
 }
