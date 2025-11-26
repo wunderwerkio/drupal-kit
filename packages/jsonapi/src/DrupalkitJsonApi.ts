@@ -21,7 +21,7 @@ import {
   UpdateParameters,
   ValidOperation,
 } from "./resources.js";
-import { isJsonApiRequest } from "./utils.js";
+import { isJsonApiRequest, isJsonApiResponse } from "./utils.js";
 
 declare module "@drupal-kit/core" {
   interface DrupalkitOptions {
@@ -373,8 +373,8 @@ export const DrupalkitJsonApi = (
    * Create DrupalkitJsonApiError for JSON:API failed requests.
    */
   drupalkit.hook.error("request", (error) => {
-    // Only care about JSON:API requests.
-    if (isJsonApiRequest(error.request)) {
+    // Throw DrupalkitJsonApiError if either the request or response uses JSON:API content-type.
+    if (isJsonApiRequest(error.request) || isJsonApiResponse(error.response)) {
       throw DrupalkitJsonApiError.fromDrupalkitError(error);
     }
 
