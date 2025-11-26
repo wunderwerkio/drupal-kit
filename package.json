@@ -37,5 +37,8 @@
     "patchedDependencies": {
       "is-plain-object@5.0.0": "patches/is-plain-object@5.0.0.patch"
     }
+  },
+  "volta": {
+    "node": "20.19.6"
   }
 }
