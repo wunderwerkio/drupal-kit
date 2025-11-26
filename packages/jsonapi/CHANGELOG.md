@@ -1,5 +1,14 @@
 # @drupal-kit/jsonapi
 
+## 0.12.1
+
+### Patch Changes
+
+- [#105](https://github.com/wunderwerkio/drupal-kit/pull/105) [`8d57a2e`](https://github.com/wunderwerkio/drupal-kit/commit/8d57a2e75459ff6ebc4ad1817cc93b2f46fed0ab) Thanks [@chfoidl](https://github.com/chfoidl)! - Properly detect JSON:API errors from response content-type
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.12.1
+
 ## 0.12.0
 
 ### Minor Changes

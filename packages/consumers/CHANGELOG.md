@@ -1,5 +1,12 @@
 # @drupal-kit/consumers
 
+## 0.12.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.12.1
+
 ## 0.12.0
 
 ### Patch Changes
