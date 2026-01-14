@@ -7,6 +7,7 @@ import { Drupalkit } from "@drupal-kit/core";
 import { DrupalkitJsonApi, DrupalkitJsonApiError } from "../src/index.js";
 import JsonApiArticleCollection from "./fixtures/jsonapi_article_collection.json" with { type: "json" };
 import JsonApiArticleDetail from "./fixtures/jsonapi_article_detail.json" with { type: "json" };
+import JsonApiFileUpload from "./fixtures/jsonapi_file_upload.json" with { type: "json" };
 import JsonApiIncludeError from "./fixtures/jsonapi_include_error.json" with { type: "json" };
 import JsonApiIndexError from "./fixtures/jsonapi_index_error.json" with { type: "json" };
 import JsonApiIndex from "./fixtures/jsonapi_index.json" with { type: "json" };
@@ -813,6 +814,179 @@ test.serial("Handle error when deleting resource", async (t) => {
   const result = await drupalkit.jsonApi.resource("node--article", "delete", {
     uuid,
   });
+
+  const error = result.expectErr("Expect error");
+
+  t.assert(error instanceof DrupalkitJsonApiError);
+  t.is(error.statusCode, 400);
+});
+
+/**
+ * uploadFile().
+ */
+
+test.serial("Upload file to entity field", async (t) => {
+  const drupalkit = createDrupalkit();
+  const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
+  const fileData = new Blob(["fake-image-data"], { type: "image/jpeg" });
+
+  t.plan(4);
+
+  server.use(
+    http.post(
+      "*/jsonapi/node/with-file/" + uuid + "/field_image",
+      async ({ request }) => {
+        t.is(request.headers.get("Content-Type"), "application/octet-stream");
+        t.is(
+          request.headers.get("Content-Disposition"),
+          'file; filename="test-image.jpg"',
+        );
+
+        const body = await request.arrayBuffer();
+        t.is(body.byteLength, fileData.size);
+
+        return HttpResponse.json(JsonApiFileUpload, {
+          status: 201,
+          headers: {
+            "Content-Type": "application/vnd.api+json",
+          },
+        });
+      },
+    ),
+  );
+
+  const result = await drupalkit.jsonApi.uploadFile(
+    "node--with-file",
+    uuid,
+    "field_image",
+    fileData,
+    "test-image.jpg",
+  );
+
+  const res = result.unwrap();
+  t.is(res.data?.type, "file--file");
+});
+
+test.serial("Upload file with custom request options", async (t) => {
+  t.plan(2);
+
+  const drupalkit = createDrupalkit();
+  const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
+  const fileData = new Blob(["fake-data"]);
+
+  drupalkit.hook.before("request", (options) => {
+    t.is(options.cache, "no-cache");
+  });
+
+  server.use(
+    http.post(
+      "*/jsonapi/node/with-file/" + uuid + "/field_image",
+      ({ request }) => {
+        t.is(request.headers.get("X-Custom"), "1");
+
+        return HttpResponse.json(JsonApiFileUpload, {
+          status: 201,
+          headers: {
+            "Content-Type": "application/vnd.api+json",
+          },
+        });
+      },
+    ),
+  );
+
+  await drupalkit.jsonApi.uploadFile(
+    "node--with-file",
+    uuid,
+    "field_image",
+    fileData,
+    "test.jpg",
+    {
+      cache: "no-cache",
+      headers: {
+        "X-Custom": "1",
+      },
+    },
+  );
+});
+
+test.serial("Upload file sanitizes filename", async (t) => {
+  const drupalkit = createDrupalkit();
+  const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
+  const fileData = new Blob(["fake-data"]);
+
+  t.plan(1);
+
+  server.use(
+    http.post(
+      "*/jsonapi/node/with-file/" + uuid + "/field_image",
+      ({ request }) => {
+        t.is(
+          request.headers.get("Content-Disposition"),
+          'file; filename="ueber-bild.jpg"',
+        );
+
+        return HttpResponse.json(JsonApiFileUpload, {
+          status: 201,
+          headers: {
+            "Content-Type": "application/vnd.api+json",
+          },
+        });
+      },
+    ),
+  );
+
+  await drupalkit.jsonApi.uploadFile(
+    "node--with-file",
+    uuid,
+    "field_image",
+    fileData,
+    "über-bild.jpg",
+  );
+});
+
+test.serial("Upload file validates filename extension", async (t) => {
+  const drupalkit = createDrupalkit();
+  const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
+  const fileData = new Blob(["fake-data"]);
+
+  const result = await drupalkit.jsonApi.uploadFile(
+    "node--with-file",
+    uuid,
+    "field_image",
+    fileData,
+    "noextension",
+  );
+
+  const err = result.expectErr("Expect validation error");
+
+  t.assert(err instanceof DrupalkitJsonApiError);
+  t.is(err.message, "Filename must include a file extension");
+  t.is(err.statusCode, 400);
+});
+
+test.serial("Handle error when uploading file", async (t) => {
+  const drupalkit = createDrupalkit();
+  const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
+  const fileData = new Blob(["fake-data"]);
+
+  server.use(
+    http.post("*/jsonapi/node/with-file/" + uuid + "/field_image", () =>
+      HttpResponse.json(JsonApiIncludeError, {
+        status: 400,
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      }),
+    ),
+  );
+
+  const result = await drupalkit.jsonApi.uploadFile(
+    "node--with-file",
+    uuid,
+    "field_image",
+    fileData,
+    "test.jpg",
+  );
 
   const error = result.expectErr("Expect error");
 

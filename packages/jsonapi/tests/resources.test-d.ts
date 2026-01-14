@@ -6,11 +6,17 @@ import {
   DeriveResourceObject,
   DeriveSimpleJsonApiResource,
   DrupalkitJsonApi,
+  FileRelationshipKeys,
   JsonApiCreatePayload,
   JsonApiResources,
   JsonApiUpdatePayload,
 } from "../src/index.js";
-import { NodeArticleResource, UserResource } from "./types.js";
+import {
+  FileResource,
+  NodeArticleResource,
+  NodeWithFileResource,
+  UserResource,
+} from "./types.js";
 
 const BASE_URL = "https://my-drupal.com";
 
@@ -222,11 +228,47 @@ function testUpdatePayload() {
   });
 }
 
-/**
- * Asserts that the type of `expression` is identical to type `T`.
- *
- * @param expression - Expression that should be identical to type `T`.
- */
+function testFileRelationshipKeys() {
+  expectType<"field_image" | "field_attachments">(
+    {} as FileRelationshipKeys<"node--with-file">,
+  );
+}
+
+async function testUploadFile() {
+  const drupalkit = createDrupalkit();
+  const uuid = "0c9b2d1b-1c6a-4e0a-9f7b-4b6b8d6b8f6d";
+  const file = new Blob(["test"]);
+
+  const result = await drupalkit.jsonApi.uploadFile(
+    "node--with-file",
+    uuid,
+    "field_image",
+    file,
+    "test.jpg",
+  );
+
+  const data = result.unwrap();
+  expectType<DeriveResourceObject<FileResource>>(data.data!);
+
+  drupalkit.jsonApi.uploadFile(
+    "node--with-file",
+    uuid,
+    // @ts-expect-error - uid is not a file relationship
+    "uid",
+    file,
+    "test.jpg",
+  );
+
+  drupalkit.jsonApi.uploadFile(
+    "node--with-file",
+    uuid,
+    // @ts-expect-error - invalid field name
+    "invalid_field",
+    file,
+    "test.jpg",
+  );
+}
+
 export const expectType = <T>(expression: T) => {
   // Do nothing, the TypeScript compiler handles this for us
 };
