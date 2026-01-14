@@ -336,3 +336,28 @@ export type JsonApiCreatePayload<TResource extends JsonApiResource> =
   CreateParameters<TResource>["payload"];
 export type JsonApiUpdatePayload<TResource extends JsonApiResource> =
   UpdateParameters<TResource>["payload"];
+
+/**
+ * Extract keys from a resource's relationships that are file relationships.
+ *
+ * A file relationship is one where the type is "file--file" (single or array).
+ */
+export type FileRelationshipKeys<T extends keyof JsonApiResources> = {
+  [K in keyof JsonApiResources[T]["resource"]["relationships"]]: JsonApiResources[T]["resource"]["relationships"][K] extends
+    | { type: "file--file" }
+    | { type: "file--file" }[]
+    ? K
+    : never;
+}[keyof JsonApiResources[T]["resource"]["relationships"]];
+
+/**
+ * Derive file resource object type from a file relationship.
+ *
+ * Maps JsonApiResource or JsonApiResource[] to DeriveResourceObject variants.
+ */
+export type DerivedFileResource<T> = T extends (infer U extends
+  JsonApiResource)[]
+  ? DeriveResourceObject<U>[]
+  : T extends JsonApiResource
+    ? DeriveResourceObject<T>
+    : never;

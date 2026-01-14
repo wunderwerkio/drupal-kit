@@ -1,0 +1,40 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http://jsonapi.org/format/1.0/"
+        }
+      }
+    }
+  },
+  "data": {
+    "type": "file--file",
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "links": {
+      "self": {
+        "href": "https://my-drupal.com/jsonapi/file/file/a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      }
+    },
+    "attributes": {
+      "drupal_internal__fid": 123,
+      "langcode": "en",
+      "filename": "test-image.jpg",
+      "uri": {
+        "value": "public://2024-01/test-image.jpg",
+        "url": "/sites/default/files/2024-01/test-image.jpg"
+      },
+      "filemime": "image/jpeg",
+      "filesize": 12345,
+      "status": true,
+      "created": "2024-01-15T10:30:00+00:00",
+      "changed": "2024-01-15T10:30:00+00:00"
+    }
+  },
+  "links": {
+    "self": {
+      "href": "https://my-drupal.com/jsonapi/node/with-file/5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f/field_image"
+    }
+  }
+}

@@ -8,7 +8,9 @@ import { DrupalkitJsonApiError } from "./DrupalkitJsonApiError.js";
 import {
   CreateParameters,
   DeleteParameters,
+  DerivedFileResource,
   DeriveResourceObject,
+  FileRelationshipKeys,
   JsonApiIndex,
   JsonApiResource,
   JsonApiResources,
@@ -21,7 +23,11 @@ import {
   UpdateParameters,
   ValidOperation,
 } from "./resources.js";
-import { isJsonApiRequest, isJsonApiResponse } from "./utils.js";
+import {
+  isJsonApiRequest,
+  isJsonApiResponse,
+  sanitizeFilename,
+} from "./utils.js";
 
 declare module "@drupal-kit/core" {
   interface DrupalkitOptions {
@@ -370,6 +376,81 @@ export const DrupalkitJsonApi = (
   };
 
   /**
+   * Upload a file to an entity's file relationship field.
+   *
+   * @param type - Entity type (e.g. "node--article").
+   * @param uuid - Entity uuid.
+   * @param fieldName - File relationship field name.
+   * @param file - File or Blob to upload.
+   * @param filenameWithExt - Filename with extension.
+   * @param requestOptions - Optional request options.
+   */
+  const uploadFile = async <
+    Type extends keyof JsonApiResources,
+    TField extends FileRelationshipKeys<Type>,
+    TFileResource extends
+      JsonApiResources[Type]["resource"]["relationships"][TField],
+  >(
+    type: Type,
+    uuid: string,
+    fieldName: TField,
+    file: File | Blob,
+    filenameWithExt: string,
+    requestOptions?: OverrideableRequestOptions,
+  ): Promise<
+    Result<Response<DerivedFileResource<TFileResource>>, DrupalkitJsonApiError>
+  > => {
+    const sanitizedFilename = sanitizeFilename(filenameWithExt);
+    const path =
+      (type as string).replace("--", "/") +
+      "/" +
+      uuid +
+      "/" +
+      String(fieldName);
+    const url = buildJsonApiUrl(path, {
+      localeOverride: requestOptions?.locale,
+    });
+
+    if (!filenameWithExt.includes(".") || filenameWithExt.endsWith(".")) {
+      return Result.Err(
+        new DrupalkitJsonApiError(
+          "Filename must include a file extension",
+          400,
+          {
+            request: {
+              url,
+              baseUrl: drupalkitOptions.baseUrl,
+              method: "POST",
+              headers: {},
+            },
+          },
+        ),
+      );
+    }
+
+    const result = await drupalkit.request<
+      Response<DerivedFileResource<TFileResource>>
+    >(
+      url,
+      {
+        method: "POST",
+        body: file,
+        headers: {
+          "Content-Type": "application/octet-stream",
+          "Content-Disposition": `file; filename="${sanitizedFilename}"`,
+        },
+      },
+      requestOptions,
+    );
+
+    if (result.err) {
+      return Result.Err(DrupalkitJsonApiError.fromDrupalkitError(result.val));
+    }
+
+    return Result.Ok(result.val.data);
+  };
+
+  /**
    * Create DrupalkitJsonApiError for JSON:API failed requests.
    */
   drupalkit.hook.error("request", (error) => {
@@ -390,6 +471,7 @@ export const DrupalkitJsonApi = (
       getIndex,
       simplifyResourceResponse,
       getMenuItems,
+      uploadFile,
       async resource<
         Type extends keyof JsonApiResources,
         Resource extends JsonApiResources[Type]["resource"],

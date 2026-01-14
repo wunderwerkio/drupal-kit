@@ -8,6 +8,24 @@ export interface UserResource extends JsonApiResource {
   };
 }
 
+export interface FileResource extends JsonApiResource {
+  type: "file--file";
+  attributes: {
+    drupal_internal__fid: number;
+    langcode: string;
+    filename: string;
+    uri: {
+      value: string;
+      url: string;
+    };
+    filemime: string;
+    filesize: number;
+    status: boolean;
+    created: string;
+    changed: string;
+  };
+}
+
 export interface NodeArticleResource extends JsonApiResource {
   type: "node--article";
   attributes: {
@@ -15,6 +33,18 @@ export interface NodeArticleResource extends JsonApiResource {
   };
   relationships: {
     uid: UserResource;
+  };
+}
+
+export interface NodeWithFileResource extends JsonApiResource {
+  type: "node--with-file";
+  attributes: {
+    title: string;
+  };
+  relationships: {
+    uid: UserResource;
+    field_image: FileResource;
+    field_attachments: FileResource[];
   };
 }
 
@@ -40,6 +70,14 @@ declare module "../src/resources.js" {
     };
     "node--union-rel": {
       resource: NodeUnionRelResource;
+      operations: "readSingle" | "readMany";
+    };
+    "node--with-file": {
+      resource: NodeWithFileResource;
+      operations: "readSingle" | "readMany" | "create" | "update" | "delete";
+    };
+    "file--file": {
+      resource: FileResource;
       operations: "readSingle" | "readMany";
     };
   }
