@@ -1,5 +1,16 @@
 # @drupal-kit/jsonapi
 
+## 0.13.0
+
+### Minor Changes
+
+- [#111](https://github.com/wunderwerkio/drupal-kit/pull/111) [`b472287`](https://github.com/wunderwerkio/drupal-kit/commit/b472287c88bbf7f96be46bd29197c117d7e82ff7) Thanks [@chfoidl](https://github.com/chfoidl)! - Support file uploads via JSON:API
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.13.0
+
 ## 0.12.2
 
 ### Patch Changes
