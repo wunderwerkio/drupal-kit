@@ -4,7 +4,7 @@ import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
 import { DrupalkitUserApi } from "../src/index.js";
-import UserResponse from "./fixtures/user_response.json" assert { type: "json" };
+import UserResponse from "./fixtures/user_response.js";
 
 const BASE_URL = "https://my-drupal.com";
 

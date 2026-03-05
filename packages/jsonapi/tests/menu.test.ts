@@ -4,8 +4,8 @@ import { setupServer } from "msw/node";
 import { Drupalkit } from "@drupal-kit/core";
 
 import { DrupalkitJsonApi, DrupalkitJsonApiError } from "../src/index.js";
-import JsonApiMenuItemsError from "./fixtures/jsonapi_menu_items_error.json" with { type: "json" };
-import JsonApiMenuItems from "./fixtures/jsonapi_menu_items.json" with { type: "json" };
+import JsonApiMenuItemsError from "./fixtures/jsonapi_menu_items_error.js";
+import JsonApiMenuItems from "./fixtures/jsonapi_menu_items.js";
 
 const BASE_URL = "https://my-drupal.com";
 
