@@ -13,6 +13,10 @@ fs.readFile(DECLARATION_FILE, (err, data) => {
   const newContent = content
     .replaceAll("<Type extends never", "<Type extends keyof JsonApiResources")
     .replaceAll(
+      "<Type_1 extends never",
+      "<Type_1 extends keyof JsonApiResources",
+    )
+    .replaceAll(
       "<TResourceType extends never",
       "<TResourceType extends keyof JsonApiResources",
     )
