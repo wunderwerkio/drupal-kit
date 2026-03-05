@@ -1,5 +1,7 @@
 # @drupal-kit/config-prettier
 
+## 0.13.3
+
 ## 0.13.2
 
 ## 0.13.0

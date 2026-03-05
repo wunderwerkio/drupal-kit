@@ -1,5 +1,14 @@
 # @drupal-kit/jsonapi
 
+## 0.13.3
+
+### Patch Changes
+
+- [`aea2473`](https://github.com/wunderwerkio/drupal-kit/commit/aea24737110376938d05aaeb84084554f92f9606) Thanks [@chfoidl](https://github.com/chfoidl)! - Fix build time type declaration rewrite
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.13.3
+
 ## 0.13.2
 
 ### Patch Changes
