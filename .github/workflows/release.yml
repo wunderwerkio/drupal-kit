@@ -9,7 +9,8 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
   id-token: write # Required for OIDC
-  contents: read
+  contents: write # Push version bump commits
+  pull-requests: write # Create versioning PR
 
 jobs:
   release:
@@ -41,4 +42,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
