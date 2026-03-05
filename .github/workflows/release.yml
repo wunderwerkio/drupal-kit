@@ -7,37 +7,25 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+permissions:
+  id-token: write # Required for OIDC
+  contents: read
+
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: nix develop --command bash {0}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Install nix
-        uses: nixbuild/nix-quick-install-action@v26
+      - uses: pnpm/action-setup@v4
 
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v4
-        name: Setup pnpm cache
+      - uses: actions/setup-node@v4
         with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Set token config
-        run: |
-          echo "//npm.wunderwerk.dev/:_authToken=${NPM_TOKEN}" >> .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
@@ -46,11 +34,10 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          commit: 'release: version packages'
+          commit: "release: version packages"
           version: nix develop --command pnpm version-packages
           publish: nix develop --command pnpm publish-packages
           createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
