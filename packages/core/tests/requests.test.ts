@@ -3,7 +3,11 @@ import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 
 import { Drupalkit, DrupalkitError } from "../src/index.js";
-import DemoEndpointResponse from "./fixtures/demo-endpoint.json" with { type: "json" };
+
+const { default: DemoEndpointResponse } = await import(
+  "./fixtures/demo-endpoint.json",
+  { with: { type: "json" } }
+);
 
 const BASE_URL = "https://my-drupal.com";
 
