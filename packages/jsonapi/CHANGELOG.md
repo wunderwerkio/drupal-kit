@@ -1,5 +1,19 @@
 # @drupal-kit/jsonapi
 
+## 0.13.0
+
+### Minor Changes
+
+- [#111](https://github.com/wunderwerkio/drupal-kit/pull/111) [`b472287`](https://github.com/wunderwerkio/drupal-kit/commit/b472287c88bbf7f96be46bd29197c117d7e82ff7) Thanks [@chfoidl](https://github.com/chfoidl)! - Support file uploads via JSON:API
+
+### Patch Changes
+
+- [#113](https://github.com/wunderwerkio/drupal-kit/pull/113) [`941bfd9`](https://github.com/wunderwerkio/drupal-kit/commit/941bfd9fce6e3423b67794069ce023c33829e011) Thanks [@chfoidl](https://github.com/chfoidl)! - - Update rollup from ^4.18.0 to ^4.59.0 to fix high severity CVE across all packages
+  - Update esbuild from ^0.21.5 to ^0.27.3 to address medium severity vulnerability across all packages
+  - Update qs from ~6.12.1 to ~6.14.2 to fix low/medium severity vulnerability in packages/core
+- Updated dependencies [[`941bfd9`](https://github.com/wunderwerkio/drupal-kit/commit/941bfd9fce6e3423b67794069ce023c33829e011)]:
+  - @drupal-kit/core@0.13.0
+
 ## 0.12.2
 
 ### Patch Changes

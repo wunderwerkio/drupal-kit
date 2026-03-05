@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 patchedDependencies:
   is-plain-object@5.0.0:
     hash: lray4voikhoiy5hx7wwtwhzd7e
@@ -82,17 +86,17 @@ importers:
   packages/consumers:
     dependencies:
       '@drupal-kit/core':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../core
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -141,13 +145,13 @@ importers:
         version: 6.14.2
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -189,7 +193,7 @@ importers:
   packages/jsonapi:
     dependencies:
       '@drupal-kit/core':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../core
       '@wunderwerk/ts-functional':
         specifier: 1.0.0-beta.3
@@ -205,13 +209,13 @@ importers:
         version: 1.2.0
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -247,20 +251,20 @@ importers:
   packages/simple-oauth:
     dependencies:
       '@drupal-kit/core':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../core
       '@wunderwerk/ts-functional':
         specifier: 1.0.0-beta.3
         version: 1.0.0-beta.3
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -296,20 +300,20 @@ importers:
   packages/simple-oauth-auth-code:
     dependencies:
       '@drupal-kit/core':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../core
       '@wunderwerk/ts-functional':
         specifier: 1.0.0-beta.3
         version: 1.0.0-beta.3
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -345,10 +349,10 @@ importers:
   packages/types:
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/eslint
       typescript:
         specifier: 5.4.5
@@ -357,7 +361,7 @@ importers:
   packages/user-api:
     dependencies:
       '@drupal-kit/core':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../core
       '@wunderwerk/ts-functional':
         specifier: 1.0.0-beta.3
@@ -367,13 +371,13 @@ importers:
         version: 1.0.2
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -412,17 +416,17 @@ importers:
   packages/verification:
     dependencies:
       '@drupal-kit/core':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../core
     devDependencies:
       '@drupal-kit/config-typescript':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/typescript
       '@drupal-kit/eslint-config':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../config/eslint
       '@drupal-kit/types':
-        specifier: workspace:0.12.2
+        specifier: workspace:0.13.0
         version: link:../types
       '@rollup/plugin-typescript':
         specifier: ^11.1.1
@@ -6816,7 +6820,3 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
