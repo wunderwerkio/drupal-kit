@@ -1,6 +1,6 @@
 {
   "name": "@drupal-kit/types",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "types": "./src/index.ts",
   "devDependencies": {
     "@drupal-kit/config-typescript": "workspace:0.13.0",
