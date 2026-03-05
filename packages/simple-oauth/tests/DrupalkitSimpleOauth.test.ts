@@ -7,9 +7,9 @@ import {
   DrupalkitSimpleOauth,
   DrupalkitSimpleOauthError,
 } from "../src/index.js";
-import ErrorResponse from "./fixtures/error_response.json" with { type: "json" };
-import TokenResponse from "./fixtures/token_response.json" with { type: "json" };
-import UserInfoResponse from "./fixtures/userinfo_response.json" with { type: "json" };
+import ErrorResponse from "./fixtures/error_response.js";
+import TokenResponse from "./fixtures/token_response.js";
+import UserInfoResponse from "./fixtures/userinfo_response.js";
 
 const BASE_URL = "https://my-drupal.com";
 

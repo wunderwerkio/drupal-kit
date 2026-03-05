@@ -4,7 +4,7 @@ import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
 
 import { DrupalkitSimpleOauthAuthCode } from "../src/index.js";
-import AuthCodeResponse from "./fixtures/auth_code_response.json" with { type: "json" };
+import AuthCodeResponse from "./fixtures/auth_code_response.js";
 
 const BASE_URL = "https://my-drupal.com";
 

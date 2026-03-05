@@ -2,7 +2,7 @@ import test from "ava";
 import { DrupalkitError, UNKNOWN_ERROR_PREFIX } from "@drupal-kit/core";
 
 import { DrupalkitJsonApiError } from "../src/index.js";
-import JsonApiErrorResponse from "./fixtures/jsonapi_multiple_errors.json" with { type: "json" };
+import JsonApiErrorResponse from "./fixtures/jsonapi_multiple_errors.js";
 
 const request = {
   method: "GET",

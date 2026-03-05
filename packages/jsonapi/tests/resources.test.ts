@@ -5,12 +5,12 @@ import { setupServer } from "msw/node";
 import { Drupalkit } from "@drupal-kit/core";
 
 import { DrupalkitJsonApi, DrupalkitJsonApiError } from "../src/index.js";
-import JsonApiArticleCollection from "./fixtures/jsonapi_article_collection.json" with { type: "json" };
-import JsonApiArticleDetail from "./fixtures/jsonapi_article_detail.json" with { type: "json" };
-import JsonApiFileUpload from "./fixtures/jsonapi_file_upload.json" with { type: "json" };
-import JsonApiIncludeError from "./fixtures/jsonapi_include_error.json" with { type: "json" };
-import JsonApiIndexError from "./fixtures/jsonapi_index_error.json" with { type: "json" };
-import JsonApiIndex from "./fixtures/jsonapi_index.json" with { type: "json" };
+import JsonApiArticleCollection from "./fixtures/jsonapi_article_collection.js";
+import JsonApiArticleDetail from "./fixtures/jsonapi_article_detail.js";
+import JsonApiFileUpload from "./fixtures/jsonapi_file_upload.js";
+import JsonApiIncludeError from "./fixtures/jsonapi_include_error.js";
+import JsonApiIndexError from "./fixtures/jsonapi_index_error.js";
+import JsonApiIndex from "./fixtures/jsonapi_index.js";
 
 import "./types.js";
 
