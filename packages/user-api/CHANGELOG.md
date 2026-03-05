@@ -1,5 +1,14 @@
 # @drupal-kit/user-api
 
+## 0.13.2
+
+### Patch Changes
+
+- [#114](https://github.com/wunderwerkio/drupal-kit/pull/114) [`703ddb9`](https://github.com/wunderwerkio/drupal-kit/commit/703ddb995cf5d63bd6d53e04117f59547a28fa60) Thanks [@chfoidl](https://github.com/chfoidl)! - Fix inter-dependency resolution
+
+- Updated dependencies []:
+  - @drupal-kit/core@0.13.2
+
 ## 0.13.0
 
 ### Patch Changes
