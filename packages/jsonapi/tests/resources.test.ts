@@ -772,7 +772,7 @@ test("Delete resource with custom request options", async () => {
     http.delete("*/jsonapi/node/article/" + uuid, ({ request }) => {
       expect(request.headers.get("X-Custom")).toBe("1");
 
-      HttpResponse.json(JsonApiIncludeError, {
+      return HttpResponse.json(JsonApiIncludeError, {
         status: 400,
         headers: {
           "Content-Type": "application/vnd.api+json",
