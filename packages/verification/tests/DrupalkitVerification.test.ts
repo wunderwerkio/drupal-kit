@@ -35,7 +35,7 @@ test.afterEach(() => {
   server.resetHandlers();
 });
 
-test.after(() => {
+test.after.always(() => {
   server.close();
 });
 
