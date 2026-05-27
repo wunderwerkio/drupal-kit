@@ -1,16 +1,14 @@
-import test from "ava";
+import { expect, test } from "vitest";
 
 import { Drupalkit } from "../src/index.js";
 
-test("Instanciate drupalkit", (t) => {
+test("Instanciate drupalkit", () => {
   new Drupalkit({
     baseUrl: "https://drupal-headless-boilerplate.ddev.site",
   });
-
-  t.pass();
 });
 
-test("Deep merge plugins", (t) => {
+test("Deep merge plugins", () => {
   const pluginOne = () => {
     return {
       oneUniq: true,
@@ -33,21 +31,21 @@ test("Deep merge plugins", (t) => {
 
   const instance = new EnhancedDrupalkit({ baseUrl: "some-url" });
 
-  t.assert(Object.keys(instance).includes("oneUniq"));
-  t.assert(Object.keys(instance).includes("twoUniq"));
-  t.assert(Object.keys(instance.shared).includes("propFromOne"));
-  t.assert(Object.keys(instance.shared).includes("propFromTwo"));
+  expect(Object.keys(instance).includes("oneUniq")).toBeTruthy();
+  expect(Object.keys(instance).includes("twoUniq")).toBeTruthy();
+  expect(Object.keys(instance.shared).includes("propFromOne")).toBeTruthy();
+  expect(Object.keys(instance.shared).includes("propFromTwo")).toBeTruthy();
 });
 
-test("Set agent", (t) => {
+test("Set agent", () => {
   const instance = new Drupalkit({
     baseUrl: "https://drupal-headless-boilerplate.ddev.site",
   });
 
-  t.is(instance.agent, `drupal-kit/0.0.0-development`);
+  expect(instance.agent).toBe(`drupal-kit/0.0.0-development`);
 });
 
-test("Build url with query", (t) => {
+test("Build url with query", () => {
   const instance = new Drupalkit({
     baseUrl: "https://drupal-headless-boilerplate.ddev.site",
   });
@@ -59,8 +57,7 @@ test("Build url with query", (t) => {
     },
   });
 
-  t.is(
-    url,
+  expect(url).toBe(
     `https://drupal-headless-boilerplate.ddev.site/api/some-endpoint?limit=10&page=5`,
   );
 });

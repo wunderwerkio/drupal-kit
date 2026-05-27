@@ -10,39 +10,29 @@
   },
   "devDependencies": {
     "@drupal-kit/config-typescript": "workspace:0.13.4",
+    "@drupal-kit/config-vitest": "workspace:0.13.4",
     "@drupal-kit/eslint-config": "workspace:0.13.4",
     "@drupal-kit/types": "workspace:0.13.4",
     "@rollup/plugin-typescript": "^11.1.1",
     "@swc/core": "^1.6.5",
     "@types/util-deprecate": "^1.0.3",
-    "ava": "^6.1.3",
     "esbuild": "^0.27.3",
     "msw": "^2.14.6",
     "rollup": "^4.59.0",
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-esbuild": "^6.1.1",
     "ts-node": "^10.9.2",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "vitest": "^3.2.4"
   },
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint --ext .ts,.tsx src --max-warnings 0",
-    "test": "NODE_NO_WARNINGS=1 ava",
+    "test": "NODE_NO_WARNINGS=1 vitest run",
+    "test:watch": "NODE_NO_WARNINGS=1 vitest",
     "typecheck": "pnpm run '/(typecheck:.*)/'",
     "typecheck:src": "tsc --project ./tsconfig.json",
     "typecheck:tests": "tsc --project ./tsconfig.tests.json"
-  },
-  "ava": {
-    "files": [
-      "tests/**/*.test.ts"
-    ],
-    "extensions": {
-      "ts": "module"
-    },
-    "nodeArguments": [
-      "--loader",
-      "ts-node/esm"
-    ]
   },
   "exports": {
     ".": {

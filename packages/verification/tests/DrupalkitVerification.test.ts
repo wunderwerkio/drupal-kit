@@ -1,4 +1,4 @@
-import test from "ava";
+import { afterAll, afterEach, beforeAll, expect, test } from "vitest";
 import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
@@ -27,26 +27,26 @@ const createDrupalkit = (
 
 const server = setupServer();
 
-test.before(() => {
+beforeAll(() => {
   server.listen();
 });
 
-test.afterEach(() => {
+afterEach(() => {
   server.resetHandlers();
 });
 
-test.after(() => {
+afterAll(() => {
   server.close();
 });
 
-test("Instanciate with plugin", (t) => {
+test("Instanciate with plugin", () => {
   const drupalkit = createDrupalkit();
 
-  t.assert(drupalkit.hasOwnProperty("verification"));
+  expect(drupalkit.hasOwnProperty("verification")).toBeTruthy();
 });
 
-test.serial("Add Hash verification to a request once", async (t) => {
-  t.plan(4);
+test("Add Hash verification to a request once", async () => {
+  expect.assertions(4);
   let first = true;
 
   const drupalkit = createDrupalkit();
@@ -55,10 +55,10 @@ test.serial("Add Hash verification to a request once", async (t) => {
   server.use(
     http.get("*/", async ({ request }) => {
       if (first) {
-        t.is(request.headers.get("x-verification-hash"), hash);
+        expect(request.headers.get("x-verification-hash")).toBe(hash);
         first = false;
       } else {
-        t.not(request.headers.get("x-verification-hash"), hash);
+        expect(request.headers.get("x-verification-hash")).not.toBe(hash);
       }
 
       return HttpResponse.text();
@@ -71,18 +71,18 @@ test.serial("Add Hash verification to a request once", async (t) => {
     method: "GET",
   });
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 
   // Second request.
   result = await drupalkit.request("/", {
     method: "GET",
   });
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Add Magic code verification to a request once", async (t) => {
-  t.plan(4);
+test("Add Magic code verification to a request once", async () => {
+  expect.assertions(4);
   let first = true;
 
   const drupalkit = createDrupalkit();
@@ -91,10 +91,10 @@ test.serial("Add Magic code verification to a request once", async (t) => {
   server.use(
     http.get("*/", async ({ request }) => {
       if (first) {
-        t.is(request.headers.get("x-verification-magic-code"), code);
+        expect(request.headers.get("x-verification-magic-code")).toBe(code);
         first = false;
       } else {
-        t.not(request.headers.get("x-verification-magic-code"), code);
+        expect(request.headers.get("x-verification-magic-code")).not.toBe(code);
       }
 
       return HttpResponse.text();
@@ -108,12 +108,12 @@ test.serial("Add Magic code verification to a request once", async (t) => {
     method: "GET",
   });
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 
   // Second request.
   result = await drupalkit.request("/", {
     method: "GET",
   });
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });

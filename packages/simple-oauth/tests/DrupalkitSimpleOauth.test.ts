@@ -1,4 +1,4 @@
-import test from "ava";
+import { afterAll, afterEach, beforeAll, expect, test } from "vitest";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitError, DrupalkitOptions } from "@drupal-kit/core";
@@ -32,26 +32,26 @@ const createDrupalkit = (
 
 const server = setupServer();
 
-test.before(() => {
+beforeAll(() => {
   server.listen();
 });
 
-test.afterEach(() => {
+afterEach(() => {
   server.resetHandlers();
 });
 
-test.after(() => {
+afterAll(() => {
   server.close();
 });
 
-test("Instanciate with plugin", (t) => {
+test("Instanciate with plugin", () => {
   const drupalkit = createDrupalkit();
 
-  t.assert(drupalkit.hasOwnProperty("simpleOauth"));
+  expect(drupalkit.hasOwnProperty("simpleOauth")).toBeTruthy();
 });
 
-test.serial("Request token with client credentials grant", async (t) => {
-  t.plan(3);
+test("Request token with client credentials grant", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
 
@@ -59,11 +59,10 @@ test.serial("Request token with client credentials grant", async (t) => {
     http.post("*/oauth/token", async ({ request }) => {
       const body = await request.text();
 
-      t.is(
-        request.headers.get("content-type"),
+      expect(request.headers.get("content-type")).toBe(
         "application/x-www-form-urlencoded",
       );
-      t.snapshot(body);
+      expect(body).toMatchSnapshot();
 
       return HttpResponse.json(TokenResponse);
     }),
@@ -79,21 +78,21 @@ test.serial("Request token with client credentials grant", async (t) => {
 
   const res = result.unwrap();
 
-  t.snapshot(res);
+  expect(res).toMatchSnapshot();
 });
 
-test.serial("Request token with custom request options", async (t) => {
-  t.plan(2);
+test("Request token with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/oauth/token", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(TokenResponse);
     }),
@@ -114,8 +113,8 @@ test.serial("Request token with custom request options", async (t) => {
   );
 });
 
-test.serial("Request token authenticated", async (t) => {
-  t.plan(3);
+test("Request token authenticated", async () => {
+  expect.assertions(3);
 
   const authinfo = "Bearer abc123";
 
@@ -123,13 +122,13 @@ test.serial("Request token authenticated", async (t) => {
   drupalkit.setAuth(authinfo);
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/oauth/token", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
-      t.is(request.headers.get("Authorization"), authinfo);
+      expect(request.headers.get("X-Custom")).toBe("1");
+      expect(request.headers.get("Authorization")).toBe(authinfo);
 
       return HttpResponse.json(TokenResponse);
     }),
@@ -151,7 +150,7 @@ test.serial("Request token authenticated", async (t) => {
   );
 });
 
-test.serial("Request token with explicit endpoint", async (t) => {
+test("Request token with explicit endpoint", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     oauthTokenEndpoint: "/custom/token",
@@ -169,10 +168,10 @@ test.serial("Request token with explicit endpoint", async (t) => {
     },
   );
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle request errors", async (t) => {
+test("Handle request errors", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -191,11 +190,11 @@ test.serial("Handle request errors", async (t) => {
 
   const res = result.expectErr("Expected error");
 
-  t.assert(res instanceof DrupalkitSimpleOauthError);
-  t.is(res.statusCode, 400);
+  expect(res instanceof DrupalkitSimpleOauthError).toBeTruthy();
+  expect(res.statusCode).toBe(400);
 });
 
-test.serial("Handle network errors", async (t) => {
+test("Handle network errors", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(http.post("*/oauth/token", async () => HttpResponse.error()));
@@ -209,31 +208,28 @@ test.serial("Handle network errors", async (t) => {
   );
 
   const error = result.expectErr("Expected error");
-  t.assert(error.message.includes("Failed to fetch"));
+  expect(error.message.includes("Failed to fetch")).toBeTruthy();
 });
 
-test.serial(
-  "Do not produce DrupalkitSimpleOauthErrors when not requesting a token",
-  async (t) => {
-    const drupalkit = createDrupalkit();
+test("Do not produce DrupalkitSimpleOauthErrors when not requesting a token", async () => {
+  const drupalkit = createDrupalkit();
 
-    server.use(
-      http.post("*/not/oauth/related", async () =>
-        HttpResponse.text(null, { status: 400 }),
-      ),
-    );
+  server.use(
+    http.post("*/not/oauth/related", async () =>
+      HttpResponse.text(null, { status: 400 }),
+    ),
+  );
 
-    const result = await drupalkit.request("/not/oauth/related", {
-      method: "POST",
-    });
+  const result = await drupalkit.request("/not/oauth/related", {
+    method: "POST",
+  });
 
-    const error = result.expectErr("Expected error");
+  const error = result.expectErr("Expected error");
 
-    t.assert(!(error instanceof DrupalkitSimpleOauthError));
-  },
-);
+  expect(!(error instanceof DrupalkitSimpleOauthError)).toBeTruthy();
+});
 
-test.serial("Request user info", async (t) => {
+test("Request user info", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -246,21 +242,21 @@ test.serial("Request user info", async (t) => {
 
   const res = result.unwrap();
 
-  t.snapshot(res);
+  expect(res).toMatchSnapshot();
 });
 
-test.serial("Request user info with custom request options", async (t) => {
-  t.plan(2);
+test("Request user info with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.get("*/oauth/userinfo", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(UserInfoResponse);
     }),
@@ -274,7 +270,7 @@ test.serial("Request user info with custom request options", async (t) => {
   });
 });
 
-test.serial("Request user info with explicit endpoint", async (t) => {
+test("Request user info with explicit endpoint", async () => {
   const endpoint = "/custom/userinfo";
 
   const drupalkit = createDrupalkit({
@@ -290,10 +286,10 @@ test.serial("Request user info with explicit endpoint", async (t) => {
 
   const result = await drupalkit.simpleOauth.getUserInfo();
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle request errors when requesting user info", async (t) => {
+test("Handle request errors when requesting user info", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -306,7 +302,7 @@ test.serial("Handle request errors when requesting user info", async (t) => {
 
   const error = result.expectErr("Expected error");
 
-  t.assert(!(error instanceof DrupalkitSimpleOauthError));
-  t.assert(error instanceof DrupalkitError);
-  t.is(error.statusCode, 400);
+  expect(!(error instanceof DrupalkitSimpleOauthError)).toBeTruthy();
+  expect(error instanceof DrupalkitError).toBeTruthy();
+  expect(error.statusCode).toBe(400);
 });

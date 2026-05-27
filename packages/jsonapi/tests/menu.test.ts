@@ -1,4 +1,4 @@
-import test from "ava";
+import { afterAll, afterEach, beforeAll, expect, test } from "vitest";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { Drupalkit } from "@drupal-kit/core";
@@ -23,19 +23,19 @@ const createDrupalkit = ({ baseUrl = BASE_URL }: { baseUrl?: string } = {}) => {
 
 const server = setupServer();
 
-test.before(() => {
+beforeAll(() => {
   server.listen();
 });
 
-test.afterEach(() => {
+afterEach(() => {
   server.resetHandlers();
 });
 
-test.after(() => {
+afterAll(() => {
   server.close();
 });
 
-test.serial("Get menu items", async (t) => {
+test("Get menu items", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -52,21 +52,21 @@ test.serial("Get menu items", async (t) => {
 
   const res = result.unwrap();
 
-  t.snapshot(res);
+  expect(res).toMatchSnapshot();
 });
 
-test.serial("Get menu items with custom request options", async (t) => {
-  t.plan(2);
+test("Get menu items with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.get("*/jsonapi/menu_items/my_menu", ({ request }) => {
-      t.is(request.headers.get("x-custom"), "1");
+      expect(request.headers.get("x-custom")).toBe("1");
 
       return HttpResponse.json(JsonApiMenuItems, {
         headers: {
@@ -84,7 +84,7 @@ test.serial("Get menu items with custom request options", async (t) => {
   });
 });
 
-test.serial("Get menu items for non-existant menu", async (t) => {
+test("Get menu items for non-existant menu", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -102,6 +102,6 @@ test.serial("Get menu items for non-existant menu", async (t) => {
 
   const err = result.expectErr("Expect error");
 
-  t.assert(err instanceof DrupalkitJsonApiError);
-  t.is(err.statusCode, 404);
+  expect(err instanceof DrupalkitJsonApiError).toBeTruthy();
+  expect(err.statusCode).toBe(404);
 });

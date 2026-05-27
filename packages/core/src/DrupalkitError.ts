@@ -62,10 +62,17 @@ export class DrupalkitError<T = unknown> extends Error {
     super(message);
 
     // Maintains proper stack trace (only available on V8)
-    // @ts-expect-error - Error.captureStackTrace is not available in all browsers.
-    if (Error.captureStackTrace) {
-      // @ts-expect-error - Error.captureStackTrace is not available in all browsers.
-      Error.captureStackTrace(this, this.constructor);
+    const ErrorWithCapture = Error as ErrorConstructor & {
+      captureStackTrace?: (
+        error: Error,
+        constructor: new (...args: unknown[]) => object,
+      ) => void;
+    };
+    if (ErrorWithCapture.captureStackTrace) {
+      ErrorWithCapture.captureStackTrace(
+        this,
+        this.constructor as new (...args: unknown[]) => object,
+      );
     }
 
     this.name = "HttpError";

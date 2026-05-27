@@ -34,9 +34,9 @@ The update script installs Node 20 via nvm and prepends it to PATH in `~/.bashrc
 
 Turborepo handles dependency ordering: `@drupal-kit/core` must build before downstream plugins. Always use `pnpm build` (via turbo) rather than building individual packages manually, unless you know the dependency graph.
 
-### Tests use MSW mocks
+### Tests use Vitest and MSW mocks
 
-All tests mock HTTP via MSW (Mock Service Worker). No real Drupal instance or network access is required for the test suite.
+Packages run tests with Vitest (`vitest run`). Shared config lives in `@drupal-kit/config-vitest`. All HTTP is mocked via MSW (Mock Service Worker). No real Drupal instance or network access is required for the test suite.
 
 ### Shared skills
 

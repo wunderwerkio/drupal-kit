@@ -1,15 +1,15 @@
-import test from "ava";
+import { expect, test } from "vitest";
 
 import { trimSlashesFromSegment } from "../src/utils.js";
 
-test("Trim slashes from segment", (t) => {
-  t.is(trimSlashesFromSegment("/"), "");
-  t.is(trimSlashesFromSegment("/test"), "test");
-  t.is(trimSlashesFromSegment("test/"), "test");
-  t.is(trimSlashesFromSegment("test/test"), "test/test");
-  t.is(trimSlashesFromSegment("//test"), "test");
-  t.is(trimSlashesFromSegment("///test"), "test");
-  t.is(trimSlashesFromSegment("///test/"), "test");
-  t.is(trimSlashesFromSegment("test//"), "test");
-  t.is(trimSlashesFromSegment("test//test"), "test//test");
+test("Trim slashes from segment", () => {
+  expect(trimSlashesFromSegment("/")).toBe("");
+  expect(trimSlashesFromSegment("/test")).toBe("test");
+  expect(trimSlashesFromSegment("test/")).toBe("test");
+  expect(trimSlashesFromSegment("test/test")).toBe("test/test");
+  expect(trimSlashesFromSegment("//test")).toBe("test");
+  expect(trimSlashesFromSegment("///test")).toBe("test");
+  expect(trimSlashesFromSegment("///test/")).toBe("test");
+  expect(trimSlashesFromSegment("test//")).toBe("test");
+  expect(trimSlashesFromSegment("test//test")).toBe("test//test");
 });
