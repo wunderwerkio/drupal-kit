@@ -7,7 +7,7 @@
     "@wunderwerk/ts-functional": "1.0.0-beta.3",
     "before-after-hook": "^3.0.2",
     "is-plain-object": "^5.0.0",
-    "qs": "~6.14.2"
+    "qs": "~6.15.2"
   },
   "devDependencies": {
     "@drupal-kit/config-typescript": "workspace:0.13.3",
