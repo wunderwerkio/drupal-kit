@@ -1,0 +1,14 @@
+{
+  "name": "@drupal-kit/config-vitest",
+  "version": "0.13.4",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@drupal-kit/config-typescript": "workspace:0.13.4",
+    "typescript": "5.4.5",
+    "vitest": "^3.2.4"
+  },
+  "exports": {
+    "./vitest": "./create-vitest-config.ts"
+  }
+}
