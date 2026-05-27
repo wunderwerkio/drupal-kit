@@ -137,8 +137,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(patch_hash=lray4voikhoiy5hx7wwtwhzd7e)
       qs:
-        specifier: ~6.14.2
-        version: 6.14.2
+        specifier: ~6.15.2
+        version: 6.15.2
     devDependencies:
       '@drupal-kit/config-typescript':
         specifier: workspace:0.13.3
@@ -2526,7 +2526,7 @@ packages:
       call-bind: 1.0.5
       define-properties: 1.2.1
       es-abstract: 1.22.3
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.3.0
       is-array-buffer: 3.0.2
       is-shared-array-buffer: 1.0.2
     dev: true
@@ -2709,7 +2709,7 @@ packages:
     resolution: {integrity: sha512-C3nQxfFZxFRVoJoGKKI8y3MOEo129NQ+FgQ08iye+Mk4zNZZGdjfs06bVTr+DBSlA66Q2VEcMki/cUCP4SercQ==}
     dependencies:
       function-bind: 1.1.2
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.3.0
       set-function-length: 1.2.0
     dev: true
 
@@ -3109,8 +3109,8 @@ packages:
     resolution: {integrity: sha512-E7uGkTzkk1d0ByLeSc6ZsFS79Axg+m1P/VsgYsxHgiuc3tFSj+MjMIwe90FC4lOAZzNBdY7kkO2P2wKdsQ1vgQ==}
     engines: {node: '>= 0.4'}
     dependencies:
-      get-intrinsic: 1.2.2
-      gopd: 1.0.1
+      get-intrinsic: 1.3.0
+      gopd: 1.2.0
       has-property-descriptors: 1.0.1
     dev: true
 
@@ -3189,7 +3189,7 @@ packages:
   /drupal-jsonapi-params@2.3.1:
     resolution: {integrity: sha512-Isx6dudrFhORCl87OWHHO2LpQIAha5d6n7+/fwngsgcQs4PYeZcmTAA3pKUmvfyyFgCJ0N4fLAJQHyf4jtgiDA==}
     dependencies:
-      qs: 6.14.2
+      qs: 6.15.2
     dev: false
 
   /dunder-proto@1.0.1:
@@ -3251,14 +3251,14 @@ packages:
       es-set-tostringtag: 2.0.2
       es-to-primitive: 1.2.1
       function.prototype.name: 1.1.6
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.3.0
       get-symbol-description: 1.0.0
       globalthis: 1.0.3
-      gopd: 1.0.1
+      gopd: 1.2.0
       has-property-descriptors: 1.0.1
       has-proto: 1.0.1
-      has-symbols: 1.0.3
-      hasown: 2.0.0
+      has-symbols: 1.1.0
+      hasown: 2.0.2
       internal-slot: 1.0.6
       is-array-buffer: 3.0.2
       is-callable: 1.2.7
@@ -3268,7 +3268,7 @@ packages:
       is-string: 1.0.7
       is-typed-array: 1.1.12
       is-weakref: 1.0.2
-      object-inspect: 1.13.1
+      object-inspect: 1.13.4
       object-keys: 1.1.1
       object.assign: 4.1.5
       regexp.prototype.flags: 1.5.1
@@ -3384,9 +3384,9 @@ packages:
     resolution: {integrity: sha512-BuDyupZt65P9D2D2vA/zqcI3G5xRsklm5N3xCwuiy+/vKy8i0ifdsQP1sLgO4tZDSCaQUSnmC48khknGMV3D2Q==}
     engines: {node: '>= 0.4'}
     dependencies:
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.3.0
       has-tostringtag: 1.0.0
-      hasown: 2.0.0
+      hasown: 2.0.2
     dev: true
 
   /es-set-tostringtag@2.0.3:
@@ -3403,7 +3403,7 @@ packages:
   /es-shim-unscopables@1.0.2:
     resolution: {integrity: sha512-J3yBRXCzDu4ULnQwxyToo/OjdMx6akgVC7K6few0a7F/0wLtmKKN7I73AH5T2836UuXRqN7Qg+IIUw/+YJksRw==}
     dependencies:
-      hasown: 2.0.0
+      hasown: 2.0.2
     dev: true
 
   /es-to-primitive@1.2.1:
@@ -3966,8 +3966,8 @@ packages:
     dependencies:
       function-bind: 1.1.2
       has-proto: 1.0.1
-      has-symbols: 1.0.3
-      hasown: 2.0.0
+      has-symbols: 1.1.0
+      hasown: 2.0.2
     dev: true
 
   /get-intrinsic@1.3.0:
@@ -4002,7 +4002,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.5
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.3.0
     dev: true
 
   /get-symbol-description@1.0.2:
@@ -4117,12 +4117,6 @@ packages:
       unicorn-magic: 0.1.0
     dev: true
 
-  /gopd@1.0.1:
-    resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
-    dependencies:
-      get-intrinsic: 1.2.2
-    dev: true
-
   /gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
     engines: {node: '>= 0.4'}
@@ -4157,7 +4151,7 @@ packages:
   /has-property-descriptors@1.0.1:
     resolution: {integrity: sha512-VsX8eaIewvas0xnvinAe9bw4WfIeODpGYikiWYLH+dma0Jw6KHYqWiWfhQlgOVK8D6PvjubK5Uc4P0iIhIcNVg==}
     dependencies:
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.3.0
     dev: true
 
   /has-property-descriptors@1.0.2:
@@ -4180,11 +4174,6 @@ packages:
     dev: true
     optional: true
 
-  /has-symbols@1.0.3:
-    resolution: {integrity: sha512-l3LCuF6MgDNwTDKkdYGEihYjt5pRPbEg46rtlmnSPlUbgmB8LOIrKJbYYFBSbnPaJexMKtiPO8hmeRjRz2Td+A==}
-    engines: {node: '>= 0.4'}
-    dev: true
-
   /has-symbols@1.1.0:
     resolution: {integrity: sha512-1cDNdwJ2Jaohmb3sg4OmKaMBwuC48sYni5HUw2DvsC8LjGTLK9h+eb1X6RyuOHe4hT0ULCW68iomhjUoKUqlPQ==}
     engines: {node: '>= 0.4'}
@@ -4193,7 +4182,7 @@ packages:
     resolution: {integrity: sha512-kFjcSNhnlGV1kyoGk7OXKSawH5JOb/LzUc5w9B02hOTO0dfFRjbHQKvg1d6cf3HbeUmtU9VbbV3qzZ2Teh97WQ==}
     engines: {node: '>= 0.4'}
     dependencies:
-      has-symbols: 1.0.3
+      has-symbols: 1.1.0
     dev: true
 
   /has-tostringtag@1.0.2:
@@ -4317,9 +4306,9 @@ packages:
     resolution: {integrity: sha512-Xj6dv+PsbtwyPpEflsejS+oIZxmMlV44zAhG479uYu89MsjcYOhCFnNyKrkJrihbsiasQyY0afoCl/9BLR65bg==}
     engines: {node: '>= 0.4'}
     dependencies:
-      get-intrinsic: 1.2.2
-      hasown: 2.0.0
-      side-channel: 1.0.4
+      get-intrinsic: 1.3.0
+      hasown: 2.0.2
+      side-channel: 1.1.0
     dev: true
 
   /internal-slot@1.0.7:
@@ -4342,7 +4331,7 @@ packages:
     resolution: {integrity: sha512-y+FyyR/w8vfIRq4eQcM1EYgSTnmHXPqaF+IgzgraytCFq5Xh8lllDVmAZolPJiZttZLeFSINPYMaEJ7/vWUa1w==}
     dependencies:
       call-bind: 1.0.5
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.3.0
       is-typed-array: 1.1.12
     dev: true
 
@@ -4568,7 +4557,7 @@ packages:
     resolution: {integrity: sha512-C/CPBqKWnvdcxqIARxyOh4v1UUEOCHpgDa0WYgpKDFMszcrPcffg5uhwSgPCLD2WWxmq6isisz87tzT01tuGhg==}
     engines: {node: '>= 0.4'}
     dependencies:
-      has-symbols: 1.0.3
+      has-symbols: 1.1.0
     dev: true
 
   /is-text-path@2.0.0:
@@ -5149,10 +5138,6 @@ packages:
     requiresBuild: true
     dev: true
 
-  /object-inspect@1.13.1:
-    resolution: {integrity: sha512-5qoj1RUiKOMsCCNLV1CBiPYE10sziTsnmNxkAI/rZhiD63CF7IqdFGC/XzjWjpSgLf0LxXX3bDFIh0E18f6UhQ==}
-    dev: true
-
   /object-inspect@1.13.4:
     resolution: {integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==}
     engines: {node: '>= 0.4'}
@@ -5168,7 +5153,7 @@ packages:
     dependencies:
       call-bind: 1.0.5
       define-properties: 1.2.1
-      has-symbols: 1.0.3
+      has-symbols: 1.1.0
       object-keys: 1.1.1
     dev: true
 
@@ -5552,8 +5537,8 @@ packages:
     resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
     dev: true
 
-  /qs@6.14.2:
-    resolution: {integrity: sha512-V/yCWTTF7VJ9hIh18Ugr2zhJMP01MY7c5kh4J870L7imm6/DIzBsNLTXzMwUA3yZ5b/KBqLx8Kp3uRvd7xSe3Q==}
+  /qs@6.15.2:
+    resolution: {integrity: sha512-Rzq0KEyX/w/tEybncDgdkZrJgVUsUMk3xjh3t5bv3S1HTAtg+uOYt72+ZfwiQwKdysThkTBdL/rTi6HDmX9Ddw==}
     engines: {node: '>=0.6'}
     dependencies:
       side-channel: 1.1.0
@@ -5788,8 +5773,8 @@ packages:
     engines: {node: '>=0.4'}
     dependencies:
       call-bind: 1.0.5
-      get-intrinsic: 1.2.2
-      has-symbols: 1.0.3
+      get-intrinsic: 1.3.0
+      has-symbols: 1.1.0
       isarray: 2.0.5
     dev: true
 
@@ -5814,7 +5799,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.5
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.3.0
       is-regex: 1.1.4
     dev: true
 
@@ -5877,8 +5862,8 @@ packages:
     dependencies:
       define-data-property: 1.1.1
       function-bind: 1.1.2
-      get-intrinsic: 1.2.2
-      gopd: 1.0.1
+      get-intrinsic: 1.3.0
+      gopd: 1.2.0
       has-property-descriptors: 1.0.1
     dev: true
 
@@ -5966,14 +5951,6 @@ packages:
       get-intrinsic: 1.3.0
       object-inspect: 1.13.4
       side-channel-map: 1.0.1
-
-  /side-channel@1.0.4:
-    resolution: {integrity: sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw==}
-    dependencies:
-      call-bind: 1.0.5
-      get-intrinsic: 1.2.2
-      object-inspect: 1.13.1
-    dev: true
 
   /side-channel@1.1.0:
     resolution: {integrity: sha512-ZX99e6tRweoUXqR+VBrslhda51Nh5MTQwou5tnUDgbtyM0dBgmhEDtWGP/xbKn6hqfPRHujUNwz5fy/wbbhnpw==}
@@ -6483,7 +6460,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.5
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.3.0
       is-typed-array: 1.1.12
     dev: true
 
@@ -6579,7 +6556,7 @@ packages:
     dependencies:
       call-bind: 1.0.5
       has-bigints: 1.0.2
-      has-symbols: 1.0.3
+      has-symbols: 1.1.0
       which-boxed-primitive: 1.0.2
     dev: true
 
@@ -6699,7 +6676,7 @@ packages:
       available-typed-arrays: 1.0.5
       call-bind: 1.0.5
       for-each: 0.3.3
-      gopd: 1.0.1
+      gopd: 1.2.0
       has-tostringtag: 1.0.0
     dev: true
 
