@@ -1,4 +1,4 @@
-import test from "ava";
+import { afterAll, afterEach, beforeAll, expect, test } from "vitest";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
@@ -30,19 +30,19 @@ const createDrupalkit = ({ baseUrl = BASE_URL }: { baseUrl?: string } = {}) => {
 
 const server = setupServer();
 
-test.before(() => {
+beforeAll(() => {
   server.listen();
 });
 
-test.afterEach(() => {
+afterEach(() => {
   server.resetHandlers();
 });
 
-test.after(() => {
+afterAll(() => {
   server.close();
 });
 
-test("Build JSON:API url", (t) => {
+test("Build JSON:API url", () => {
   const drupalkit = createDrupalkit();
   const queryParams = new DrupalJsonApiParams();
   queryParams
@@ -56,33 +56,33 @@ test("Build JSON:API url", (t) => {
 
   // Simple url.
   let url = drupalkit.jsonApi.buildJsonApiUrl("node/article");
-  t.snapshot(url);
+  expect(url).toMatchSnapshot();
 
   // With query.
   url = drupalkit.jsonApi.buildJsonApiUrl("node/article", {
     query: queryParams.getQueryObject(),
   });
-  t.snapshot(url);
+  expect(url).toMatchSnapshot();
 
   // With locale.
   url = drupalkit.jsonApi.buildJsonApiUrl("node/article", {
     localeOverride: "es",
   });
-  t.snapshot(url);
+  expect(url).toMatchSnapshot();
 
   // With locale and query.
   url = drupalkit.jsonApi.buildJsonApiUrl("node/article", {
     localeOverride: "es",
     query: queryParams.getQueryObject(),
   });
-  t.snapshot(url);
+  expect(url).toMatchSnapshot();
 });
 
 /**
  * getIndex().
  */
 
-test.serial("Get JSON:API index", async (t) => {
+test("Get JSON:API index", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -99,10 +99,10 @@ test.serial("Get JSON:API index", async (t) => {
 
   const res = index.unwrap();
 
-  t.snapshot(JSON.stringify(res));
-  t.assert(res.hasOwnProperty("jsonapi"));
-  t.assert(res.hasOwnProperty("data"));
-  t.assert(res.hasOwnProperty("links"));
+  expect(JSON.stringify(res)).toMatchSnapshot();
+  expect(res.hasOwnProperty("jsonapi")).toBeTruthy();
+  expect(res.hasOwnProperty("data")).toBeTruthy();
+  expect(res.hasOwnProperty("links")).toBeTruthy();
 
   // With error
   server.resetHandlers();
@@ -120,21 +120,21 @@ test.serial("Get JSON:API index", async (t) => {
   index = await drupalkit.jsonApi.getIndex();
 
   const err = index.expectErr("Expect error");
-  t.assert(err instanceof DrupalkitJsonApiError);
+  expect(err instanceof DrupalkitJsonApiError).toBeTruthy();
 });
 
-test.serial("Get JSON:API index with options", async (t) => {
-  t.plan(2);
+test("Get JSON:API index with options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.get("*/jsonapi", ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(JsonApiIndex, {
         headers: {
@@ -156,7 +156,7 @@ test.serial("Get JSON:API index with options", async (t) => {
  * .resource() - "readSingle".
  */
 
-test.serial("Get JSON:API resource", async (t) => {
+test("Get JSON:API resource", async () => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
@@ -179,22 +179,22 @@ test.serial("Get JSON:API resource", async (t) => {
   );
 
   const res = result.unwrap();
-  t.snapshot(res);
+  expect(res).toMatchSnapshot();
 });
 
-test.serial("Get JSON:API resource with options", async (t) => {
-  t.plan(2);
+test("Get JSON:API resource with options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.get("*/jsonapi/node/article/" + uuid, ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(JsonApiArticleDetail, {
         headers: {
@@ -219,7 +219,7 @@ test.serial("Get JSON:API resource with options", async (t) => {
   );
 });
 
-test.serial("Simplify single resource", async (t) => {
+test("Simplify single resource", async () => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
@@ -244,18 +244,18 @@ test.serial("Simplify single resource", async (t) => {
   const res = result.unwrap();
   const data = drupalkit.jsonApi.simplifyResourceResponse(res);
 
-  t.snapshot(data);
+  expect(data).toMatchSnapshot();
 });
 
-test.serial("Get localized JSON:API resource", async (t) => {
+test("Get localized JSON:API resource", async () => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
-  t.plan(2);
+  expect.assertions(2);
 
   server.use(
     http.get("*/jsonapi/node/article/" + uuid, ({ request }) => {
-      t.assert(request.url.toString().includes("/en/jsonapi"));
+      expect(request.url.toString().includes("/en/jsonapi")).toBeTruthy();
 
       return HttpResponse.json(JsonApiArticleDetail, {
         headers: {
@@ -277,11 +277,11 @@ test.serial("Get localized JSON:API resource", async (t) => {
   );
 
   const res = result.unwrap();
-  t.snapshot(res);
+  expect(res).toMatchSnapshot();
 });
 
-test.serial("Get JSON:API resource with query parameters", async (t) => {
-  t.plan(2);
+test("Get JSON:API resource with query parameters", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
@@ -292,7 +292,7 @@ test.serial("Get JSON:API resource with query parameters", async (t) => {
 
   server.use(
     http.get("*/jsonapi/node/article/" + uuid, ({ request }) => {
-      t.snapshot(request.url.toString());
+      expect(request.url.toString()).toMatchSnapshot();
 
       return HttpResponse.json(JsonApiArticleDetail, {
         headers: {
@@ -311,10 +311,10 @@ test.serial("Get JSON:API resource with query parameters", async (t) => {
     },
   );
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle error when getting single resource", async (t) => {
+test("Handle error when getting single resource", async () => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
@@ -343,15 +343,15 @@ test.serial("Handle error when getting single resource", async (t) => {
 
   const err = result.expectErr("Expect error");
 
-  t.assert(err instanceof DrupalkitJsonApiError);
-  t.is(err.statusCode, 400);
+  expect(err instanceof DrupalkitJsonApiError).toBeTruthy();
+  expect(err.statusCode).toBe(400);
 });
 
 /**
  * .resource() - "readMany".
  */
 
-test.serial("Get many resources", async (t) => {
+test("Get many resources", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -371,22 +371,22 @@ test.serial("Get many resources", async (t) => {
   );
 
   const res = result.unwrap();
-  t.snapshot(res);
+  expect(res).toMatchSnapshot();
 });
 
-test.serial("Get many resources with custom request options", async (t) => {
-  t.plan(3);
+test("Get many resources with custom request options", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.get("*/jsonapi/node/article", ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
-      t.assert(request.url.toString().includes("/en/jsonapi"));
+      expect(request.headers.get("X-Custom")).toBe("1");
+      expect(request.url.toString().includes("/en/jsonapi")).toBeTruthy();
 
       return HttpResponse.json(JsonApiArticleCollection, {
         headers: {
@@ -410,7 +410,7 @@ test.serial("Get many resources with custom request options", async (t) => {
   );
 });
 
-test.serial("Simplify many resources", async (t) => {
+test("Simplify many resources", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -432,11 +432,11 @@ test.serial("Simplify many resources", async (t) => {
   const res = result.unwrap();
   const data = drupalkit.jsonApi.simplifyResourceResponse(res);
 
-  t.assert(data.length === 8);
-  t.snapshot(data);
+  expect(data.length === 8).toBeTruthy();
+  expect(data).toMatchSnapshot();
 });
 
-test.serial("Handle error when getting many resource", async (t) => {
+test("Handle error when getting many resource", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -457,11 +457,11 @@ test.serial("Handle error when getting many resource", async (t) => {
 
   const err = result.expectErr("Expect error");
 
-  t.assert(err instanceof DrupalkitJsonApiError);
-  t.is(err.statusCode, 400);
+  expect(err instanceof DrupalkitJsonApiError).toBeTruthy();
+  expect(err.statusCode).toBe(400);
 });
 
-test.serial("Handle network error", async (t) => {
+test("Handle network error", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -477,23 +477,23 @@ test.serial("Handle network error", async (t) => {
 
   const err = result.expectErr("Expect error");
 
-  t.assert(err.message.includes("Failed to fetch"), err.message);
-  t.is(err.response, undefined);
+  expect(err.message.includes("Failed to fetch"), err.message).toBeTruthy();
+  expect(err.response).toBe(undefined);
 });
 
 /**
  * .resource() - "create".
  */
 
-test.serial("Create new resource", async (t) => {
+test("Create new resource", async () => {
   const drupalkit = createDrupalkit();
 
-  t.plan(3);
+  expect.assertions(3);
 
   server.use(
     http.post("*/jsonapi/node/article", async ({ request }) => {
       const payload = await request.json();
-      t.is((payload as any).data.type, "node--article");
+      expect((payload as any).data.type).toBe("node--article");
 
       return HttpResponse.json(JsonApiArticleDetail, {
         headers: {
@@ -521,25 +521,25 @@ test.serial("Create new resource", async (t) => {
   });
 
   const res = result.unwrap();
-  t.snapshot(res);
+  expect(res).toMatchSnapshot();
 
   const simpleData = drupalkit.jsonApi.simplifyResourceResponse(res);
-  t.snapshot(simpleData);
+  expect(simpleData).toMatchSnapshot();
 });
 
-test.serial("Create resource with custom request options", async (t) => {
-  t.plan(3);
+test("Create resource with custom request options", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/jsonapi/node/article", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
-      t.assert(request.url.toString().includes("/en/jsonapi"));
+      expect(request.headers.get("X-Custom")).toBe("1");
+      expect(request.url.toString().includes("/en/jsonapi")).toBeTruthy();
 
       return HttpResponse.json(JsonApiArticleDetail, {
         headers: {
@@ -578,7 +578,7 @@ test.serial("Create resource with custom request options", async (t) => {
   );
 });
 
-test.serial("Handle error when creating new resource", async (t) => {
+test("Handle error when creating new resource", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -612,26 +612,26 @@ test.serial("Handle error when creating new resource", async (t) => {
 
   const error = result.expectErr("Expect error");
 
-  t.assert(error instanceof DrupalkitJsonApiError);
-  t.is(error.statusCode, 400);
+  expect(error instanceof DrupalkitJsonApiError).toBeTruthy();
+  expect(error.statusCode).toBe(400);
 });
 
 /**
  * .resource() - "update".
  */
 
-test.serial("Update resource", async (t) => {
+test("Update resource", async () => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
-  t.plan(4);
+  expect.assertions(4);
 
   server.use(
     http.patch("*/jsonapi/node/article/" + uuid, async ({ request }) => {
       const payload = (await request.json()) as any;
 
-      t.is(payload.data.type, "node--article");
-      t.is(payload.data.id, uuid);
+      expect(payload.data.type).toBe("node--article");
+      expect(payload.data.id).toBe(uuid);
 
       return HttpResponse.json(JsonApiArticleDetail, {
         headers: {
@@ -651,26 +651,26 @@ test.serial("Update resource", async (t) => {
   });
 
   const res = result.unwrap();
-  t.snapshot(res);
+  expect(res).toMatchSnapshot();
 
   const simpleData = drupalkit.jsonApi.simplifyResourceResponse(res);
-  t.snapshot(simpleData);
+  expect(simpleData).toMatchSnapshot();
 });
 
-test.serial("Update resource with custom request options", async (t) => {
-  t.plan(3);
+test("Update resource with custom request options", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.patch("*/jsonapi/node/article/" + uuid, async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
-      t.assert(request.url.toString().includes("/en/jsonapi"));
+      expect(request.headers.get("X-Custom")).toBe("1");
+      expect(request.url.toString().includes("/en/jsonapi")).toBeTruthy();
 
       return HttpResponse.json(JsonApiArticleDetail, {
         headers: {
@@ -701,7 +701,7 @@ test.serial("Update resource with custom request options", async (t) => {
   );
 });
 
-test.serial("Handle error when updating resource", async (t) => {
+test("Handle error when updating resource", async () => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
@@ -727,15 +727,15 @@ test.serial("Handle error when updating resource", async (t) => {
 
   const error = result.expectErr("Expect error");
 
-  t.assert(error instanceof DrupalkitJsonApiError);
-  t.is(error.statusCode, 400);
+  expect(error instanceof DrupalkitJsonApiError).toBeTruthy();
+  expect(error.statusCode).toBe(400);
 });
 
 /**
  * .resource() - "delete".
  */
 
-test.serial("Delete resource", async (t) => {
+test("Delete resource", async () => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
@@ -755,22 +755,22 @@ test.serial("Delete resource", async (t) => {
   });
 
   const res = result.unwrap();
-  t.assert(res);
+  expect(res).toBeTruthy();
 });
 
-test.serial("Delete resource with custom request options", async (t) => {
-  t.plan(2);
+test("Delete resource with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.delete("*/jsonapi/node/article/" + uuid, ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       HttpResponse.json(JsonApiIncludeError, {
         status: 400,
@@ -796,7 +796,7 @@ test.serial("Delete resource with custom request options", async (t) => {
   );
 });
 
-test.serial("Handle error when deleting resource", async (t) => {
+test("Handle error when deleting resource", async () => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
 
@@ -817,33 +817,34 @@ test.serial("Handle error when deleting resource", async (t) => {
 
   const error = result.expectErr("Expect error");
 
-  t.assert(error instanceof DrupalkitJsonApiError);
-  t.is(error.statusCode, 400);
+  expect(error instanceof DrupalkitJsonApiError).toBeTruthy();
+  expect(error.statusCode).toBe(400);
 });
 
 /**
  * uploadFile().
  */
 
-test.serial("Upload file to entity field", async (t) => {
+test("Upload file to entity field", async () => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
   const fileData = new Blob(["fake-image-data"], { type: "image/jpeg" });
 
-  t.plan(4);
+  expect.assertions(4);
 
   server.use(
     http.post(
       "*/jsonapi/node/with-file/" + uuid + "/field_image",
       async ({ request }) => {
-        t.is(request.headers.get("Content-Type"), "application/octet-stream");
-        t.is(
-          request.headers.get("Content-Disposition"),
+        expect(request.headers.get("Content-Type")).toBe(
+          "application/octet-stream",
+        );
+        expect(request.headers.get("Content-Disposition")).toBe(
           'file; filename="test-image.jpg"',
         );
 
         const body = await request.arrayBuffer();
-        t.is(body.byteLength, fileData.size);
+        expect(body.byteLength).toBe(fileData.size);
 
         return HttpResponse.json(JsonApiFileUpload, {
           status: 201,
@@ -864,25 +865,25 @@ test.serial("Upload file to entity field", async (t) => {
   );
 
   const res = result.unwrap();
-  t.is(res.data?.type, "file--file");
+  expect(res.data?.type).toBe("file--file");
 });
 
-test.serial("Upload file with custom request options", async (t) => {
-  t.plan(2);
+test("Upload file with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
   const fileData = new Blob(["fake-data"]);
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post(
       "*/jsonapi/node/with-file/" + uuid + "/field_image",
       ({ request }) => {
-        t.is(request.headers.get("X-Custom"), "1");
+        expect(request.headers.get("X-Custom")).toBe("1");
 
         return HttpResponse.json(JsonApiFileUpload, {
           status: 201,
@@ -909,19 +910,18 @@ test.serial("Upload file with custom request options", async (t) => {
   );
 });
 
-test.serial("Upload file sanitizes filename", async (t) => {
+test("Upload file sanitizes filename", async () => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
   const fileData = new Blob(["fake-data"]);
 
-  t.plan(1);
+  expect.assertions(1);
 
   server.use(
     http.post(
       "*/jsonapi/node/with-file/" + uuid + "/field_image",
       ({ request }) => {
-        t.is(
-          request.headers.get("Content-Disposition"),
+        expect(request.headers.get("Content-Disposition")).toBe(
           'file; filename="ueber-bild.jpg"',
         );
 
@@ -944,7 +944,7 @@ test.serial("Upload file sanitizes filename", async (t) => {
   );
 });
 
-test.serial("Upload file validates filename extension", async (t) => {
+test("Upload file validates filename extension", async () => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
   const fileData = new Blob(["fake-data"]);
@@ -959,12 +959,12 @@ test.serial("Upload file validates filename extension", async (t) => {
 
   const err = result.expectErr("Expect validation error");
 
-  t.assert(err instanceof DrupalkitJsonApiError);
-  t.is(err.message, "Filename must include a file extension");
-  t.is(err.statusCode, 400);
+  expect(err instanceof DrupalkitJsonApiError).toBeTruthy();
+  expect(err.message).toBe("Filename must include a file extension");
+  expect(err.statusCode).toBe(400);
 });
 
-test.serial("Handle error when uploading file", async (t) => {
+test("Handle error when uploading file", async () => {
   const drupalkit = createDrupalkit();
   const uuid = "5f5f5f5f-5f5f-5f5f-5f5f-5f5f5f5f5f5f";
   const fileData = new Blob(["fake-data"]);
@@ -990,6 +990,6 @@ test.serial("Handle error when uploading file", async (t) => {
 
   const error = result.expectErr("Expect error");
 
-  t.assert(error instanceof DrupalkitJsonApiError);
-  t.is(error.statusCode, 400);
+  expect(error instanceof DrupalkitJsonApiError).toBeTruthy();
+  expect(error.statusCode).toBe(400);
 });

@@ -1,4 +1,4 @@
-import test from "ava";
+import { afterAll, afterEach, beforeAll, expect, test } from "vitest";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
@@ -7,15 +7,15 @@ import { DrupalkitConsumers } from "../src/index.js";
 
 const server = setupServer();
 
-test.before(() => {
+beforeAll(() => {
   server.listen();
 });
 
-test.afterEach(() => {
+afterEach(() => {
   server.resetHandlers();
 });
 
-test.after(() => {
+afterAll(() => {
   server.close();
 });
 
@@ -36,12 +36,12 @@ const createDrupalkit = (
   });
 };
 
-test.serial("Add consumer id to request", async (t) => {
-  t.plan(2);
+test("Add consumer id to request", async () => {
+  expect.assertions(2);
 
   server.use(
     http.get("*", ({ request }) => {
-      t.is(request.headers.get("X-Consumer-ID"), CONSUMER_ID);
+      expect(request.headers.get("X-Consumer-ID")).toBe(CONSUMER_ID);
 
       return HttpResponse.text();
     }),
@@ -56,38 +56,35 @@ test.serial("Add consumer id to request", async (t) => {
     method: "GET",
   });
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial(
-  "Do not add consumer id header if no value is supplied",
-  async (t) => {
-    t.plan(1);
-
-    server.use(
-      http.get("*", ({ request }) => {
-        t.is(request.headers.get("X-Consumer-ID"), null);
-
-        return HttpResponse.text();
-      }),
-    );
-
-    const drupalkit = createDrupalkit({
-      baseUrl: BASE_URL,
-    });
-
-    await drupalkit.request("/", {
-      method: "GET",
-    });
-  },
-);
-
-test.serial("Add consumer id with custom header name", async (t) => {
-  t.plan(1);
+test("Do not add consumer id header if no value is supplied", async () => {
+  expect.assertions(1);
 
   server.use(
     http.get("*", ({ request }) => {
-      t.is(request.headers.get("X-Custom-Consumer-ID"), CONSUMER_ID);
+      expect(request.headers.get("X-Consumer-ID")).toBe(null);
+
+      return HttpResponse.text();
+    }),
+  );
+
+  const drupalkit = createDrupalkit({
+    baseUrl: BASE_URL,
+  });
+
+  await drupalkit.request("/", {
+    method: "GET",
+  });
+});
+
+test("Add consumer id with custom header name", async () => {
+  expect.assertions(1);
+
+  server.use(
+    http.get("*", ({ request }) => {
+      expect(request.headers.get("X-Custom-Consumer-ID")).toBe(CONSUMER_ID);
 
       return HttpResponse.text();
     }),
@@ -104,58 +101,52 @@ test.serial("Add consumer id with custom header name", async (t) => {
   });
 });
 
-test.serial(
-  "Add consumer id to request - via deprecated consumerUUID",
-  async (t) => {
-    t.plan(2);
+test("Add consumer id to request - via deprecated consumerUUID", async () => {
+  expect.assertions(2);
 
-    server.use(
-      http.get("*", ({ request }) => {
-        t.is(request.headers.get("X-Consumer-ID"), CONSUMER_ID);
+  server.use(
+    http.get("*", ({ request }) => {
+      expect(request.headers.get("X-Consumer-ID")).toBe(CONSUMER_ID);
 
-        return HttpResponse.text();
-      }),
-    );
+      return HttpResponse.text();
+    }),
+  );
 
-    const drupalkit = createDrupalkit({
-      baseUrl: BASE_URL,
-      consumerUUID: CONSUMER_ID,
-    });
+  const drupalkit = createDrupalkit({
+    baseUrl: BASE_URL,
+    consumerUUID: CONSUMER_ID,
+  });
 
-    const result = await drupalkit.request("/", {
-      method: "GET",
-    });
+  const result = await drupalkit.request("/", {
+    method: "GET",
+  });
 
-    t.assert(result.ok);
-  },
-);
+  expect(result.ok).toBeTruthy();
+});
 
-test.serial(
-  "Do not overwrite already existing consumer id header",
-  async (t) => {
-    const otherId = "other";
-    t.plan(2);
+test("Do not overwrite already existing consumer id header", async () => {
+  const otherId = "other";
+  expect.assertions(2);
 
-    server.use(
-      http.get("*", ({ request }) => {
-        t.is(request.headers.get("X-Consumer-ID"), otherId);
+  server.use(
+    http.get("*", ({ request }) => {
+      expect(request.headers.get("X-Consumer-ID")).toBe(otherId);
 
-        return HttpResponse.text();
-      }),
-    );
+      return HttpResponse.text();
+    }),
+  );
 
-    const drupalkit = createDrupalkit({
-      baseUrl: BASE_URL,
-      consumerUUID: CONSUMER_ID,
-    });
+  const drupalkit = createDrupalkit({
+    baseUrl: BASE_URL,
+    consumerUUID: CONSUMER_ID,
+  });
 
-    const result = await drupalkit.request("/", {
-      method: "GET",
-      headers: {
-        "X-Consumer-ID": otherId,
-      },
-    });
+  const result = await drupalkit.request("/", {
+    method: "GET",
+    headers: {
+      "X-Consumer-ID": otherId,
+    },
+  });
 
-    t.assert(result.ok);
-  },
-);
+  expect(result.ok).toBeTruthy();
+});

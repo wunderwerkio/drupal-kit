@@ -1,4 +1,4 @@
-import test from "ava";
+import { expect, test } from "vitest";
 import { DrupalkitError, UNKNOWN_ERROR_PREFIX } from "@drupal-kit/core";
 
 import { DrupalkitJsonApiError } from "../src/index.js";
@@ -13,18 +13,18 @@ const request = {
   baseUrl: "https://example.com",
 };
 
-test("Instanciate from DrupalkitError", (t) => {
+test("Instanciate from DrupalkitError", () => {
   const error = new DrupalkitError("test-error", 400, {
     request,
   });
 
   const jaError = DrupalkitJsonApiError.fromDrupalkitError(error);
 
-  t.assert(jaError instanceof DrupalkitJsonApiError);
-  t.assert(jaError instanceof DrupalkitError);
+  expect(jaError instanceof DrupalkitJsonApiError).toBeTruthy();
+  expect(jaError instanceof DrupalkitError).toBeTruthy();
 });
 
-test("Extract errors from JSON:API response", (t) => {
+test("Extract errors from JSON:API response", () => {
   const error = new DrupalkitError("test-error", 400, {
     request,
     response: {
@@ -39,20 +39,22 @@ test("Extract errors from JSON:API response", (t) => {
 
   const jaError = DrupalkitJsonApiError.fromDrupalkitError(error);
 
-  t.assert(jaError.hasValidationErrors());
-  t.deepEqual(jaError.getInvalidFields(), [
+  expect(jaError.hasValidationErrors()).toBeTruthy();
+  expect(jaError.getInvalidFields()).toEqual([
     "field_firstname",
     "field_lastname",
   ]);
 
-  t.is(jaError.getErrorsByStatus(400).length, 1);
-  t.is(jaError.getErrorsByStatus(422).length, 2);
+  expect(jaError.getErrorsByStatus(400).length).toBe(1);
+  expect(jaError.getErrorsByStatus(422).length).toBe(2);
 
-  t.snapshot(jaError.getErrorsByStatus(400), "bad-request-errors");
-  t.snapshot(jaError.getErrorsByStatus(422), "unprocessable-entity-errors");
+  expect(jaError.getErrorsByStatus(400)).toMatchSnapshot("bad-request-errors");
+  expect(jaError.getErrorsByStatus(422)).toMatchSnapshot(
+    "unprocessable-entity-errors",
+  );
 });
 
-test("Unknown error message is replaced with JSON:API error detail", (t) => {
+test("Unknown error message is replaced with JSON:API error detail", () => {
   const unknownMessage = `${UNKNOWN_ERROR_PREFIX} {"some":"data"}`;
   const error = new DrupalkitError(unknownMessage, 400, {
     request,
@@ -76,10 +78,10 @@ test("Unknown error message is replaced with JSON:API error detail", (t) => {
 
   const jaError = DrupalkitJsonApiError.fromDrupalkitError(error);
 
-  t.is(jaError.message, "The specific error detail from JSON:API");
+  expect(jaError.message).toBe("The specific error detail from JSON:API");
 });
 
-test("Unknown error message falls back to JSON:API error title when detail is missing", (t) => {
+test("Unknown error message falls back to JSON:API error title when detail is missing", () => {
   const unknownMessage = `${UNKNOWN_ERROR_PREFIX} {"some":"data"}`;
   const error = new DrupalkitError(unknownMessage, 400, {
     request,
@@ -102,10 +104,10 @@ test("Unknown error message falls back to JSON:API error title when detail is mi
 
   const jaError = DrupalkitJsonApiError.fromDrupalkitError(error);
 
-  t.is(jaError.message, "Bad Request Title");
+  expect(jaError.message).toBe("Bad Request Title");
 });
 
-test("Unknown error message is kept when no JSON:API errors are present", (t) => {
+test("Unknown error message is kept when no JSON:API errors are present", () => {
   const unknownMessage = `${UNKNOWN_ERROR_PREFIX} {"some":"data"}`;
   const error = new DrupalkitError(unknownMessage, 500, {
     request,
@@ -121,10 +123,10 @@ test("Unknown error message is kept when no JSON:API errors are present", (t) =>
 
   const jaError = DrupalkitJsonApiError.fromDrupalkitError(error);
 
-  t.is(jaError.message, unknownMessage);
+  expect(jaError.message).toBe(unknownMessage);
 });
 
-test("Non-unknown error message is preserved even with JSON:API errors", (t) => {
+test("Non-unknown error message is preserved even with JSON:API errors", () => {
   const customMessage = "Custom error message";
   const error = new DrupalkitError(customMessage, 400, {
     request,
@@ -148,5 +150,5 @@ test("Non-unknown error message is preserved even with JSON:API errors", (t) => 
 
   const jaError = DrupalkitJsonApiError.fromDrupalkitError(error);
 
-  t.is(jaError.message, customMessage);
+  expect(jaError.message).toBe(customMessage);
 });

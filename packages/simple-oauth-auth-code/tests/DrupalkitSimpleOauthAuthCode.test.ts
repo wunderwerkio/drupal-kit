@@ -1,4 +1,4 @@
-import test from "ava";
+import { afterAll, afterEach, beforeAll, expect, test } from "vitest";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
@@ -24,19 +24,19 @@ const createDrupalkit = (
 
 const server = setupServer();
 
-test.before(() => {
+beforeAll(() => {
   server.listen();
 });
 
-test.afterEach(() => {
+afterEach(() => {
   server.resetHandlers();
 });
 
-test.after(() => {
+afterAll(() => {
   server.close();
 });
 
-test.serial("Request auth code", async (t) => {
+test("Request auth code", async () => {
   const drupalkit = createDrupalkit();
 
   const operation = "register";
@@ -51,16 +51,16 @@ test.serial("Request auth code", async (t) => {
   const result = await drupalkit.simpleOauth.requestAuthCode(operation, email);
 
   const res = result.unwrap();
-  t.deepEqual(res, AuthCodeResponse);
+  expect(res).toEqual(AuthCodeResponse);
 });
 
-test.serial("Request auth code with custom request options", async (t) => {
-  t.plan(2);
+test("Request auth code with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   const operation = "register";
@@ -68,7 +68,7 @@ test.serial("Request auth code with custom request options", async (t) => {
 
   server.use(
     http.post("*/simple-oauth/auth-code", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(AuthCodeResponse);
     }),
@@ -82,7 +82,7 @@ test.serial("Request auth code with custom request options", async (t) => {
   });
 });
 
-test.serial("Request auth code with explicit endpoint", async (t) => {
+test("Request auth code with explicit endpoint", async () => {
   const endpoint = "/custom/auth-code";
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
@@ -100,10 +100,10 @@ test.serial("Request auth code with explicit endpoint", async (t) => {
 
   const result = await drupalkit.simpleOauth.requestAuthCode(operation, email);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle network error", async (t) => {
+test("Handle network error", async () => {
   const drupalkit = createDrupalkit();
 
   const operation = "register";
@@ -115,5 +115,5 @@ test.serial("Handle network error", async (t) => {
 
   const result = await drupalkit.simpleOauth.requestAuthCode(operation, email);
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 });

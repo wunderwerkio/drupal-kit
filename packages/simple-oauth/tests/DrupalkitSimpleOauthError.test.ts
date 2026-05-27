@@ -1,4 +1,4 @@
-import test from "ava";
+import { expect, test } from "vitest";
 import { DrupalkitError } from "@drupal-kit/core";
 import { DrupalkitResponse } from "@drupal-kit/types";
 
@@ -37,7 +37,7 @@ const createResponse = ({
   };
 };
 
-test("Instanciate from DrupalkitError", (t) => {
+test("Instanciate from DrupalkitError", () => {
   const error = new DrupalkitError("test-error", 400, {
     request,
     response: createResponse({}),
@@ -45,11 +45,11 @@ test("Instanciate from DrupalkitError", (t) => {
 
   const soError = DrupalkitSimpleOauthError.fromDrupalkitError(error);
 
-  t.assert(soError instanceof DrupalkitSimpleOauthError);
-  t.assert(soError instanceof DrupalkitError);
+  expect(soError instanceof DrupalkitSimpleOauthError).toBeTruthy();
+  expect(soError instanceof DrupalkitError).toBeTruthy();
 });
 
-test("OauthError should be null if error does not contain simple oauth error data", (t) => {
+test("OauthError should be null if error does not contain simple oauth error data", () => {
   // Without response.
   let error = new DrupalkitError("test-error", 400, {
     request,
@@ -57,8 +57,8 @@ test("OauthError should be null if error does not contain simple oauth error dat
 
   let soError = DrupalkitSimpleOauthError.fromDrupalkitError(error);
 
-  t.assert(soError instanceof DrupalkitSimpleOauthError);
-  t.is(soError.error, null);
+  expect(soError instanceof DrupalkitSimpleOauthError).toBeTruthy();
+  expect(soError.error).toBe(null);
 
   // Without payload.
   error = new DrupalkitError("test-error", 400, {
@@ -71,8 +71,8 @@ test("OauthError should be null if error does not contain simple oauth error dat
 
   soError = DrupalkitSimpleOauthError.fromDrupalkitError(error);
 
-  t.assert(soError instanceof DrupalkitSimpleOauthError);
-  t.is(soError.error, null);
+  expect(soError instanceof DrupalkitSimpleOauthError).toBeTruthy();
+  expect(soError.error).toBe(null);
 
   // With invalid payload.
   error = new DrupalkitError("test-error", 400, {
@@ -87,11 +87,11 @@ test("OauthError should be null if error does not contain simple oauth error dat
 
   soError = DrupalkitSimpleOauthError.fromDrupalkitError(error);
 
-  t.assert(soError instanceof DrupalkitSimpleOauthError);
-  t.is(soError.error, null);
+  expect(soError instanceof DrupalkitSimpleOauthError).toBeTruthy();
+  expect(soError.error).toBe(null);
 });
 
-test("Set error type, hint and message from response", (t) => {
+test("Set error type, hint and message from response", () => {
   const type: SimpleOauthError = "access_denied";
   const hint = "Insufficent permissions";
   const message =
@@ -111,12 +111,12 @@ test("Set error type, hint and message from response", (t) => {
     error,
   ) as DrupalkitSimpleOauthError;
 
-  t.is(soError.error, type);
-  t.is(soError.hint, hint);
-  t.is(soError.message, message);
+  expect(soError.error).toBe(type);
+  expect(soError.hint).toBe(hint);
+  expect(soError.message).toBe(message);
 });
 
-test("Get type of invalid_request error", (t) => {
+test("Get type of invalid_request error", () => {
   const type: SimpleOauthError = "invalid_request";
   const hint = "Check the `client_secret` parameter";
 
@@ -132,10 +132,12 @@ test("Get type of invalid_request error", (t) => {
     error,
   ) as DrupalkitSimpleOauthError;
 
-  t.is(soError.getInvalidRequestType(), "invalid_parameter_client_secret");
+  expect(soError.getInvalidRequestType()).toBe(
+    "invalid_parameter_client_secret",
+  );
 });
 
-test("Get invalid_request type as generic if no hint is set", (t) => {
+test("Get invalid_request type as generic if no hint is set", () => {
   const type: SimpleOauthError = "invalid_request";
   const hint = "";
 
@@ -151,10 +153,10 @@ test("Get invalid_request type as generic if no hint is set", (t) => {
     error,
   ) as DrupalkitSimpleOauthError;
 
-  t.is(soError.getInvalidRequestType(), "generic");
+  expect(soError.getInvalidRequestType()).toBe("generic");
 });
 
-test("Get invalid_request type by hint", (t) => {
+test("Get invalid_request type by hint", () => {
   const type: SimpleOauthError = "invalid_request";
   const hint = "Authorization code has been revoked";
 
@@ -170,10 +172,10 @@ test("Get invalid_request type by hint", (t) => {
     error,
   ) as DrupalkitSimpleOauthError;
 
-  t.is(soError.getInvalidRequestType(), "auth_code_revoked");
+  expect(soError.getInvalidRequestType()).toBe("auth_code_revoked");
 });
 
-test("Get invalid_request type by hint regexp", (t) => {
+test("Get invalid_request type by hint regexp", () => {
   const type: SimpleOauthError = "invalid_request";
   const hint = "Code challenge method must be one of one, two, three.";
 
@@ -189,10 +191,10 @@ test("Get invalid_request type by hint regexp", (t) => {
     error,
   ) as DrupalkitSimpleOauthError;
 
-  t.is(soError.getInvalidRequestType(), "code_challenge_invalid");
+  expect(soError.getInvalidRequestType()).toBe("code_challenge_invalid");
 });
 
-test("Get invalid_request type as generic if nothing matches", (t) => {
+test("Get invalid_request type as generic if nothing matches", () => {
   const type: SimpleOauthError = "invalid_request";
   const hint = "Some unhandled hint.";
 
@@ -208,5 +210,5 @@ test("Get invalid_request type as generic if nothing matches", (t) => {
     error,
   ) as DrupalkitSimpleOauthError;
 
-  t.is(soError.getInvalidRequestType(), "generic");
+  expect(soError.getInvalidRequestType()).toBe("generic");
 });

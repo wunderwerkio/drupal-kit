@@ -1,4 +1,4 @@
-import test from "ava";
+import { afterAll, afterEach, beforeAll, expect, test } from "vitest";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 
@@ -19,19 +19,19 @@ const server = setupServer(
   http.get("*/network-error", () => HttpResponse.error()),
 );
 
-test.before(() => {
+beforeAll(() => {
   server.listen();
 });
 
-test.afterEach(() => {
+afterEach(() => {
   server.resetHandlers();
 });
 
-test.after(() => {
+afterAll(() => {
   server.close();
 });
 
-test.serial("Make simple GET request", async (t) => {
+test("Make simple GET request", async () => {
   const drupalkit = new Drupalkit({
     baseUrl: BASE_URL,
   });
@@ -41,19 +41,19 @@ test.serial("Make simple GET request", async (t) => {
     headers: {},
   });
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 
   const response = result.unwrap();
 
-  t.is(response.status, 200);
-  t.assert(response.url.includes("/demo-endpoint"));
-  t.assert(response.url.startsWith(BASE_URL));
-  t.deepEqual(response.data, DemoEndpointResponse);
-  t.assert("content-type" in response.headers);
+  expect(response.status).toBe(200);
+  expect(response.url.includes("/demo-endpoint")).toBeTruthy();
+  expect(response.url.startsWith(BASE_URL)).toBeTruthy();
+  expect(response.data).toEqual(DemoEndpointResponse);
+  expect("content-type" in response.headers).toBeTruthy();
 });
 
-test.serial("Make request with payload", async (t) => {
-  t.plan(3);
+test("Make request with payload", async () => {
+  expect.assertions(3);
 
   const headers = {
     "X-Custom": "value",
@@ -65,8 +65,8 @@ test.serial("Make request with payload", async (t) => {
   server.use(
     http.post("*/demo-endpoint", async ({ request }) => {
       const payload = await request.json();
-      t.deepEqual(payload, body);
-      t.deepEqual(request.headers.get("X-Custom"), headers["X-Custom"]);
+      expect(payload).toEqual(body);
+      expect(request.headers.get("X-Custom")).toEqual(headers["X-Custom"]);
 
       return HttpResponse.text();
     }),
@@ -82,10 +82,10 @@ test.serial("Make request with payload", async (t) => {
     body,
   });
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Add response data to result", async (t) => {
+test("Add response data to result", async () => {
   const drupalkit = new Drupalkit({
     baseUrl: BASE_URL,
   });
@@ -96,10 +96,10 @@ test.serial("Add response data to result", async (t) => {
 
   const { headers } = result.unwrap();
 
-  t.is(headers["content-type"], "application/json");
+  expect(headers["content-type"]).toBe("application/json");
 });
 
-test.serial("Do not add response data for 204 and 205 responses", async (t) => {
+test("Do not add response data for 204 and 205 responses", async () => {
   server.use(
     http.get("*/demo-endpoint-204", async () => {
       return HttpResponse.text(null, { status: 204 });
@@ -114,10 +114,10 @@ test.serial("Do not add response data for 204 and 205 responses", async (t) => {
     method: "GET",
   });
 
-  t.is(result.unwrap().data, undefined);
+  expect(result.unwrap().data).toBe(undefined);
 });
 
-test.serial("Return drupalkit errors", async (t) => {
+test("Return drupalkit errors", async () => {
   const drupalkit = new Drupalkit({
     baseUrl: BASE_URL,
   });
@@ -127,15 +127,15 @@ test.serial("Return drupalkit errors", async (t) => {
     headers: {},
   });
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 
   const err = result.expectErr("Must be error");
 
-  t.assert(err instanceof DrupalkitError);
-  t.is(err.statusCode, 404);
+  expect(err instanceof DrupalkitError).toBeTruthy();
+  expect(err.statusCode).toBe(404);
 });
 
-test.serial("Append locale to url", async (t) => {
+test("Append locale to url", async () => {
   http.get("*/en/demo-endpoint", () => {
     return HttpResponse.json(DemoEndpointResponse);
   });
@@ -153,10 +153,10 @@ test.serial("Append locale to url", async (t) => {
 
   const response = result.unwrap();
 
-  t.assert(response.url.includes("/en/demo-endpoint"));
+  expect(response.url.includes("/en/demo-endpoint")).toBeTruthy();
 });
 
-test.serial("Append overwritten locale to url", async (t) => {
+test("Append overwritten locale to url", async () => {
   http.get("*/en/demo-endpoint", () => {
     return HttpResponse.json(DemoEndpointResponse);
   });
@@ -174,26 +174,26 @@ test.serial("Append overwritten locale to url", async (t) => {
 
   const response = result.unwrap();
 
-  t.assert(response.url.includes("/en/demo-endpoint"));
+  expect(response.url.includes("/en/demo-endpoint")).toBeTruthy();
 });
 
-test.serial("Execute hooks", async (t) => {
-  t.plan(5);
+test("Execute hooks", async () => {
+  expect.assertions(5);
 
   const drupalkit = new Drupalkit({
     baseUrl: BASE_URL,
   });
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.baseUrl, BASE_URL);
+    expect(options.baseUrl).toBe(BASE_URL);
   });
 
   drupalkit.hook.after("request", (result, options) => {
-    t.is(options.baseUrl, BASE_URL);
+    expect(options.baseUrl).toBe(BASE_URL);
 
-    t.is(result.status, 200);
-    t.deepEqual(result.data, DemoEndpointResponse);
-    t.is(result.headers["content-type"], "application/json");
+    expect(result.status).toBe(200);
+    expect(result.data).toEqual(DemoEndpointResponse);
+    expect(result.headers["content-type"]).toBe("application/json");
   });
 
   await drupalkit.request("/demo-endpoint", {
@@ -202,15 +202,15 @@ test.serial("Execute hooks", async (t) => {
   });
 });
 
-test.serial("Add auth header if present", async (t) => {
-  t.plan(3);
+test("Add auth header if present", async () => {
+  expect.assertions(3);
   const authHeaderValue = "Bearer 00000";
 
   server.use(
     http.get(
       "*/demo-endpoint",
       ({ request }) => {
-        t.is(request.headers.get("authorization"), authHeaderValue);
+        expect(request.headers.get("authorization")).toBe(authHeaderValue);
 
         return HttpResponse.text();
       },
@@ -235,7 +235,7 @@ test.serial("Add auth header if present", async (t) => {
     http.get(
       "*/demo-endpoint",
       ({ request }) => {
-        t.is(request.headers.get("authorization"), null);
+        expect(request.headers.get("authorization")).toBe(null);
 
         return HttpResponse.text();
       },
@@ -256,7 +256,7 @@ test.serial("Add auth header if present", async (t) => {
     http.get(
       "*/demo-endpoint",
       ({ request }) => {
-        t.is(request.headers.get("authorization"), null);
+        expect(request.headers.get("authorization")).toBe(null);
 
         return HttpResponse.text();
       },
@@ -269,7 +269,7 @@ test.serial("Add auth header if present", async (t) => {
   });
 });
 
-test.serial("Handle network errors", async (t) => {
+test("Handle network errors", async () => {
   const drupalkit = new Drupalkit({
     baseUrl: BASE_URL,
   });
@@ -278,15 +278,15 @@ test.serial("Handle network errors", async (t) => {
     method: "GET",
   });
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
   const error = result.expectErr("Must be error");
 
-  t.assert(error instanceof DrupalkitError);
-  t.is(error.response, undefined);
+  expect(error instanceof DrupalkitError).toBeTruthy();
+  expect(error.response).toBe(undefined);
 });
 
-test.serial("Allow options overrides", async (t) => {
-  t.plan(3);
+test("Allow options overrides", async () => {
+  expect.assertions(3);
 
   server.use(
     http.get("*/en/demo-endpoint", () => {
@@ -300,8 +300,8 @@ test.serial("Allow options overrides", async (t) => {
   });
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "force-cache");
-    t.deepEqual(options.next, {
+    expect(options.cache).toBe("force-cache");
+    expect(options.next).toEqual({
       revalidate: 5,
       tags: ["tag1", "user:3"],
     });
@@ -327,5 +327,5 @@ test.serial("Allow options overrides", async (t) => {
 
   const response = result.unwrap();
 
-  t.assert(response.url.includes("/en/demo-endpoint"));
+  expect(response.url.includes("/en/demo-endpoint")).toBeTruthy();
 });

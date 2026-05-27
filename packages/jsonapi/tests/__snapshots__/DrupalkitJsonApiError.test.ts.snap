@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`DrupalkitJsonApiError should extract errors from JSON:API response: bad-request-errors 1`] = `
+exports[`Extract errors from JSON:API response > bad-request-errors 1`] = `
 [
   {
     "detail": "\`wrong-field\` is not a valid relationship field name. Possible values: node_type, revision_uid, uid, menu_link, field_media.",
@@ -18,7 +18,7 @@ exports[`DrupalkitJsonApiError should extract errors from JSON:API response: bad
 ]
 `;
 
-exports[`DrupalkitJsonApiError should extract errors from JSON:API response: unprocessable-entity-errors 1`] = `
+exports[`Extract errors from JSON:API response > unprocessable-entity-errors 1`] = `
 [
   {
     "detail": "field_firstname: Dieser Wert sollte nicht leer sein.",

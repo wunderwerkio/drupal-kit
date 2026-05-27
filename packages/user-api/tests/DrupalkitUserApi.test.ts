@@ -1,4 +1,4 @@
-import test from "ava";
+import { afterAll, afterEach, beforeAll, expect, test } from "vitest";
 import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
 import { Drupalkit, DrupalkitOptions } from "@drupal-kit/core";
@@ -28,20 +28,20 @@ const createDrupalkit = (
 
 const server = setupServer();
 
-test.before(() => {
+beforeAll(() => {
   server.listen();
 });
 
-test.afterEach(() => {
+afterEach(() => {
   server.resetHandlers();
 });
 
-test.after(() => {
+afterAll(() => {
   server.close();
 });
 
-test.serial("Register", async (t) => {
-  t.plan(3);
+test("Register", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
 
@@ -52,11 +52,11 @@ test.serial("Register", async (t) => {
 
   server.use(
     http.post("*/user-api/register", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
       const data = await request.json();
 
-      t.deepEqual(data, payload);
+      expect(data).toEqual(payload);
 
       return HttpResponse.json(UserResponse);
     }),
@@ -66,16 +66,16 @@ test.serial("Register", async (t) => {
 
   const res = result.unwrap();
 
-  t.deepEqual(res, UserResponse);
+  expect(res).toEqual(UserResponse);
 });
 
-test.serial("Register with custom request options", async (t) => {
-  t.plan(2);
+test("Register with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   const payload = {
@@ -85,7 +85,7 @@ test.serial("Register with custom request options", async (t) => {
 
   server.use(
     http.post("*/user-api/register", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(UserResponse);
     }),
@@ -99,8 +99,8 @@ test.serial("Register with custom request options", async (t) => {
   });
 });
 
-test.serial("Register with email notification disabled", async (t) => {
-  t.plan(1);
+test("Register with email notification disabled", async () => {
+  expect.assertions(1);
 
   const drupalkit = createDrupalkit();
 
@@ -111,7 +111,7 @@ test.serial("Register with email notification disabled", async (t) => {
 
   server.use(
     http.post("*/user-api/register", async ({ request }) => {
-      t.is(request.headers.get("X-Disable-Email-Notification"), "1");
+      expect(request.headers.get("X-Disable-Email-Notification")).toBe("1");
 
       return HttpResponse.json(UserResponse);
     }),
@@ -122,8 +122,8 @@ test.serial("Register with email notification disabled", async (t) => {
   });
 });
 
-test.serial("Register with account activation disabled", async (t) => {
-  t.plan(1);
+test("Register with account activation disabled", async () => {
+  expect.assertions(1);
 
   const drupalkit = createDrupalkit();
 
@@ -134,7 +134,7 @@ test.serial("Register with account activation disabled", async (t) => {
 
   server.use(
     http.post("*/user-api/register", async ({ request }) => {
-      t.is(request.headers.get("X-Disable-Account-Activation"), "1");
+      expect(request.headers.get("X-Disable-Account-Activation")).toBe("1");
 
       return HttpResponse.json(UserResponse);
     }),
@@ -146,8 +146,8 @@ test.serial("Register with account activation disabled", async (t) => {
   });
 });
 
-test.serial("Register with all options", async (t) => {
-  t.plan(2);
+test("Register with all options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
 
@@ -158,8 +158,8 @@ test.serial("Register with all options", async (t) => {
 
   server.use(
     http.post("*/user-api/register", async ({ request }) => {
-      t.is(request.headers.get("X-Disable-Email-Notification"), "1");
-      t.is(request.headers.get("X-Disable-Account-Activation"), "1");
+      expect(request.headers.get("X-Disable-Email-Notification")).toBe("1");
+      expect(request.headers.get("X-Disable-Account-Activation")).toBe("1");
 
       return HttpResponse.json(UserResponse);
     }),
@@ -171,7 +171,7 @@ test.serial("Register with all options", async (t) => {
   });
 });
 
-test.serial("Register with custom endpoint", async (t) => {
+test("Register with custom endpoint", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiRegistrationEndpoint: "/custom/register",
@@ -190,10 +190,10 @@ test.serial("Register with custom endpoint", async (t) => {
 
   const result = await drupalkit.userApi.register(payload);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle register error", async (t) => {
+test("Handle register error", async () => {
   const drupalkit = createDrupalkit();
 
   const payload = {
@@ -209,15 +209,15 @@ test.serial("Handle register error", async (t) => {
 
   const result = await drupalkit.userApi.register(payload);
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 });
 
 /**
  * Resend register email.
  */
 
-test.serial("Resend register email", async (t) => {
-  t.plan(3);
+test("Resend register email", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
@@ -225,9 +225,9 @@ test.serial("Resend register email", async (t) => {
 
   server.use(
     http.post("*/user-api/register/resend-email", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
-      t.deepEqual(await request.json(), { email, operation });
+      expect(await request.json()).toEqual({ email, operation });
 
       return HttpResponse.json(successResponse);
     }),
@@ -237,23 +237,23 @@ test.serial("Resend register email", async (t) => {
 
   const res = result.unwrap();
 
-  t.deepEqual(res, successResponse);
+  expect(res).toEqual(successResponse);
 });
 
-test.serial("Resend register email with custom request options", async (t) => {
-  t.plan(2);
+test("Resend register email with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
   const operation = "register";
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/user-api/register/resend-email", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(successResponse);
     }),
@@ -267,7 +267,7 @@ test.serial("Resend register email with custom request options", async (t) => {
   });
 });
 
-test.serial("Resend register email with custom endpoint", async (t) => {
+test("Resend register email with custom endpoint", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiRegisterResendEmailEndpoint: "/custom/register/resend-email",
@@ -283,10 +283,10 @@ test.serial("Resend register email with custom endpoint", async (t) => {
 
   const result = await drupalkit.userApi.resendRegisterEmail(email, operation);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Resend register email - deprecated version", async (t) => {
+test("Resend register email - deprecated version", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiResendMailEndpoint: "/custom/register/resend-email",
@@ -305,10 +305,10 @@ test.serial("Resend register email - deprecated version", async (t) => {
     operation,
   );
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle error while resend register email", async (t) => {
+test("Handle error while resend register email", async () => {
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
   const operation = "register";
@@ -321,21 +321,21 @@ test.serial("Handle error while resend register email", async (t) => {
 
   const result = await drupalkit.userApi.resendRegisterEmail(email, operation);
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 });
 
 /**
  * initCancelAccount().
  */
 
-test.serial("Init cancel account", async (t) => {
-  t.plan(2);
+test("Init cancel account", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
 
   server.use(
     http.post("*/user-api/cancel-account/init", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
       return HttpResponse.json(successResponse);
     }),
@@ -345,21 +345,21 @@ test.serial("Init cancel account", async (t) => {
 
   const res = result.unwrap();
 
-  t.deepEqual(res, successResponse);
+  expect(res).toEqual(successResponse);
 });
 
-test.serial("Init cancel account with custom request options", async (t) => {
-  t.plan(2);
+test("Init cancel account with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/user-api/cancel-account/init", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(successResponse);
     }),
@@ -373,7 +373,7 @@ test.serial("Init cancel account with custom request options", async (t) => {
   });
 });
 
-test.serial("Init cancel account with custom endpoint", async (t) => {
+test("Init cancel account with custom endpoint", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiInitCancelAccountEndpoint: "/custom/cancel-account/init",
@@ -387,10 +387,10 @@ test.serial("Init cancel account with custom endpoint", async (t) => {
 
   const result = await drupalkit.userApi.initCancelAccount();
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Init cancel account - deprecated version", async (t) => {
+test("Init cancel account - deprecated version", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiInitAccountCancelEndpoint: "/custom/cancel-account/init",
@@ -404,10 +404,10 @@ test.serial("Init cancel account - deprecated version", async (t) => {
 
   const result = await drupalkit.userApi.initAccountCancel();
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle error while init cancel account", async (t) => {
+test("Handle error while init cancel account", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -418,21 +418,21 @@ test.serial("Handle error while init cancel account", async (t) => {
 
   const result = await drupalkit.userApi.initCancelAccount();
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 });
 
 /**
  * cancelAccount().
  */
 
-test.serial("Cancel account", async (t) => {
-  t.plan(2);
+test("Cancel account", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
 
   server.use(
     http.post("*/user-api/cancel-account", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
       return HttpResponse.json(successResponse);
     }),
@@ -442,21 +442,21 @@ test.serial("Cancel account", async (t) => {
 
   const res = result.unwrap();
 
-  t.deepEqual(res, successResponse);
+  expect(res).toEqual(successResponse);
 });
 
-test.serial("Cancel account with custom request options", async (t) => {
-  t.plan(2);
+test("Cancel account with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/user-api/cancel-account", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
       return HttpResponse.json(successResponse);
     }),
@@ -470,7 +470,7 @@ test.serial("Cancel account with custom request options", async (t) => {
   });
 });
 
-test.serial("Cancel account with custom endpoint", async (t) => {
+test("Cancel account with custom endpoint", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiCancelAccountEndpoint: "/custom/cancel-account",
@@ -484,10 +484,10 @@ test.serial("Cancel account with custom endpoint", async (t) => {
 
   const result = await drupalkit.userApi.cancelAccount();
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle error while cancel account", async (t) => {
+test("Handle error while cancel account", async () => {
   const drupalkit = createDrupalkit();
 
   server.use(
@@ -498,24 +498,24 @@ test.serial("Handle error while cancel account", async (t) => {
 
   const result = await drupalkit.userApi.cancelAccount();
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 });
 
 /**
  * Init set password
  */
 
-test.serial("Init set password", async (t) => {
-  t.plan(3);
+test("Init set password", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
   server.use(
     http.post("*/user-api/set-password/init", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
-      t.deepEqual(await request.json(), { email });
+      expect(await request.json()).toEqual({ email });
 
       return HttpResponse.json(successResponse);
     }),
@@ -525,22 +525,22 @@ test.serial("Init set password", async (t) => {
 
   const res = result.unwrap();
 
-  t.deepEqual(res, successResponse);
+  expect(res).toEqual(successResponse);
 });
 
-test.serial("Init set password with custom request options", async (t) => {
-  t.plan(2);
+test("Init set password with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/user-api/set-password/init", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(successResponse);
     }),
@@ -554,7 +554,7 @@ test.serial("Init set password with custom request options", async (t) => {
   });
 });
 
-test.serial("Init set password with custom endpoint", async (t) => {
+test("Init set password with custom endpoint", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiInitSetPasswordEndpoint: "/custom/set-password/init",
@@ -569,10 +569,10 @@ test.serial("Init set password with custom endpoint", async (t) => {
 
   const result = await drupalkit.userApi.initSetPassword(email);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Init set password - deprecated version", async (t) => {
+test("Init set password - deprecated version", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiResetPasswordEndpoint: "/custom/set-password/init",
@@ -587,10 +587,10 @@ test.serial("Init set password - deprecated version", async (t) => {
 
   const result = await drupalkit.userApi.resetPassword(email);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle error while init set password", async (t) => {
+test("Handle error while init set password", async () => {
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
@@ -602,24 +602,24 @@ test.serial("Handle error while init set password", async (t) => {
 
   const result = await drupalkit.userApi.initSetPassword(email);
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 });
 
 /**
  * Set password
  */
 
-test.serial("Set password", async (t) => {
-  t.plan(3);
+test("Set password", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
   const newPassword = "new-password";
 
   server.use(
     http.post("*/user-api/set-password", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
-      t.deepEqual(await request.json(), { newPassword });
+      expect(await request.json()).toEqual({ newPassword });
 
       return HttpResponse.json(successResponse);
     }),
@@ -629,22 +629,22 @@ test.serial("Set password", async (t) => {
 
   const res = result.unwrap();
 
-  t.deepEqual(res, successResponse);
+  expect(res).toEqual(successResponse);
 });
 
-test.serial("Set password with custom request options", async (t) => {
-  t.plan(2);
+test("Set password with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
   const newPassword = "new-password";
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/user-api/set-password", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(successResponse);
     }),
@@ -658,7 +658,7 @@ test.serial("Set password with custom request options", async (t) => {
   });
 });
 
-test.serial("Set password with custom endpoint", async (t) => {
+test("Set password with custom endpoint", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiSetPasswordEndpoint: "/custom/set-password",
@@ -673,10 +673,10 @@ test.serial("Set password with custom endpoint", async (t) => {
 
   const result = await drupalkit.userApi.setPassword(newPassword);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Set password - deprecated version", async (t) => {
+test("Set password - deprecated version", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiUpdatePasswordEndpoint: "/custom/set-password",
@@ -691,10 +691,10 @@ test.serial("Set password - deprecated version", async (t) => {
 
   const result = await drupalkit.userApi.updatePassword(newPassword);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle error while set password", async (t) => {
+test("Handle error while set password", async () => {
   const drupalkit = createDrupalkit();
   const newPassword = "new-password";
 
@@ -706,24 +706,24 @@ test.serial("Handle error while set password", async (t) => {
 
   const result = await drupalkit.userApi.setPassword(newPassword);
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 });
 
 /**
  * Init unset password
  */
 
-test.serial("Init unset password", async (t) => {
-  t.plan(3);
+test("Init unset password", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
   server.use(
     http.post("*/user-api/unset-password/init", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
-      t.deepEqual(await request.json(), { email });
+      expect(await request.json()).toEqual({ email });
 
       return HttpResponse.json(successResponse);
     }),
@@ -733,22 +733,22 @@ test.serial("Init unset password", async (t) => {
 
   const res = result.unwrap();
 
-  t.deepEqual(res, successResponse);
+  expect(res).toEqual(successResponse);
 });
 
-test.serial("Init unset password with custom request options", async (t) => {
-  t.plan(2);
+test("Init unset password with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/user-api/unset-password/init", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(successResponse);
     }),
@@ -762,7 +762,7 @@ test.serial("Init unset password with custom request options", async (t) => {
   });
 });
 
-test.serial("Init unset password with custom endpoint", async (t) => {
+test("Init unset password with custom endpoint", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiInitUnsetPasswordEndpoint: "/custom/unset-password/init",
@@ -777,10 +777,10 @@ test.serial("Init unset password with custom endpoint", async (t) => {
 
   const result = await drupalkit.userApi.initUnsetPassword(email);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle error while init unset password", async (t) => {
+test("Handle error while init unset password", async () => {
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
@@ -792,23 +792,23 @@ test.serial("Handle error while init unset password", async (t) => {
 
   const result = await drupalkit.userApi.initUnsetPassword(email);
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 });
 
 /**
  * Unset password
  */
 
-test.serial("Unset password with verification", async (t) => {
-  t.plan(3);
+test("Unset password with verification", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
 
   server.use(
     http.post("*/user-api/unset-password", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
-      t.deepEqual(await request.json(), {});
+      expect(await request.json()).toEqual({});
 
       return HttpResponse.json(successResponse);
     }),
@@ -818,20 +818,20 @@ test.serial("Unset password with verification", async (t) => {
 
   const res = result.unwrap();
 
-  t.deepEqual(res, successResponse);
+  expect(res).toEqual(successResponse);
 });
 
-test.serial("Unset password with currentPassword", async (t) => {
-  t.plan(3);
+test("Unset password with currentPassword", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
   const currentPassword = "abc123";
 
   server.use(
     http.post("*/user-api/unset-password", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
-      t.deepEqual(await request.json(), { currentPassword });
+      expect(await request.json()).toEqual({ currentPassword });
 
       return HttpResponse.json(successResponse);
     }),
@@ -841,21 +841,21 @@ test.serial("Unset password with currentPassword", async (t) => {
 
   const res = result.unwrap();
 
-  t.deepEqual(res, successResponse);
+  expect(res).toEqual(successResponse);
 });
 
-test.serial("Unset password with custom request options", async (t) => {
-  t.plan(2);
+test("Unset password with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/user-api/unset-password", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(successResponse);
     }),
@@ -869,7 +869,7 @@ test.serial("Unset password with custom request options", async (t) => {
   });
 });
 
-test.serial("Unset password with custom endpoint", async (t) => {
+test("Unset password with custom endpoint", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiUnsetPasswordEndpoint: "/custom/unset-password",
@@ -883,10 +883,10 @@ test.serial("Unset password with custom endpoint", async (t) => {
 
   const result = await drupalkit.userApi.unsetPassword();
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle error while unset password", async (t) => {
+test("Handle error while unset password", async () => {
   const drupalkit = createDrupalkit();
   const newPassword = "new-password";
 
@@ -898,24 +898,24 @@ test.serial("Handle error while unset password", async (t) => {
 
   const result = await drupalkit.userApi.unsetPassword(newPassword);
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 });
 
 /**
  * Passwordless login
  */
 
-test.serial("Passwordless login", async (t) => {
-  t.plan(3);
+test("Passwordless login", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
   server.use(
     http.post("*/user-api/passwordless-login", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
-      t.deepEqual(await request.json(), { email });
+      expect(await request.json()).toEqual({ email });
 
       return HttpResponse.json(successResponse);
     }),
@@ -925,22 +925,22 @@ test.serial("Passwordless login", async (t) => {
 
   const res = result.unwrap();
 
-  t.deepEqual(res, successResponse);
+  expect(res).toEqual(successResponse);
 });
 
-test.serial("Passwordless login with custom request options", async (t) => {
-  t.plan(2);
+test("Passwordless login with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/user-api/passwordless-login", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(successResponse);
     }),
@@ -954,7 +954,7 @@ test.serial("Passwordless login with custom request options", async (t) => {
   });
 });
 
-test.serial("Passwordless login with custom endpoint", async (t) => {
+test("Passwordless login with custom endpoint", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiPasswordlessLoginEndpoint: "/custom/passwordless-login",
@@ -969,10 +969,10 @@ test.serial("Passwordless login with custom endpoint", async (t) => {
 
   const result = await drupalkit.userApi.passwordlessLogin(email);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle error while passwordless login", async (t) => {
+test("Handle error while passwordless login", async () => {
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
@@ -984,24 +984,24 @@ test.serial("Handle error while passwordless login", async (t) => {
 
   const result = await drupalkit.userApi.passwordlessLogin(email);
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 });
 
 /**
  * Init set email
  */
 
-test.serial("Init set email", async (t) => {
-  t.plan(3);
+test("Init set email", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
   server.use(
     http.post("*/user-api/set-email/init", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
-      t.deepEqual(await request.json(), { email });
+      expect(await request.json()).toEqual({ email });
 
       return HttpResponse.json(successResponse);
     }),
@@ -1011,22 +1011,22 @@ test.serial("Init set email", async (t) => {
 
   const res = result.unwrap();
 
-  t.deepEqual(res, successResponse);
+  expect(res).toEqual(successResponse);
 });
 
-test.serial("Init set email with custom request options", async (t) => {
-  t.plan(2);
+test("Init set email with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/user-api/set-email/init", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(successResponse);
     }),
@@ -1040,7 +1040,7 @@ test.serial("Init set email with custom request options", async (t) => {
   });
 });
 
-test.serial("Init set email with custom endpoint", async (t) => {
+test("Init set email with custom endpoint", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiInitSetEmailEndpoint: "/custom/set-email/init",
@@ -1055,10 +1055,10 @@ test.serial("Init set email with custom endpoint", async (t) => {
 
   const result = await drupalkit.userApi.initSetEmail(email);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Init set email - deprecated version", async (t) => {
+test("Init set email - deprecated version", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiVerifyEmailEndpoint: "/custom/set-email/init",
@@ -1073,10 +1073,10 @@ test.serial("Init set email - deprecated version", async (t) => {
 
   const result = await drupalkit.userApi.verifyEmail(email);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle error while init set email", async (t) => {
+test("Handle error while init set email", async () => {
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
@@ -1088,24 +1088,24 @@ test.serial("Handle error while init set email", async (t) => {
 
   const result = await drupalkit.userApi.initSetEmail(email);
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 });
 
 /**
  * Set email
  */
 
-test.serial("Set email", async (t) => {
-  t.plan(3);
+test("Set email", async () => {
+  expect.assertions(3);
 
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
   server.use(
     http.post("*/user-api/set-email", async ({ request }) => {
-      t.is(request.headers.get("content-type"), "application/json");
+      expect(request.headers.get("content-type")).toBe("application/json");
 
-      t.deepEqual(await request.json(), { email });
+      expect(await request.json()).toEqual({ email });
 
       return HttpResponse.json(successResponse);
     }),
@@ -1115,22 +1115,22 @@ test.serial("Set email", async (t) => {
 
   const res = result.unwrap();
 
-  t.deepEqual(res, successResponse);
+  expect(res).toEqual(successResponse);
 });
 
-test.serial("Set email with custom request options", async (t) => {
-  t.plan(2);
+test("Set email with custom request options", async () => {
+  expect.assertions(2);
 
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
   drupalkit.hook.before("request", (options) => {
-    t.is(options.cache, "no-cache");
+    expect(options.cache).toBe("no-cache");
   });
 
   server.use(
     http.post("*/user-api/set-email", async ({ request }) => {
-      t.is(request.headers.get("X-Custom"), "1");
+      expect(request.headers.get("X-Custom")).toBe("1");
 
       return HttpResponse.json(successResponse);
     }),
@@ -1144,7 +1144,7 @@ test.serial("Set email with custom request options", async (t) => {
   });
 });
 
-test.serial("Set email with custom endpoint", async (t) => {
+test("Set email with custom endpoint", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiSetEmailEndpoint: "/custom/set-email",
@@ -1159,10 +1159,10 @@ test.serial("Set email with custom endpoint", async (t) => {
 
   const result = await drupalkit.userApi.setEmail(email);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Set email - deprecated version", async (t) => {
+test("Set email - deprecated version", async () => {
   const drupalkit = createDrupalkit({
     baseUrl: BASE_URL,
     userApiUpdateEmailEndpoint: "/custom/set-email",
@@ -1177,10 +1177,10 @@ test.serial("Set email - deprecated version", async (t) => {
 
   const result = await drupalkit.userApi.updateEmail(email);
 
-  t.assert(result.ok);
+  expect(result.ok).toBeTruthy();
 });
 
-test.serial("Handle error while set email", async (t) => {
+test("Handle error while set email", async () => {
   const drupalkit = createDrupalkit();
   const email = "JzWZg@example.com";
 
@@ -1192,5 +1192,5 @@ test.serial("Handle error while set email", async (t) => {
 
   const result = await drupalkit.userApi.setEmail(email);
 
-  t.assert(result.err);
+  expect(result.err).toBeTruthy();
 });
