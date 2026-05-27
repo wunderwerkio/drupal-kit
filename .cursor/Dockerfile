@@ -10,8 +10,14 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       bash \
       ca-certificates \
+      curl \
       git \
-      sudo && \
+      jq \
+      less \
+      procps \
+      ripgrep \
+      sudo \
+      unzip && \
     rm -rf /var/lib/apt/lists/* && \
     npm install -g "pnpm@${PNPM_VERSION}"
 
