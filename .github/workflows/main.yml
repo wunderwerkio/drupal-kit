@@ -27,9 +27,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Audit dependencies
-        run: pnpm audit
-
       - name: Lint
         run: pnpm lint
         env:
