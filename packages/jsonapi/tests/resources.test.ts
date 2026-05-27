@@ -374,6 +374,34 @@ test.serial("Get many resources", async (t) => {
   t.snapshot(res);
 });
 
+test.serial("Get many resources with pagination", async (t) => {
+  t.plan(2);
+  const drupalkit = createDrupalkit();
+
+  drupalkit.hook.before("request", (options) => {
+    const url = new URL(options.url);
+    t.is(url.searchParams.get("page[limit]"), "3");
+    t.is(url.searchParams.get("page[offset]"), "6");
+  });
+
+  server.use(
+    http.get("*/jsonapi/node/article", () => {
+      return HttpResponse.json(JsonApiArticleCollection, {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+        },
+      });
+    }),
+  );
+
+  await drupalkit.jsonApi.resource("node--article", "readMany", {
+    pagination: {
+      limit: 3,
+      offset: 6,
+    },
+  });
+});
+
 test.serial("Get many resources with custom request options", async (t) => {
   t.plan(3);
 

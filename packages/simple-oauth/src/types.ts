@@ -36,30 +36,51 @@ export interface SimpleOauthErrorResponse {
   hint?: string;
 }
 
-export interface SimpleOauthGrant {
+export type SimpleOauthGrant =
+  | SimpleOauthCamelCaseClient
+  | SimpleOauthSnakeCaseClient;
+
+export interface SimpleOauthCamelCaseClient {
+  clientId: string;
+  clientSecret: string;
+}
+
+export interface SimpleOauthSnakeCaseClient {
   client_id: string;
   client_secret: string;
 }
 
-export interface SimpleOauthAuthCodeGrant extends SimpleOauthGrant {
+export type SimpleOauthAuthCodeGrant = SimpleOauthGrant & {
   code: string;
+  redirectUri?: string;
   redirect_uri?: string;
-}
+  codeVerifier?: string;
+  code_verifier?: string;
+};
 
-export interface SimpleOauthClientCredentialsGrant extends SimpleOauthGrant {
+export type SimpleOauthClientCredentialsGrant = SimpleOauthGrant & {
   scope?: string;
-}
+};
 
-export interface SimpleOauthRefreshTokenGrant extends SimpleOauthGrant {
-  refresh_token: string;
-  scope?: string;
-}
+export type SimpleOauthRefreshTokenGrant = SimpleOauthGrant &
+  (
+    | {
+        refreshToken: string;
+        refresh_token?: string;
+      }
+    | {
+        refresh_token: string;
+        refreshToken?: string;
+      }
+  ) & {
+    scope?: string;
+  };
 
-export interface SimpleOauthPasswordGrant extends SimpleOauthGrant {
+export type SimpleOauthPasswordGrant = SimpleOauthGrant & {
   username: string;
   password: string;
   scope?: string;
-}
+};
 
 export type SimpleOauthError =
   | "invalid_request"

@@ -7,6 +7,7 @@ import {
   Log,
   OverrideableRequestOptions,
   RequestOptions,
+  RequestHeaders,
   RequestRequestOptions,
   Url,
 } from "@drupal-kit/types";
@@ -14,6 +15,7 @@ import {
 import { DrupalkitError } from "./DrupalkitError.js";
 import fetchWrapper from "./fetch-wrapper.js";
 import {
+  AuthHeaderValue,
   Constructor,
   DrupalkitOptions,
   DrupalkitPlugin,
@@ -40,10 +42,11 @@ export class Drupalkit {
   readonly availableLocales: string[] = [];
   readonly defaultLocale?: string;
   readonly agent: string;
+  readonly defaultHeaders: RequestHeaders;
   readonly log: Log;
   readonly hook: HookCollection<Hooks>;
   private locale?: string;
-  private auth?: string;
+  private auth?: AuthHeaderValue;
 
   /**
    * Attach a plugin (or many) to your Drupalkit instance.
@@ -98,6 +101,8 @@ export class Drupalkit {
     this.hook = hook;
     this.baseUrl = trimSlashesFromSegment(options.baseUrl);
     this.agent = `drupal-kit/${VERSION}`;
+    this.defaultHeaders = options.defaultHeaders ?? {};
+    this.auth = options.auth;
 
     if (options.locale) {
       this.locale = options.locale;
@@ -138,17 +143,20 @@ export class Drupalkit {
    * @param options - Request options.
    * @param optionOverrides - Optional overridden options. These options are merged correctly with the actual options and allow for user-specific overrides.
    */
-  public request<R, E = unknown>(
+  public async request<TResponse, TError = unknown>(
     url: Url,
     options: RequestOptions,
     optionOverrides?: OverrideableRequestOptions,
-  ): Promise<Result<DrupalkitResponse<R, number>, DrupalkitError<E>>> {
+  ): Promise<
+    Result<DrupalkitResponse<TResponse, number>, DrupalkitError<TError>>
+  > {
     // eslint-disable-next-line jsdoc/require-jsdoc
     const request = (options: RequestRequestOptions) => {
-      return fetchWrapper<R>(options);
+      return fetchWrapper<TResponse>(options);
     };
 
     const headers = {
+      ...this.defaultHeaders,
       ...options.headers,
       "user-agent": this.agent,
     };
@@ -161,7 +169,10 @@ export class Drupalkit {
     if (options.unauthenticated || optionOverrides?.unauthenticated) {
       delete headers.authorization;
     } else if (this.auth) {
-      headers.authorization = this.auth;
+      const auth = await this.resolveAuth();
+      if (auth) {
+        headers.authorization = auth;
+      }
     }
 
     const requestOptions = {
@@ -176,7 +187,9 @@ export class Drupalkit {
     };
 
     const p = this.hook("request", request, requestOptions)
-      .then((response) => Result.Ok(response as DrupalkitResponse<R, number>))
+      .then((response) =>
+        Result.Ok(response as DrupalkitResponse<TResponse, number>),
+      )
       .catch((error) => {
         if (error instanceof DrupalkitError) return Result.Err(error);
 
@@ -195,7 +208,7 @@ export class Drupalkit {
    *
    * @param auth - The authorization header value.
    */
-  public setAuth(auth: string) {
+  public setAuth(auth: AuthHeaderValue) {
     this.auth = auth;
   }
 
@@ -213,6 +226,13 @@ export class Drupalkit {
    */
   public unsetAuth() {
     this.auth = undefined;
+  }
+
+  /**
+   * Resolve the current authorization header value.
+   */
+  private async resolveAuth() {
+    return typeof this.auth === "function" ? await this.auth() : this.auth;
   }
 
   /**

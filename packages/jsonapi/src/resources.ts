@@ -131,13 +131,41 @@ export interface RelationshipLinkage<T extends string> {
  */
 
 type ExtractArrayElementType<T> = T extends Array<infer U> ? U : never;
+type DeriveDepth = 0 | 1 | 2 | 3 | 4 | 5;
+type PreviousDepth = {
+  0: 0;
+  1: 0;
+  2: 1;
+  3: 2;
+  4: 3;
+  5: 4;
+};
 
-type DeriveSimpleJsonApiResourceUnion<T> = T extends infer U extends
-  JsonApiResource
-  ? DeriveSimpleJsonApiResource<U>
+type DeriveSimpleJsonApiResourceUnion<
+  TResource,
+  TDepth extends DeriveDepth,
+> = TResource extends infer U extends JsonApiResource
+  ? DeriveSimpleJsonApiResource<U, PreviousDepth[TDepth]>
   : never;
 
-export type DeriveSimpleJsonApiResource<TResource extends JsonApiResource> = {
+type DeriveSimpleJsonApiResourceRelationship<
+  TRelationship,
+  TDepth extends DeriveDepth,
+> = TDepth extends 0
+  ? never
+  : NonNullable<TRelationship> extends JsonApiResource
+    ? DeriveSimpleJsonApiResourceUnion<NonNullable<TRelationship>, TDepth>
+    : NonNullable<TRelationship> extends JsonApiResource[]
+      ? DeriveSimpleJsonApiResourceUnion<
+          ExtractArrayElementType<NonNullable<TRelationship>>,
+          TDepth
+        >[]
+      : never;
+
+export type DeriveSimpleJsonApiResource<
+  TResource extends JsonApiResource,
+  TDepth extends DeriveDepth = 5,
+> = {
   id: TResource["id"];
   type: TResource["type"];
   resourceIdObjMeta: {
@@ -156,12 +184,14 @@ export type DeriveSimpleJsonApiResource<TResource extends JsonApiResource> = {
     : never;
 } & {
   [key in keyof TResource["relationships"]]: TResource["relationships"][key] extends JsonApiResource
-    ? DeriveSimpleJsonApiResourceUnion<TResource["relationships"][key]>
-    : TResource["relationships"][key] extends JsonApiResource[]
-      ? DeriveSimpleJsonApiResourceUnion<
-          ExtractArrayElementType<TResource["relationships"][key]>
-        >[]
-      : never;
+    ? DeriveSimpleJsonApiResourceRelationship<
+        TResource["relationships"][key],
+        TDepth
+      >
+    : DeriveSimpleJsonApiResourceRelationship<
+        TResource["relationships"][key],
+        TDepth
+      >;
 };
 
 /**
@@ -169,13 +199,37 @@ export type DeriveSimpleJsonApiResource<TResource extends JsonApiResource> = {
  * object from a standard json api resource object.
  */
 
-type DeriveResourceObjectUnion<T> = T extends infer U extends JsonApiResource
-  ? DeriveResourceObject<U>
+type DeriveResourceObjectUnion<
+  TResource,
+  TDepth extends DeriveDepth,
+> = TResource extends infer U extends JsonApiResource
+  ? DeriveResourceObject<U, PreviousDepth[TDepth]>
   : never;
 
-export type DeriveResourceObject<TResource extends JsonApiResource> = {
-  type: TResource["type"];
+type DeriveResourceObjectRelationship<
+  TRelationship,
+  TDepth extends DeriveDepth,
+> = TDepth extends 0
+  ? never
+  : NonNullable<TRelationship> extends JsonApiResource
+    ? Relationship<
+        DeriveResourceObjectUnion<NonNullable<TRelationship>, TDepth>
+      >
+    : NonNullable<TRelationship> extends JsonApiResource[]
+      ? Relationship<
+          DeriveResourceObjectUnion<
+            ExtractArrayElementType<NonNullable<TRelationship>>,
+            TDepth
+          >[]
+        >
+      : never;
+
+export type DeriveResourceObject<
+  TResource extends JsonApiResource,
+  TDepth extends DeriveDepth = 5,
+> = {
   id: TResource["id"];
+  type: TResource["type"];
   attributes: {
     [key in keyof TResource["attributes"]]: TResource["attributes"][key] extends Attributes[0]
       ? TResource["attributes"][key]
@@ -192,23 +246,38 @@ export type DeriveResourceObject<TResource extends JsonApiResource> = {
       : never;
   };
   relationships: {
-    [key in keyof TResource["relationships"]]: TResource["relationships"][key] extends JsonApiResource
-      ? Relationship<DeriveResourceObject<TResource["relationships"][key]>>
-      : TResource["relationships"][key] extends JsonApiResource[]
-        ? Relationship<
-            DeriveResourceObjectUnion<
-              ExtractArrayElementType<TResource["relationships"][key]>
-            >[]
-          >
-        : never;
+    [key in keyof TResource["relationships"]]: DeriveResourceObjectRelationship<
+      TResource["relationships"][key],
+      TDepth
+    >;
   };
 };
 
-type ResourceRelationshipLinkage<T> = T extends JsonApiResource
-  ? RelationshipLinkage<T["type"]>
-  : T extends JsonApiResource[]
-    ? RelationshipLinkage<ExtractArrayElementType<T>["type"]>[]
-    : never;
+type ResourceRelationshipLinkage<TRelationship> =
+  NonNullable<TRelationship> extends JsonApiResource
+    ? RelationshipLinkage<NonNullable<TRelationship>["type"]>
+    : NonNullable<TRelationship> extends JsonApiResource[]
+      ? RelationshipLinkage<
+          ExtractArrayElementType<NonNullable<TRelationship>>["type"]
+        >[]
+      : never;
+
+export type JsonApiPagination = {
+  limit?: number;
+  offset?: number;
+};
+
+export type JsonApiPaginationLinks = {
+  first?: Link | null;
+  prev?: Link | null;
+  next?: Link | null;
+  last?: Link | null;
+};
+
+export type WithPaginationLinks<TResponse extends { links?: unknown }> =
+  TResponse & {
+    links?: TResponse["links"] & JsonApiPaginationLinks;
+  };
 
 /**
  * Creates a simple json api resource from a resource object.
@@ -224,13 +293,13 @@ export type SimpleFromResourceObject<T> =
 /**
  * Extract the update payload type from a resource object.
  */
-type ResourceCreateUpdatePayload<R extends JsonApiResource> = object & {
-  id?: R["id"];
-  type?: R["type"];
-  attributes?: Partial<R["attributes"]>;
+type ResourceCreateUpdatePayload<TResource extends JsonApiResource> = object & {
+  id?: TResource["id"];
+  type?: TResource["type"];
+  attributes?: Partial<TResource["attributes"]>;
   relationships?: Partial<{
-    [key in keyof R["relationships"]]: {
-      data: ResourceRelationshipLinkage<R["relationships"][key]>;
+    [key in keyof TResource["relationships"]]: {
+      data: ResourceRelationshipLinkage<TResource["relationships"][key]>;
     } | null;
   }>;
 };
@@ -252,6 +321,27 @@ export type ResourceResult<
   DrupalkitJsonApiError
 >;
 
+export type JsonApiResourceOperationResult<
+  TResource extends JsonApiResource,
+  TOperation,
+> = TOperation extends "readSingle"
+  ? Result<Response<DeriveResourceObject<TResource>>, DrupalkitJsonApiError>
+  : TOperation extends "readMany"
+    ? Result<
+        WithPaginationLinks<Response<DeriveResourceObject<TResource>[]>>,
+        DrupalkitJsonApiError
+      >
+    : TOperation extends "create"
+      ? Result<Response<DeriveResourceObject<TResource>>, DrupalkitJsonApiError>
+      : TOperation extends "update"
+        ? Result<
+            Response<DeriveResourceObject<TResource>>,
+            DrupalkitJsonApiError
+          >
+        : TOperation extends "delete"
+          ? Result<true, DrupalkitJsonApiError>
+          : Result<never, DrupalkitJsonApiError>;
+
 /**
  * Remove index signature from T.
  *
@@ -271,6 +361,7 @@ export type RemoveIndex<T> = {
 
 type ReadParameters = {
   queryParams?: DrupalJsonApiParamsInterface;
+  pagination?: JsonApiPagination;
 };
 
 export type ReadSingleParameters = ReadParameters & {
@@ -279,13 +370,13 @@ export type ReadSingleParameters = ReadParameters & {
 
 export type ReadManyParameters = ReadParameters;
 
-export type CreateParameters<Resource extends JsonApiResource> = {
-  payload: ResourceCreateUpdatePayload<Resource>;
+export type CreateParameters<TResource extends JsonApiResource> = {
+  payload: ResourceCreateUpdatePayload<TResource>;
 };
 
-export type UpdateParameters<Resource extends JsonApiResource> = {
+export type UpdateParameters<TResource extends JsonApiResource> = {
   uuid: string;
-  payload: ResourceCreateUpdatePayload<Resource>;
+  payload: ResourceCreateUpdatePayload<TResource>;
 };
 
 export type DeleteParameters = {
@@ -296,17 +387,17 @@ export type DeleteParameters = {
  * Infer correct parameters by operation and resource type.
  */
 export type ToParameters<
-  Operation,
-  Resource extends JsonApiResource,
-> = "readSingle" extends Operation
+  TOperation,
+  TResource extends JsonApiResource,
+> = "readSingle" extends TOperation
   ? ReadSingleParameters
-  : "readMany" extends Operation
+  : "readMany" extends TOperation
     ? ReadManyParameters
-    : "create" extends Operation
-      ? CreateParameters<Resource>
-      : "update" extends Operation
-        ? UpdateParameters<Resource>
-        : "delete" extends Operation
+    : "create" extends TOperation
+      ? CreateParameters<TResource>
+      : "update" extends TOperation
+        ? UpdateParameters<TResource>
+        : "delete" extends TOperation
           ? DeleteParameters
           : never;
 

@@ -33,6 +33,7 @@ export interface NodeArticleResource extends JsonApiResource {
   };
   relationships: {
     uid: UserResource;
+    field_teaser_image?: FileResource;
   };
 }
 

@@ -34,6 +34,45 @@ export const DrupalkitSimpleOauth = (
   const oauthUserInfoEndpoint =
     drupalkitOptions.oauthUserInfoEndpoint ?? "/oauth/userinfo";
 
+  const grantPayloadFields = {
+    authorization_code: {
+      clientId: "client_id",
+      client_id: "client_id",
+      clientSecret: "client_secret",
+      client_secret: "client_secret",
+      code: "code",
+      redirectUri: "redirect_uri",
+      redirect_uri: "redirect_uri",
+      codeVerifier: "code_verifier",
+      code_verifier: "code_verifier",
+    },
+    client_credentials: {
+      clientId: "client_id",
+      client_id: "client_id",
+      clientSecret: "client_secret",
+      client_secret: "client_secret",
+      scope: "scope",
+    },
+    refresh_token: {
+      clientId: "client_id",
+      client_id: "client_id",
+      clientSecret: "client_secret",
+      client_secret: "client_secret",
+      refreshToken: "refresh_token",
+      refresh_token: "refresh_token",
+      scope: "scope",
+    },
+    password: {
+      clientId: "client_id",
+      client_id: "client_id",
+      clientSecret: "client_secret",
+      client_secret: "client_secret",
+      username: "username",
+      password: "password",
+      scope: "scope",
+    },
+  } satisfies Record<keyof SimpleOauthGrantTypes, Record<string, string>>;
+
   /**
    * Request a access token via given grant.
    *
@@ -42,19 +81,18 @@ export const DrupalkitSimpleOauth = (
    * @param requestOptions - Optional request options.
    */
   const requestToken = async <
-    GrantType extends keyof SimpleOauthGrantTypes,
-    Grant extends SimpleOauthGrantTypes[GrantType],
+    TGrantType extends keyof SimpleOauthGrantTypes,
+    TGrant extends SimpleOauthGrantTypes[TGrantType],
   >(
-    grantType: GrantType,
-    grant: Grant,
+    grantType: TGrantType,
+    grant: TGrant,
     requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<SimpleOauthTokenResponse, DrupalkitSimpleOauthError>> => {
     const url = drupalkit.buildUrl(oauthTokenEndpoint);
 
-    const body = new URLSearchParams();
-    body.append("grant_type", grantType);
-    for (const [key, value] of Object.entries(grant)) {
-      body.append(key, value);
+    const body = buildTokenRequestBody(grantType, grant);
+    if (body instanceof DrupalkitSimpleOauthError) {
+      return Result.Err(body);
     }
 
     const result = await drupalkit.request<SimpleOauthTokenResponse>(
@@ -77,6 +115,54 @@ export const DrupalkitSimpleOauth = (
     }
 
     return Result.Ok(result.val.data);
+  };
+
+  const buildTokenRequestBody = <
+    TGrantType extends keyof SimpleOauthGrantTypes,
+    TGrant extends SimpleOauthGrantTypes[TGrantType],
+  >(
+    grantType: TGrantType,
+    grant: TGrant,
+  ): URLSearchParams | DrupalkitSimpleOauthError => {
+    const fields = grantPayloadFields[grantType];
+    const invalidKeys = Object.keys(grant).filter((key) => !(key in fields));
+
+    if (invalidKeys.length) {
+      return new DrupalkitSimpleOauthError(
+        `Invalid ${String(grantType)} grant property "${invalidKeys[0]}".`,
+        400,
+        "invalid_request",
+        {
+          request: {
+            url: drupalkit.buildUrl(oauthTokenEndpoint),
+            baseUrl: drupalkitOptions.baseUrl,
+            method: "POST",
+            headers: {},
+          },
+        },
+        `Allowed properties: ${Object.keys(fields).join(", ")}`,
+      );
+    }
+
+    const body = new URLSearchParams();
+    const appendedFields = new Set<string>();
+    body.append("grant_type", String(grantType));
+
+    for (const [property, field] of Object.entries(fields)) {
+      if (appendedFields.has(field)) {
+        continue;
+      }
+
+      const value = grant[property as keyof typeof grant];
+      if (value === undefined || value === null) {
+        continue;
+      }
+
+      body.append(field, String(value));
+      appendedFields.add(field);
+    }
+
+    return body;
   };
 
   /**

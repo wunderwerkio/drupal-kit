@@ -163,6 +163,9 @@ async function testSimplifiedResourceObject() {
   const simplifiedRes = drupalkit.jsonApi.simplifyResourceResponse(res);
 
   expectType<DeriveSimpleJsonApiResource<NodeArticleResource>>(simplifiedRes);
+  expectType<DeriveSimpleJsonApiResource<FileResource> | undefined>(
+    simplifiedRes.field_teaser_image,
+  );
 
   // Test read many.
   const resMany = (
@@ -174,6 +177,17 @@ async function testSimplifiedResourceObject() {
   expectType<DeriveSimpleJsonApiResource<NodeArticleResource>[]>(
     simplifiedResMany,
   );
+}
+
+async function testPaginationParameters() {
+  const drupalkit = createDrupalkit();
+
+  await drupalkit.jsonApi.resource("node--article", "readMany", {
+    pagination: {
+      limit: 10,
+      offset: 20,
+    },
+  });
 }
 
 async function testDiscriminatedUnionRelationType() {

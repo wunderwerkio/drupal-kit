@@ -19,7 +19,7 @@ declare module "@drupal-kit/core" {
  * @param drupalkit - The Drupalkit instance.
  * @param drupalkitOptions - The options for the Drupalkit instance.
  */
-export const DrupalkitSimpleOauthAuthCode = <Operation extends string>(
+export const DrupalkitSimpleOauthAuthCode = <TOperation extends string>(
   drupalkit: Drupalkit,
   drupalkitOptions: DrupalkitOptions,
 ) => {
@@ -37,7 +37,7 @@ export const DrupalkitSimpleOauthAuthCode = <Operation extends string>(
    * @param requestOptions - Optional request options.
    */
   const requestAuthCode = async (
-    operation: Operation,
+    operation: TOperation,
     email: string,
     requestOptions?: OverrideableRequestOptions,
   ): Promise<Result<AuthCodeResponse, DrupalkitError>> => {

@@ -10,7 +10,7 @@ import { DrupalkitError, UNKNOWN_ERROR_PREFIX } from "./DrupalkitError.js";
  *
  * @param requestOptions - Options for the request.
  */
-export default function fetchWrapper<R>(
+export default function fetchWrapper<TResponse>(
   requestOptions: RequestRequestOptions & {
     redirect?: "error" | "follow" | "manual";
     fetch?: Fetch;
@@ -56,7 +56,10 @@ export default function fetchWrapper<R>(
       }
 
       if (status >= 400) {
-        const data = await getResponseData(response);
+        const data = sanitizeServerErrorData(
+          await getResponseData(response),
+          status,
+        );
 
         const error = new DrupalkitError(toErrorMessage(data), status, {
           response: {
@@ -78,7 +81,7 @@ export default function fetchWrapper<R>(
         status,
         url,
         headers,
-        data: data as R,
+        data: data as TResponse,
       };
     })
     .catch((error) => {
@@ -133,4 +136,41 @@ function toErrorMessage(data: unknown): string {
 
   // istanbul ignore next - just in case
   return `${UNKNOWN_ERROR_PREFIX} ${JSON.stringify(data)}`;
+}
+
+/**
+ * Replace detailed server errors with a generic message.
+ *
+ * @param data - The response data.
+ * @param status - The HTTP status code.
+ */
+function sanitizeServerErrorData(data: unknown, status: number) {
+  if (status < 500 || !hasServerErrorDetails(data)) {
+    return data;
+  }
+
+  return "The Drupal server returned an internal error.";
+}
+
+/**
+ * Check if response data appears to contain a server trace.
+ *
+ * @param data - The response data.
+ */
+function hasServerErrorDetails(data: unknown): boolean {
+  if (typeof data === "string") {
+    return /stack trace|traceback|^\s*#\d+\s|\n\s*at\s+\S+/im.test(data);
+  }
+
+  if (!data || typeof data !== "object") {
+    return false;
+  }
+
+  return Object.entries(data).some(([key, value]) => {
+    if (/trace|backtrace|exception|file|line/i.test(key)) {
+      return true;
+    }
+
+    return hasServerErrorDetails(value);
+  });
 }

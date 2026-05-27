@@ -16,6 +16,12 @@ const server = setupServer(
     return HttpResponse.json(DemoEndpointResponse);
   }),
   http.get("*/not-found", () => HttpResponse.text("", { status: 404 })),
+  http.get("*/server-error", () =>
+    HttpResponse.text(
+      "Error: Database credentials leaked\n    at connect (/app/index.php:10:1)",
+      { status: 500 },
+    ),
+  ),
   http.get("*/network-error", () => HttpResponse.error()),
 );
 
@@ -269,6 +275,62 @@ test.serial("Add auth header if present", async (t) => {
   });
 });
 
+test.serial("Resolve auth header before each request", async (t) => {
+  t.plan(2);
+  let token = "Bearer first";
+
+  server.use(
+    http.get("*/demo-endpoint", ({ request }) => {
+      t.is(request.headers.get("authorization"), token);
+
+      return HttpResponse.text();
+    }),
+  );
+
+  const drupalkit = new Drupalkit({
+    baseUrl: BASE_URL,
+    auth: () => token,
+  });
+
+  await drupalkit.request("/demo-endpoint", {
+    method: "GET",
+  });
+
+  token = "Bearer second";
+
+  await drupalkit.request("/demo-endpoint", {
+    method: "GET",
+  });
+});
+
+test.serial("Apply default request headers", async (t) => {
+  t.plan(2);
+
+  server.use(
+    http.get("*/demo-endpoint", ({ request }) => {
+      t.is(request.headers.get("X-Default"), "default");
+      t.is(request.headers.get("X-Override"), "request");
+
+      return HttpResponse.text();
+    }),
+  );
+
+  const drupalkit = new Drupalkit({
+    baseUrl: BASE_URL,
+    defaultHeaders: {
+      "X-Default": "default",
+      "X-Override": "default",
+    },
+  });
+
+  await drupalkit.request("/demo-endpoint", {
+    method: "GET",
+    headers: {
+      "X-Override": "request",
+    },
+  });
+});
+
 test.serial("Handle network errors", async (t) => {
   const drupalkit = new Drupalkit({
     baseUrl: BASE_URL,
@@ -283,6 +345,21 @@ test.serial("Handle network errors", async (t) => {
 
   t.assert(error instanceof DrupalkitError);
   t.is(error.response, undefined);
+});
+
+test.serial("Sanitize Drupal server error details", async (t) => {
+  const drupalkit = new Drupalkit({
+    baseUrl: BASE_URL,
+  });
+
+  const result = await drupalkit.request("/server-error", {
+    method: "GET",
+  });
+
+  const error = result.expectErr("Must be error");
+
+  t.is(error.message, "The Drupal server returned an internal error.");
+  t.is(error.response?.data, "The Drupal server returned an internal error.");
 });
 
 test.serial("Allow options overrides", async (t) => {

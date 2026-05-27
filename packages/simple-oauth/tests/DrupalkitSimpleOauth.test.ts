@@ -72,8 +72,8 @@ test.serial("Request token with client credentials grant", async (t) => {
   const result = await drupalkit.simpleOauth.requestToken(
     "client_credentials",
     {
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
     },
   );
 
@@ -102,8 +102,8 @@ test.serial("Request token with custom request options", async (t) => {
   await drupalkit.simpleOauth.requestToken(
     "client_credentials",
     {
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
     },
     {
       cache: "no-cache",
@@ -112,6 +112,72 @@ test.serial("Request token with custom request options", async (t) => {
       },
     },
   );
+});
+
+test.serial("Request token with PKCE code verifier", async (t) => {
+  t.plan(1);
+
+  const drupalkit = createDrupalkit();
+
+  server.use(
+    http.post("*/oauth/token", async ({ request }) => {
+      t.is(
+        await request.text(),
+        "grant_type=authorization_code&client_id=12345678901234567890123456789012&client_secret=F9w1cM0GQw7GjjQUaZcscWHtxnMOvn4d&code=abc&redirect_uri=https%3A%2F%2Fexample.com%2Fcallback&code_verifier=verifier",
+      );
+
+      return HttpResponse.json(TokenResponse);
+    }),
+  );
+
+  await drupalkit.simpleOauth.requestToken("authorization_code", {
+    clientId: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
+    code: "abc",
+    redirectUri: "https://example.com/callback",
+    codeVerifier: "verifier",
+  });
+});
+
+test.serial("Reject invalid token grant payload properties", async (t) => {
+  const drupalkit = createDrupalkit();
+
+  const result = await drupalkit.simpleOauth.requestToken(
+    "client_credentials",
+    {
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
+      invalid: "value",
+    } as never,
+  );
+
+  const error = result.expectErr("Expected error");
+
+  t.assert(error instanceof DrupalkitSimpleOauthError);
+  t.is(error.statusCode, 400);
+  t.true(error.message.includes("invalid"));
+});
+
+test.serial("Allow legacy snake case token grant payloads", async (t) => {
+  t.plan(1);
+
+  const drupalkit = createDrupalkit();
+
+  server.use(
+    http.post("*/oauth/token", async ({ request }) => {
+      t.is(
+        await request.text(),
+        "grant_type=client_credentials&client_id=12345678901234567890123456789012&client_secret=F9w1cM0GQw7GjjQUaZcscWHtxnMOvn4d",
+      );
+
+      return HttpResponse.json(TokenResponse);
+    }),
+  );
+
+  await drupalkit.simpleOauth.requestToken("client_credentials", {
+    client_id: CLIENT_ID,
+    client_secret: CLIENT_SECRET,
+  });
 });
 
 test.serial("Request token authenticated", async (t) => {
@@ -138,8 +204,8 @@ test.serial("Request token authenticated", async (t) => {
   await drupalkit.simpleOauth.requestToken(
     "client_credentials",
     {
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
     },
     {
       cache: "no-cache",
@@ -164,8 +230,8 @@ test.serial("Request token with explicit endpoint", async (t) => {
   const result = await drupalkit.simpleOauth.requestToken(
     "client_credentials",
     {
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
     },
   );
 
@@ -184,8 +250,8 @@ test.serial("Handle request errors", async (t) => {
   const result = await drupalkit.simpleOauth.requestToken(
     "client_credentials",
     {
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
     },
   );
 
@@ -203,8 +269,8 @@ test.serial("Handle network errors", async (t) => {
   const result = await drupalkit.simpleOauth.requestToken(
     "client_credentials",
     {
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
     },
   );
 

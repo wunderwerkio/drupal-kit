@@ -13,6 +13,7 @@ import {
   FileRelationshipKeys,
   JsonApiIndex,
   JsonApiResource,
+  JsonApiResourceOperationResult,
   JsonApiResources,
   MenuLinkContentResource,
   ReadManyParameters,
@@ -22,6 +23,7 @@ import {
   ToParameters,
   UpdateParameters,
   ValidOperation,
+  WithPaginationLinks,
 } from "./resources.js";
 import {
   isJsonApiRequest,
@@ -113,8 +115,9 @@ export const DrupalkitJsonApi = (
    * @returns A result object containing the resource object or an error.
    */
   const getResource = async <
-    R extends JsonApiResource,
-    TResourceObject extends DeriveResourceObject<R> = DeriveResourceObject<R>,
+    TResource extends JsonApiResource,
+    TResourceObject extends
+      DeriveResourceObject<TResource> = DeriveResourceObject<TResource>,
   >(
     type: ResourceType,
     parameters: ReadSingleParameters,
@@ -128,7 +131,7 @@ export const DrupalkitJsonApi = (
 
     const url = buildJsonApiUrl(path, {
       localeOverride: requestOptions?.locale,
-      query: parameters.queryParams?.getQueryObject(),
+      query: buildReadQuery(parameters),
     });
 
     const result = await drupalkit.request<Response<TResourceObject>>(
@@ -156,8 +159,10 @@ export const DrupalkitJsonApi = (
    * @param data - The resource response to simplify.
    */
   const simplifyResourceResponse = <
-    R extends JsonApiResource,
-    TResourceObject extends DeriveResourceObject<R> | DeriveResourceObject<R>[],
+    TResource extends JsonApiResource,
+    TResourceObject extends
+      | DeriveResourceObject<TResource>
+      | DeriveResourceObject<TResource>[],
     TSimpleResource extends SimpleFromResourceObject<TResourceObject>,
   >(
     data: Response<TResourceObject>,
@@ -176,8 +181,9 @@ export const DrupalkitJsonApi = (
    * @returns A result object containing the resource object or an error.
    */
   const getResourceCollection = async <
-    R extends JsonApiResource,
-    TResourceObject extends DeriveResourceObject<R> = DeriveResourceObject<R>,
+    TResource extends JsonApiResource,
+    TResourceObject extends
+      DeriveResourceObject<TResource> = DeriveResourceObject<TResource>,
   >(
     type: ResourceType,
     parameters: ReadManyParameters,
@@ -185,12 +191,17 @@ export const DrupalkitJsonApi = (
     options?: {
       path?: string;
     },
-  ): Promise<Result<Response<TResourceObject[]>, DrupalkitJsonApiError>> => {
+  ): Promise<
+    Result<
+      WithPaginationLinks<Response<TResourceObject[]>>,
+      DrupalkitJsonApiError
+    >
+  > => {
     const path = options?.path ?? type.replace("--", "/");
 
     const url = buildJsonApiUrl(path, {
       localeOverride: requestOptions?.locale,
-      query: parameters.queryParams?.getQueryObject(),
+      query: buildReadQuery(parameters),
     });
 
     const result = await drupalkit.request<Response<TResourceObject[]>>(
@@ -220,11 +231,12 @@ export const DrupalkitJsonApi = (
    * @returns A result object containing the resource object or an error.
    */
   const createResource = async <
-    R extends JsonApiResource,
-    TResourceObject extends DeriveResourceObject<R> = DeriveResourceObject<R>,
+    TResource extends JsonApiResource,
+    TResourceObject extends
+      DeriveResourceObject<TResource> = DeriveResourceObject<TResource>,
   >(
     type: ResourceType,
-    parameters: CreateParameters<R>,
+    parameters: CreateParameters<TResource>,
     requestOptions?: OverrideableRequestOptions,
     options?: {
       path?: string;
@@ -271,11 +283,12 @@ export const DrupalkitJsonApi = (
    * @returns A result object containing the resource object or an error.
    */
   const updateResource = async <
-    R extends JsonApiResource,
-    TResourceObject extends DeriveResourceObject<R> = DeriveResourceObject<R>,
+    TResource extends JsonApiResource,
+    TResourceObject extends
+      DeriveResourceObject<TResource> = DeriveResourceObject<TResource>,
   >(
     type: ResourceType,
-    parameters: UpdateParameters<R>,
+    parameters: UpdateParameters<TResource>,
     requestOptions?: OverrideableRequestOptions,
     options?: {
       path?: string;
@@ -375,6 +388,15 @@ export const DrupalkitJsonApi = (
     });
   };
 
+  const buildReadQuery = (
+    parameters: ReadSingleParameters | ReadManyParameters,
+  ) => {
+    return {
+      ...parameters.queryParams?.getQueryObject(),
+      ...(parameters.pagination ? { page: parameters.pagination } : {}),
+    };
+  };
+
   /**
    * Upload a file to an entity's file relationship field.
    *
@@ -386,12 +408,12 @@ export const DrupalkitJsonApi = (
    * @param requestOptions - Optional request options.
    */
   const uploadFile = async <
-    Type extends keyof JsonApiResources,
-    TField extends FileRelationshipKeys<Type>,
+    TType extends keyof JsonApiResources,
+    TField extends FileRelationshipKeys<TType>,
     TFileResource extends
-      JsonApiResources[Type]["resource"]["relationships"][TField],
+      JsonApiResources[TType]["resource"]["relationships"][TField],
   >(
-    type: Type,
+    type: TType,
     uuid: string,
     fieldName: TField,
     file: File | Blob,
@@ -473,70 +495,56 @@ export const DrupalkitJsonApi = (
       getMenuItems,
       uploadFile,
       async resource<
-        Type extends keyof JsonApiResources,
-        Resource extends JsonApiResources[Type]["resource"],
-        Operation extends JsonApiResources[Type]["operations"],
-        Params extends ToParameters<Operation, Resource>,
-        Return extends Record<
-          Operation,
-          "readSingle" extends Operation
-            ? Awaited<ReturnType<typeof getResource<Resource>>>
-            : "readMany" extends Operation
-              ? Awaited<ReturnType<typeof getResourceCollection<Resource>>>
-              : "create" extends Operation
-                ? Awaited<ReturnType<typeof createResource<Resource>>>
-                : "update" extends Operation
-                  ? Awaited<ReturnType<typeof updateResource<Resource>>>
-                  : "delete" extends Operation
-                    ? Awaited<ReturnType<typeof deleteResource>>
-                    : Result<never, Error>
-        >,
+        TType extends keyof JsonApiResources,
+        TResource extends JsonApiResources[TType]["resource"],
+        TOperation extends JsonApiResources[TType]["operations"],
+        TParams extends ToParameters<TOperation, TResource>,
       >(
-        type: Type,
-        operation: Operation,
-        parameters: Params,
+        type: TType,
+        operation: TOperation,
+        parameters: TParams,
         requestOptions?: OverrideableRequestOptions,
-      ): Promise<Return[Operation]> {
+      ): Promise<JsonApiResourceOperationResult<TResource, TOperation>> {
         switch (operation as ValidOperation) {
           case "readSingle":
             return (await getResource(
               type,
               parameters as ReadSingleParameters,
               requestOptions,
-            )) as Return[Operation];
+            )) as JsonApiResourceOperationResult<TResource, TOperation>;
 
           case "readMany":
             return (await getResourceCollection(
               type,
               parameters as ReadManyParameters,
               requestOptions,
-            )) as Return[Operation];
+            )) as JsonApiResourceOperationResult<TResource, TOperation>;
 
           case "create":
             return (await createResource(
               type,
-              parameters as CreateParameters<Resource>,
+              parameters as CreateParameters<TResource>,
               requestOptions,
-            )) as Return[Operation];
+            )) as JsonApiResourceOperationResult<TResource, TOperation>;
 
           case "update":
             return (await updateResource(
               type,
-              parameters as UpdateParameters<Resource>,
+              parameters as UpdateParameters<TResource>,
               requestOptions,
-            )) as Return[Operation];
+            )) as JsonApiResourceOperationResult<TResource, TOperation>;
 
           case "delete":
             return (await deleteResource(
               type,
               parameters as DeleteParameters,
               requestOptions,
-            )) as Return[Operation];
+            )) as JsonApiResourceOperationResult<TResource, TOperation>;
 
           default:
             return Result.Err(
               new Error(`Unknown operation "${operation}"`),
-            ) as Return[Operation];
+            ) as JsonApiResourceOperationResult<TResource, TOperation>;
         }
       },
     },

@@ -28,6 +28,20 @@ Install additional plugins depending on your use-case.
 A core feature of Drupal Kit is it's hook system, thanks to [before-after-hook](https://github.com/gr2m/before-after-hook).
 This hook system makes it possible to register custom hooks before and after the target function is executed.
 
+Drupal Kit also supports instance-wide headers and dynamic auth data:
+
+```typescript
+import { Drupalkit } from "@drupal-kit/core";
+
+const drupalkit = new Drupalkit({
+  baseUrl: "https://example.com",
+  defaultHeaders: {
+    "X-App": "my-app",
+  },
+  auth: async () => `Bearer ${await getAccessToken()}`,
+});
+```
+
 ### `request` hook
 
 The `request` hook is used to register custom hooks before and after the `request` function is executed.
@@ -94,7 +108,9 @@ const EnhancedDrupalkit = Drupalkit.plugin(
 );
 
 // Create a Drupal Kit instance.
-const drupalkit = new EnhancedDrupalkit();
+const drupalkit = new EnhancedDrupalkit({
+  baseUrl: "https://example.com",
+});
 ```
 
 A plugin is just a function that takes the core `Drupalkit` and the `DrupalkitOptions` as arguments.
@@ -125,12 +141,22 @@ This plugin integrates with the built-in `jsonapi` drupal core module.
 - [x] `DELETE` JSON:API resource
 - [x] Localization
 - [x] Query Parameters
+- [x] Pagination
 
 **Typescript:**
 
 The JSON:API resources are strongly typed via the `JsonApiResources` interface.
 This interface MUST be augmented in your code in order for TypeScript to infer the
-correct types for the `Drupalkit.jsonapi.resource()` method.
+correct types for the `drupalkit.jsonApi.resource()` method.
+
+```typescript
+await drupalkit.jsonApi.resource("node--article", "readMany", {
+  pagination: {
+    limit: 10,
+    offset: 20,
+  },
+});
+```
 
 ### Simple OAuth
 
@@ -140,8 +166,22 @@ This plugin integrates with the [`simple_oauth`](https://www.drupal.org/project/
 
 - [x] `/oauth/token` endpoint
 - [x] `/oauth/userinfo` endpoint
+- [x] PKCE `code_verifier` support for authorization code grants
 - [ ] `/oauth/authorize` endpoint
 - [ ] `/oauth/jwks` endpoint
+
+OAuth grant payloads accept camel-case properties and are serialized to the
+form field names expected by Drupal:
+
+```typescript
+await drupalkit.simpleOauth.requestToken("authorization_code", {
+  clientId: "client-id",
+  clientSecret: "client-secret",
+  code: "auth-code",
+  redirectUri: "https://example.com/callback",
+  codeVerifier: "pkce-verifier",
+});
+```
 
 ### Simple OAuth Auth Code
 

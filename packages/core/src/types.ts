@@ -1,6 +1,6 @@
 import { ParsedQs } from "qs";
 import * as DrupalkitTypes from "@drupal-kit/types";
-import { Fetch } from "@drupal-kit/types";
+import { Fetch, RequestHeaders } from "@drupal-kit/types";
 
 import { DrupalkitError } from "./DrupalkitError.js";
 import { Drupalkit } from "./index.js";
@@ -10,6 +10,8 @@ export interface DrupalkitOptions {
   locale?: string;
   availableLocales?: string[];
   defaultLocale?: string;
+  defaultHeaders?: RequestHeaders;
+  auth?: AuthHeaderValue;
   log?: {
     debug: (message: string) => unknown;
     info: (message: string) => unknown;
@@ -21,6 +23,11 @@ export interface DrupalkitOptions {
 }
 
 export type Query = ParsedQs | object;
+export type AuthHeaderValue =
+  | string
+  | null
+  | undefined
+  | (() => string | null | undefined | Promise<string | null | undefined>);
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -40,10 +47,10 @@ export type ReturnTypeOf<T extends AnyFunction | AnyFunction[]> =
  * @author https://stackoverflow.com/users/2887218/jcalz
  * @see https://stackoverflow.com/a/50375286/10325032
  */
-export type UnionToIntersection<Union> = (
-  Union extends any ? (argument: Union) => void : never
-) extends (argument: infer Intersection) => void // tslint:disable-line: no-unused
-  ? Intersection
+export type UnionToIntersection<TUnion> = (
+  TUnion extends any ? (argument: TUnion) => void : never
+) extends (argument: infer TIntersection) => void // tslint:disable-line: no-unused
+  ? TIntersection
   : never;
 
 type AnyFunction = (...args: any) => any;
