@@ -1,5 +1,11 @@
 # @drupal-kit/core
 
+## 0.13.4
+
+### Patch Changes
+
+- [#117](https://github.com/wunderwerkio/drupal-kit/pull/117) [`813b6c6`](https://github.com/wunderwerkio/drupal-kit/commit/813b6c64abf8e06468969a8373402c39fc5c6c32) Thanks [@chfoidl](https://github.com/chfoidl)! - Bump qs to 6.15.2 to fix CVE-2026-8723 (GHSA-q8mj-m7cp-5q26)
+
 ## 0.13.3
 
 ## 0.13.2
