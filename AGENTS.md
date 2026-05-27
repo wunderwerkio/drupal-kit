@@ -8,8 +8,7 @@ A modular, strictly-typed Drupal SDK (monorepo) for Node.js and the browser. Thi
 
 ### Runtime requirements
 
-- **Node.js 20** (specified via Volta in root `package.json`). The update script ensures Node 20 is available via nvm and pnpm 8.5.1 is installed globally.
-- **pnpm 8.5.1** (specified in `packageManager` field). Do not use npm or yarn.
+- **Node.js 20.19.6** and **pnpm 8.5.1** (from `.cursor/Dockerfile`, matching Volta/`packageManager` in root `package.json`). Do not use npm or yarn.
 
 ### Key commands
 
@@ -26,10 +25,6 @@ All commands are run from the workspace root:
 | Format write | `pnpm format:write` |
 | Full check | `pnpm check-all` |
 
-### PATH setup
-
-The update script installs Node 20 via nvm and prepends it to PATH in `~/.bashrc`. If `node --version` shows v22 instead of v20, ensure PATH has `/home/ubuntu/.nvm/versions/node/v20.20.2/bin` before `/exec-daemon`.
-
 ### Build order matters
 
 Turborepo handles dependency ordering: `@drupal-kit/core` must build before downstream plugins. Always use `pnpm build` (via turbo) rather than building individual packages manually, unless you know the dependency graph.
@@ -40,7 +35,7 @@ Packages run tests with Vitest (`vitest run`). Shared config lives in `@drupal-k
 
 ### Shared skills
 
-The shared skills repository (`wunderwerkio/wunderskills`) is cloned to `.agents/skills/shared/` on environment startup and kept up to date via the update script. This directory is gitignored.
+The shared skills repository (`wunderwerkio/wunderskills`) is cloned to `~/.cursor/skills` on environment startup via `.cursor/install-skills.sh` and kept up to date on each install run. The Cursor environment is built from `.cursor/Dockerfile` (Node 20, pnpm 8.5.1, git).
 
 ### Commit conventions
 

@@ -1,4 +1,9 @@
 {
+  "user": "ubuntu",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
   "repositoryDependencies": ["github.com/wunderwerkio/wunderskills"],
-  "install": "mkdir -p .agents/skills && if [ -d .agents/skills/shared/.git ]; then git -C .agents/skills/shared pull --ff-only; else git clone https://github.com/wunderwerkio/wunderskills.git .agents/skills/shared; fi && pnpm install"
+  "install": "bash .cursor/install-skills.sh && pnpm install"
 }

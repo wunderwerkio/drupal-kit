@@ -44,6 +44,3 @@ dist
 coverage
 
 .npmrc
-
-# Agent skills (cloned externally)
-.agents/skills/shared
