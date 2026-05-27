@@ -1,0 +1,13 @@
+const UserInfoResponse = {
+  sub: "45",
+  name: "Marcelo.Ziemann61",
+  preferred_username: "Marcelo.Ziemann61",
+  email: "Patience_Larkin75@example.org",
+  email_verified: true,
+  locale: "de",
+  zoneinfo: null,
+  updated_at: "1678809645",
+  profile: "https://my-drupal.com/users/marceloziemann61",
+} as const;
+
+export default UserInfoResponse;

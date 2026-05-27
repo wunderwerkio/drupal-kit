@@ -1,0 +1,75 @@
+{
+  "uid": [
+    {
+      "value": 47
+    }
+  ],
+  "uuid": [
+    {
+      "value": "e04a5e5a-96a6-4427-a037-d925e929b802"
+    }
+  ],
+  "langcode": [
+    {
+      "value": "de"
+    }
+  ],
+  "name": [
+    {
+      "value": "Chaim54"
+    }
+  ],
+  "created": [
+    {
+      "value": "2023-03-16T08:28:17+00:00",
+      "format": "Y-m-d\\TH:i:sP"
+    }
+  ],
+  "changed": [
+    {
+      "value": "2023-03-16T08:28:17+00:00",
+      "format": "Y-m-d\\TH:i:sP"
+    }
+  ],
+  "default_langcode": [
+    {
+      "value": true
+    }
+  ],
+  "path": [
+    {
+      "alias": null,
+      "pid": null,
+      "langcode": "de"
+    }
+  ],
+  "content_translation_source": [
+    {
+      "value": "und"
+    }
+  ],
+  "content_translation_outdated": [
+    {
+      "value": false
+    }
+  ],
+  "content_translation_uid": [
+    {
+      "target_id": 0,
+      "target_type": "user",
+      "target_uuid": "5f93bd07-c1a4-4c92-a41c-c4bec9694c05",
+      "url": "/user/0"
+    }
+  ],
+  "content_translation_status": [
+    {
+      "value": true
+    }
+  ],
+  "content_translation_created": [
+    {
+      "value": "2023-03-16T08:28:17+00:00",
+      "format": "Y-m-d\\TH:i:sP"
+    }
+  ]
+}
