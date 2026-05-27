@@ -1,0 +1,47 @@
+# Drupal Kit
+
+## Overview
+
+A modular, strictly-typed Drupal SDK (monorepo) for Node.js and the browser. This is a **library/SDK**, not a runnable application — there are no servers, databases, or external services to start.
+
+## Cursor Cloud specific instructions
+
+### Runtime requirements
+
+- **Node.js 20** (specified via Volta in root `package.json`). The update script ensures Node 20 is available via nvm and pnpm 8.5.1 is installed globally.
+- **pnpm 8.5.1** (specified in `packageManager` field). Do not use npm or yarn.
+
+### Key commands
+
+All commands are run from the workspace root:
+
+| Task | Command |
+|------|---------|
+| Install deps | `pnpm install` |
+| Build all | `pnpm build` |
+| Lint all | `pnpm lint` |
+| Test all | `pnpm test` |
+| Typecheck all | `pnpm typecheck` |
+| Format check | `pnpm format:check` |
+| Format write | `pnpm format:write` |
+| Full check | `pnpm check-all` |
+
+### PATH setup
+
+The update script installs Node 20 via nvm and prepends it to PATH in `~/.bashrc`. If `node --version` shows v22 instead of v20, ensure PATH has `/home/ubuntu/.nvm/versions/node/v20.20.2/bin` before `/exec-daemon`.
+
+### Build order matters
+
+Turborepo handles dependency ordering: `@drupal-kit/core` must build before downstream plugins. Always use `pnpm build` (via turbo) rather than building individual packages manually, unless you know the dependency graph.
+
+### Tests use MSW mocks
+
+All tests mock HTTP via MSW (Mock Service Worker). No real Drupal instance or network access is required for the test suite.
+
+### Shared skills
+
+The shared skills repository (`wunderwerkio/wunderskills`) is cloned to `.agents/skills/shared/` on environment startup and kept up to date via the update script. This directory is gitignored.
+
+### Commit conventions
+
+Husky enforces conventional commits via commitlint on the `commit-msg` hook. Use format: `type(scope): message` (e.g., `feat(core): add new hook`).
