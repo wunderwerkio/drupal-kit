@@ -1,12 +1,4 @@
 {
-  "dependencyTypes": [
-    "dev",
-    "overrides",
-    "peer",
-    "pnpmOverrides",
-    "prod",
-    "resolutions"
-  ],
   "sortFirst": [
     "name",
     "description",
