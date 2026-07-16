@@ -12,7 +12,7 @@ concurrency:
 jobs:
   lint-and-test:
     name: Lint & Test
-    runs-on: ww-onprem-small
+    runs-on: ww-onprem-large
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
