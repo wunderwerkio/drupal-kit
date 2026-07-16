@@ -1,5 +1,13 @@
 # @drupal-kit/core
 
+## 0.13.5
+
+### Patch Changes
+
+- [#123](https://github.com/wunderwerkio/drupal-kit/pull/123) [`97f9922`](https://github.com/wunderwerkio/drupal-kit/commit/97f992282d9b80a910a1944c27cdfa7f5a6b9c34) Thanks [@chfoidl](https://github.com/chfoidl)! - Fix open dependency CVEs through dependency upgrades and pnpm overrides
+
+- [#124](https://github.com/wunderwerkio/drupal-kit/pull/124) [`efe5519`](https://github.com/wunderwerkio/drupal-kit/commit/efe551909f38c3050d28f13fe2dad4458d612f75) Thanks [@chfoidl](https://github.com/chfoidl)! - Migrate test runner from AVA to Vitest
+
 ## 0.13.4
 
 ### Patch Changes
